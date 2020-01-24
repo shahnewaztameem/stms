@@ -22,6 +22,11 @@ Auth::routes(['register' => false]);
 
 Route::get('/home', function () {
     $user_type = auth()->user()->user_type;
+    /**
+     * UserType '0' for 'Admin'
+     * UserType '1' for 'Client'
+     * UserType '2' for 'User'
+     */
     switch ($user_type) {
         case 0:
             return redirect()->route('admin.home');
@@ -41,6 +46,13 @@ Route::group(['middleware' => ['auth']], function () {
     Route::group(['prefix' => 'admin'], function () {
         Route::group(['middleware' => ['admin']], function () {
             Route::get('/home', 'AdminController@index')->name('admin.home');
+
+            //ADMIN-USER-CONTROLS
+            Route::get('home/user-create', 'AdminController@create_user')->name('admin.user.create');
+            Route::post('home/user-create', 'AdminController@store_user');
+            Route::get('home/user-edit/{id}', 'AdminController@edit_user')->name('admin.user.edit');
+            Route::post('home/user-edit/{id}', 'AdminController@update_user');
+            Route::delete('home/user-delete/{id}', 'AdminController@delete_user')->name('admin.user.delete');
         });
     });
     

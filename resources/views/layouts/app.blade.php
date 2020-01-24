@@ -8,6 +8,8 @@
     <title>@yield('site_title', config('app.name'))</title>
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
+    <!-- Fontawesome CDN -->
+    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
     <!-- Styles -->
     <link href="{{ mix('/css/app.css') }}" rel="stylesheet">
     
@@ -36,7 +38,7 @@
                     @if (auth()->user()->user_type == 0)
                         <li class="nav-item">
                             <a href="{{ route('home') }}" class="nav-link">
-                                <span @if (request()->is('home')) class="border-bottom-custom" @endif>
+                                <span @if (request()->is('admin/home' || 'admin/home/*')) class="border-bottom-custom" @endif>
                                     Home
                                 </span>
                             </a>
@@ -45,16 +47,7 @@
                         
                         <li class="nav-item">
                             <a href="{{ route('home') }}" class="nav-link">
-                                <span @if (request()->is('home')) class="border-bottom-custom" @endif>
-                                    User List
-                                </span>
-                            </a>
-                        </li>
-                        <!-- /.nav-item -->
-                        
-                        <li class="nav-item">
-                            <a href="{{ route('home') }}" class="nav-link">
-                                <span @if (request()->is('home')) class="border-bottom-custom" @endif>
+                                <span @if (request()->is('admin/client-list')) class="border-bottom-custom" @endif>
                                     Client List
                                 </span>
                             </a>
