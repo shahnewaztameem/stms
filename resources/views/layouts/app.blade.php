@@ -38,7 +38,7 @@
                     @if (auth()->user()->user_type == 0)
                         <li class="nav-item">
                             <a href="{{ route('home') }}" class="nav-link">
-                                <span @if (request()->is('admin/home' || 'admin/home/*')) class="border-bottom-custom" @endif>
+                                <span @if (request()->is('admin/home') || request()->is('admin/home/*')) class="border-bottom-custom" @endif>
                                     Home
                                 </span>
                             </a>
@@ -46,8 +46,8 @@
                         <!-- /.nav-item -->
                         
                         <li class="nav-item">
-                            <a href="{{ route('home') }}" class="nav-link">
-                                <span @if (request()->is('admin/client-list')) class="border-bottom-custom" @endif>
+                            <a href="{{ route('admin.client.list') }}" class="nav-link">
+                                <span @if (request()->is('admin/client-list') || request()->is('admin/client-list/*')) class="border-bottom-custom" @endif>
                                     Client List
                                 </span>
                             </a>

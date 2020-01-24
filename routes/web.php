@@ -53,6 +53,14 @@ Route::group(['middleware' => ['auth']], function () {
             Route::get('home/user-edit/{id}', 'AdminController@edit_user')->name('admin.user.edit');
             Route::post('home/user-edit/{id}', 'AdminController@update_user');
             Route::delete('home/user-delete/{id}', 'AdminController@delete_user')->name('admin.user.delete');
+
+            //ADMIN-CLIENT-CONTROLS
+            Route::get('client-list', 'AdminController@client_list')->name('admin.client.list');
+            Route::get('client-list/client-create', 'AdminController@create_client')->name('admin.client.create');
+            Route::post('client-list/client-create', 'AdminController@store_client');
+            Route::get('client-list/client-edit/{id}', 'AdminController@edit_client')->name('admin.client.edit');
+            Route::post('client-list/client-edit/{id}', 'AdminController@update_client');
+            Route::delete('client-list/client-delete/{id}', 'AdminController@delete_client')->name('admin.client.delete');
         });
     });
     
