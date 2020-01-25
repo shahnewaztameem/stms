@@ -42,7 +42,7 @@ class ClientTaskNotification extends Notification implements ShouldQueue
     {
         $url = url('/client/task/view/'.$this->taskDetails->slug);
         return (new MailMessage)
-            ->subject('User assigned to task')
+            ->subject('Notification For New Task')
             ->greeting('Hello!')
             ->line('Your task has been created and Assigned to '.$this->taskDetails->users[1]->name)
             ->line('Task Title: ' . $this->taskDetails->title)

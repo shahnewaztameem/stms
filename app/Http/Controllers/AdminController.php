@@ -71,6 +71,8 @@ class AdminController extends Controller
     {
         $user = User::find($id);
 
+        // return $request;
+
         $request->validate([
             'name' => 'bail | nullable | max: 100',
             'email' => 'bail | nullable | email | max: 30 | unique:users,email,'.$user->id,
@@ -79,7 +81,7 @@ class AdminController extends Controller
 
         $user->name = $request->name ?? $user->name;
         $user->email = $request->email ?? $user->email;
-        if ($request->has('password')) {
+        if ($request->password) {
             $user->password = Hash::make($request->password);
         }
         $user->save();
@@ -166,7 +168,7 @@ class AdminController extends Controller
 
         $client->name = $request->name ?? $client->name;
         $client->email = $request->email ?? $client->email;
-        if ($request->has('password')) {
+        if ($request->password) {
             $client->password = Hash::make($request->password);
         }
         $client->save();
@@ -227,7 +229,7 @@ class AdminController extends Controller
         $task->details = $request->details;
 
         /**Generate Slug for the title */
-        $task->slug = Str::random(25) . uniqid();
+        $task->slug = Str::random(35) . uniqid();
 
         /**Check for uniqueness of the slug....If Not, Append a random unique id based on the microtime */
         if (Task::where('slug', $task->slug)->first()) {

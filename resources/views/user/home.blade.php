@@ -2,61 +2,55 @@
 
 @section('content')
 <div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-10">
-            {{-- <div class="card">
-                <div class="card-header">Dashboard</div>
-
-                <div class="card-body">
-                    @if (session('status'))
-                        <div class="alert alert-success" role="alert">
-                            {{ session('status') }}
-                        </div>
-                    @endif
-
-                    You are logged in!
-                </div>
-            </div> --}}
-
-            <table id="example" class="table table-striped table-bordered" style="width:100%">
-        <thead>
-            <tr>
-                <th>Name</th>
-                <th>Position</th>
-                <th>Office</th>
-                <th>Age</th>
-                <th>Start date</th>
-                <th>Salary</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>Hope Fuentes</td>
-                <td>Secretary</td>
-                <td>San Francisco</td>
-                <td>41</td>
-                <td>2010/02/12</td>
-                <td>$109,850</td>
-            </tr>
-            <tr>
-                <td>Vivian Harrell</td>
-                <td>Financial Controller</td>
-                <td>San Francisco</td>
-                <td>62</td>
-                <td>2009/02/14</td>
-                <td>$452,500</td>
-            </tr>
-            <tr>
-                <td>Timothy Mooney</td>
-                <td>Office Manager</td>
-                <td>London</td>
-                <td>37</td>
-                <td>2008/12/11</td>
-                <td>$136,200</td>
-            </tr>
-        </tbody>
-        </table>
+ <div class="row justify-content-center">
+   <div class="col-md-10">
+      @if( Session::get('success') )
+      <div class="alert alert-success container" id="div3">
+        <strong>Success!</strong> {{Session::get('success')}}
+      </div>
+      @endif
+      @foreach ($user->tasks as $task)    
+      <div class="card mb-2">
+        <div class="card-header">
+        <div class="row">
+          <div class="col-10">
+          <blockquote class="blockquote mb-0">
+            <h3><a href="{{ route('user.task.view', $task->id) }}">{{ $task->title }} </a><small class="text-muted posted-text"> Posted {{ $task->created_at->diffForHumans() }}</small></h3>
+            
+            {{-- @if (count($task->users))    
+            <footer class="blockquote-footer">{{ $task->users[0]->name }}</cite></footer>
+            @endif --}}
+            
+          </blockquote>
+          </div>
+          <div class="col-2">
+          <center>
+            <a href="{{route('user.task.view', $task->id)}}" class="add-btn" data-toggle="tooltip" data-placement="bottom" title="View Task">
+                <i class="fa fa-eye" style="font-size: 1.3rem;color: teal"></i></span>
+            </a>
+          </center>
+          </div>
         </div>
-    </div>
+        </div>
+        <div class="card-body">
+          <p class="card-text">{{ $task->details }}</p>
+          {{-- @if(count($task->users) > 1)
+            <a href="{{ route('admin.notify.client', $task->id) }}" class="btn btn-primary">Notify Client</a>
+          @endif  --}}
+        </div>
+      </div>
+      @endforeach
+
+      @if (count($user->tasks) == 0)
+        <div class="card">
+            <ul class="card-body justify-content-center">
+                <h3 class="card-text text-center">Not Task available for you.</h3>
+            </ul>
+        </div>          
+      @endif
+
+   </div>
+
+ </div>
 </div>
 @endsection

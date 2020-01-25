@@ -75,11 +75,6 @@
                                     Add Task
                                 </a>
                                 
-                                <div role="separator" class="dropdown-divider"></div>
-                                
-                                <a class="dropdown-item" href="{{ route('logout') }}">
-                                    Assign Task To User
-                                </a>
                             </div>
                         </li>
 
@@ -94,7 +89,13 @@
                         </li>
                     {{-- USER OPTIONS --}}
                     @else
-
+                        <li class="nav-item">
+                            <a href="{{ route('user.home') }}" class="nav-link">
+                                <span @if (request()->is('user/task/*')) class="border-bottom-custom" @endif>
+                                    All Tasks
+                                </span>
+                            </a>
+                        </li>
                     @endif  
                 </ul>
                 @endauth

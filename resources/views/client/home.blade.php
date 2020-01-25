@@ -40,12 +40,14 @@
         </div>
       </div>
       @endforeach
-
-      <nav>
-        <ul class="pagination justify-content-center">
-          {{-- {{$user->tasks->links()}} --}}
-        </ul>
-    </nav>
+      
+      @if (count($user->tasks) == 0)
+      <div class="card">
+          <ul class="card-body justify-content-center">
+              <h3 class="card-text text-center">Not Task created for you.</h3>
+          </ul>
+      </div>          
+      @endif
    </div>
 
  </div>

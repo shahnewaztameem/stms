@@ -92,7 +92,12 @@ Route::group(['middleware' => ['auth']], function () {
     // USER ROUTES
     Route::group(['prefix' => 'user'], function () {
         Route::group(['middleware' => ['user']], function () {
-            Route::get('/home', 'UserController@index')->name('user.home');
+            Route::get('task/all', 'UserController@index')->name('user.home');
+            Route::get('task/view/{id}', 'UserController@view')->name('user.task.view');
+            Route::post('task/file/{id}', 'UserController@store_file')->name('user.file.create');
+            // Route::get('task/file/edit/{task_id}/{id}', 'UserController@edit_file')->name('user.file.edit');
+            // Route::post('task/file/edit/{task_id}/{id}', 'UserController@update_file');
+            Route::delete('task/file/delete/{id}', 'UserController@delete_file')->name('user.file.delete');
         });
     });
 });

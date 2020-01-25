@@ -10,7 +10,7 @@ $factory->define(Task::class, function (Faker $faker) {
     $title = $faker->sentence(3);
     return [
         'title' => $title,
-        'slug' => Str::random(25) . uniqid(),
+        'slug' => Str::random(35) . uniqid(),
         'details' => $faker->sentence(20),
     ];
 });

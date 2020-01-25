@@ -43,9 +43,11 @@
           <p class="card-text"><strong>Attachment From User: </strong></p>
           <ul class="list-group">
             @foreach ($task->task_files as $file)
-             <li class="list-group-item list-group-item-primary">
+             <li class="list-group-item list-group-item-default">
               <a href="{{ asset($file->file_url) }}" target="_blank">{{ $file->file_url }}</a>
              </li>
+             
+             <div role="separator" class="dropdown-divider"></div>
             @endforeach
           </ul>
           @endif
