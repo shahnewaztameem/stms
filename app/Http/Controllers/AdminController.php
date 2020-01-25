@@ -188,7 +188,7 @@ class AdminController extends Controller
      */
     public function all_task()
     {
-        $tasks = Task::with('users', 'task_files')->latest()->get();
+        $tasks = Task::with('users', 'task_files')->latest()->paginate(10);
         // return $tasks;
         return view('admin.task.all_tasks', compact('tasks'));
     }

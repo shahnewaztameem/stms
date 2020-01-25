@@ -48,7 +48,14 @@
         </div>
       </div>
       @endforeach
+
+      <nav>
+        <ul class="pagination justify-content-center">
+          {{$tasks->links()}}
+        </ul>
+    </nav>
    </div>
+
  </div>
 </div>
 @endsection
