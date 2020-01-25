@@ -17,7 +17,7 @@ This project is developed using laravel framefork.  A simple task management sys
 10. exit
 11. php artisan serve
  
- ####Before notify a client, you should run "pt 12" to get mail
+ #### Before notify a client, you should run "pt 12" to get mail
 
 12. php artisan queue:work
    
