@@ -44,6 +44,7 @@ class AdminController extends Controller
     public function store_user(CreateUserRequest $request)
     {
         $request['user_type'] = 2;
+        $request['password'] = Hash::make($request->password);
         $user = User::create($request->all());
         return redirect()->back()->with('success', "User ($user->name) is added successfully");
     }
@@ -78,7 +79,9 @@ class AdminController extends Controller
 
         $user->name = $request->name ?? $user->name;
         $user->email = $request->email ?? $user->email;
-        $user->password = Hash::make($request->passowrd) ?? $user->password;
+        if ($request->has('password')) {
+            $user->password = Hash::make($request->password);
+        }
         $user->save();
         return redirect()->back()->with('success', "User ($user->name) is updated successfully");
     }
@@ -128,6 +131,7 @@ class AdminController extends Controller
     public function store_client(CreateUserRequest $request)
     {
         $request['user_type'] = 1;
+        $request['password'] = Hash::make($request->password);
         $client = User::create($request->all());
         return redirect()->back()->with('success', "Client ($client->name) is added successfully");
     }
@@ -162,7 +166,9 @@ class AdminController extends Controller
 
         $client->name = $request->name ?? $client->name;
         $client->email = $request->email ?? $client->email;
-        $client->password = Hash::make($request->passowrd) ?? $client->password;
+        if ($request->has('password')) {
+            $client->password = Hash::make($request->password);
+        }
         $client->save();
         return redirect()->back()->with('success', "Client ($client->name) is updated successfully");
     }

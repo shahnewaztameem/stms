@@ -85,7 +85,13 @@
 
                     {{-- CLIENT OPTIONS --}}
                     @elseif(auth()->user()->user_type == 1)
-                
+                        <li class="nav-item">
+                            <a href="{{ route('client.home') }}" class="nav-link">
+                                <span @if (request()->is('client/task/*')) class="border-bottom-custom" @endif>
+                                    All Tasks
+                                </span>
+                            </a>
+                        </li>
                     {{-- USER OPTIONS --}}
                     @else
 

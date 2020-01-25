@@ -80,7 +80,12 @@ Route::group(['middleware' => ['auth']], function () {
     // CLIENT ROUTES 
     Route::group(['prefix' => 'client'], function () {
         Route::group(['middleware' => ['client']], function () {
-            Route::get('/home', 'ClientController@index')->name('client.home');
+            Route::get('/task/all', 'ClientController@index')->name('client.home');
+            Route::get('/task/view/{slug}', 'ClientController@view')->name('client.task.view');
+            Route::post('/task/feedback/{id}', 'ClientController@store_feedback')->name('client.feedback');
+            // Route::get('task/feedback/edit/{task_id}/{id}', 'ClientController@edit_feedback')->name('client.feedback.edit');
+            // Route::post('task/feedback/edit/{task_id}/{id}', 'ClientController@update_feedback');
+            Route::delete('task/feedback/{id}', 'ClientController@delete_feedback')->name('client.feedback.delete');
         });
     });
     
