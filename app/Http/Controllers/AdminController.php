@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests\TaskRequest;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Requests\CreateUserRequest;
+use App\Notifications\ClientTaskNotification;
 use App\TaskUser;
 
 class AdminController extends Controller
@@ -333,5 +334,14 @@ class AdminController extends Controller
         $task = Task::find($id);
         $task->delete();
         return redirect()->back()->with('success', "Task ($task->title) is deleted successfully");
+    }
+
+    public function notify_client($id)
+    {
+        $task = Task::whereId($id)->with('users')->first();
+        $client = User::find($task->users[0]->id);
+        // return $client;
+        $client->notify(new ClientTaskNotification($task));
+        return redirect()->back()->with('success', "Client ($client->name) is notified successfully");
     }
 }
