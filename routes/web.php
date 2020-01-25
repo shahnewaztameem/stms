@@ -20,27 +20,29 @@ Route::get('/', function () {
 
 Auth::routes(['register' => false]);
 
-Route::get('/home', function () {
-    $user_type = auth()->user()->user_type;
-    /**
-     * UserType '0' for 'Admin'
-     * UserType '1' for 'Client'
-     * UserType '2' for 'User'
-     */
-    switch ($user_type) {
-        case 0:
-            return redirect()->route('admin.home');
-            break;
-        case 1:
-            return redirect()->route('client.home');
-            break;
-        case 2:
-            return redirect()->route('user.home');
-            break;
-    }
-})->name('home');
-
 Route::group(['middleware' => ['auth']], function () {
+
+    
+    Route::get('/home', function () {
+        $user_type = auth()->user()->user_type;
+        /**
+         * UserType '0' for 'Admin'
+         * UserType '1' for 'Client'
+         * UserType '2' for 'User'
+         */
+        switch ($user_type) {
+            case 0:
+                return redirect()->route('admin.home');
+                break;
+            case 1:
+                return redirect()->route('client.home');
+                break;
+            case 2:
+                return redirect()->route('user.home');
+                break;
+        }
+    })->name('home');
+
 
     // ADMIN ROUTES 
     Route::group(['prefix' => 'admin'], function () {
@@ -61,6 +63,17 @@ Route::group(['middleware' => ['auth']], function () {
             Route::get('client-list/client-edit/{id}', 'AdminController@edit_client')->name('admin.client.edit');
             Route::post('client-list/client-edit/{id}', 'AdminController@update_client');
             Route::delete('client-list/client-delete/{id}', 'AdminController@delete_client')->name('admin.client.delete');
+
+            // ADMIN-TASK-CONTROLS
+            Route::get('task/all', 'AdminController@all_task')->name('admin.task.all');
+            Route::get('task/create', 'AdminController@create_task')->name('admin.task.create');
+            Route::post('task/create', 'AdminController@store_task');
+            Route::get('task/edit/{id}', 'AdminController@edit_task')->name('admin.task.edit');
+            Route::post('task/edit/{id}', 'AdminController@update_task');
+            Route::delete('task/delete/{id}', 'AdminController@delete_task')->name('admin.task.delete');
+
+            // NOTIFY CLIENT
+            Route::get('admin/notify-client/{id}',  'AdminController@notify_client')->name('admin.notify.client');
         });
     });
     

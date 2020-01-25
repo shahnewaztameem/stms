@@ -306,3 +306,24 @@ html, body {
  font-size: 1.6rem;
  color: #fff !important;
 }
+
+.add-btn,
+.add-btn:active,
+.edit-btn,
+.edit-btn:active,
+.delete-btn,
+.delete-btn:active{
+  border: none ;
+  outline: none ;
+  background: transparent;
+}
+
+.posted-text{
+  font-size: small;
+}
+
+.btn-light{
+  color: #212529 !important;
+  background-color: #e2e6ea !important;
+  border-color: #dae0e5 !important;
+}

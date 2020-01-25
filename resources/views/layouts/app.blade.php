@@ -53,16 +53,36 @@
                             </a>
                         </li>
                         <!-- /.nav-item -->
-                        
-                        <li class="nav-item">
-                            <a href="{{ route('home') }}" class="nav-link">
-                                <span @if (request()->is('home')) class="border-bottom-custom" @endif>
-                                    All Tasks
-                                </span>
-                            </a>
-                        </li>
-                        <!-- /.nav-item -->
                     
+                        <li class="nav-item dropdown">
+                            <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button"
+                               data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                               <span @if (request()->is('admin/task/*')) class="border-bottom-custom" @endif>
+                                    Tasks
+                                </span>
+                                <span class="caret"></span>
+                            </a>
+
+                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+
+                                <a class="dropdown-item" href="{{ route('admin.task.all') }}">
+                                    All Tasks
+                                </a>
+
+                                <div role="separator" class="dropdown-divider"></div>
+                                
+                                <a class="dropdown-item" href="{{ route('admin.task.create') }}">
+                                    Add Task
+                                </a>
+                                
+                                <div role="separator" class="dropdown-divider"></div>
+                                
+                                <a class="dropdown-item" href="{{ route('logout') }}">
+                                    Assign Task To User
+                                </a>
+                            </div>
+                        </li>
+
                     {{-- CLIENT OPTIONS --}}
                     @elseif(auth()->user()->user_type == 1)
                 
@@ -127,13 +147,35 @@
         <!-- /.container -->
     </main>
 
+    
+
     <script src="{{ mix('/js/app.js') }}"></script>
+
+    
+    <script>
+        $.fn.selectpicker.Constructor.BootstrapVersion = 4;
+    </script>
+
+    <script>
+        $(function() {
+            $('select').selectpicker({
+                actionsBox: true,
+                liveSearch: true,
+                width: '100%',
+                selectedTextFormat: 'count > 3',
+                showTick: true,
+                size: 4,
+            });
+        });
+    </script>
+
 
     <script>
         $(document).ready(function() {
             $('#example').DataTable();
         } );
     </script>
+
 
     @yield('customJS')
 

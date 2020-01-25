@@ -2,10 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Task;
 use App\User;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
-use App\Http\Requests\CreateUserRequest;
+use App\Http\Requests\TaskRequest;
 use Illuminate\Support\Facades\Hash;
+use App\Http\Requests\CreateUserRequest;
+use App\TaskUser;
 
 class AdminController extends Controller
 {
@@ -90,10 +94,10 @@ class AdminController extends Controller
         $user->delete();
         return redirect()->back()->with('success', "User ($user->name) is deleted successfully");
     }
-    // USER MODULE END HERE
+    /** USER MODULE END HERE  */
 
     // CLIENT MODULE START FROM HERE
-        /**
+    /**
      * Index function for admin to view
      * dashboard of an admin
      * 
@@ -116,7 +120,7 @@ class AdminController extends Controller
     }
 
     /**
-     * Store an Client
+     * Store a Client
      *
      * @return Response 
      */
@@ -140,7 +144,7 @@ class AdminController extends Controller
     }
 
     /**
-     * Update and Client
+     * Update a Client
      *
      * @param [type] $id
      * @return view
@@ -163,7 +167,7 @@ class AdminController extends Controller
     }
 
     /**
-     * Delete an Client
+     * Delete a Client
      *
      * @param [type] $id
      * @return void
@@ -173,5 +177,161 @@ class AdminController extends Controller
         $client = User::find($id);
         $client->delete();
         return redirect()->back()->with('success', "Client ($client->name) is deleted successfully");
+    }
+    /** CLIENT MODULE END HERE */
+
+    // TASK MODULE START FROM HERE
+    /**
+     * All task of the system
+     * 
+     * @return view with all tasks
+     */
+    public function all_task()
+    {
+        $tasks = Task::with('users', 'task_files')->latest()->get();
+        // return $tasks;
+        return view('admin.task.all_tasks', compact('tasks'));
+    }
+
+    /**
+     * Task create form
+     *
+     * @return view
+     */
+    public function create_task()
+    {
+        $clients = User::whereUserType(1)->latest()->get();
+        $users = User::whereUserType(2)->latest()->get();
+        return view('admin.task.create', compact('clients', 'users'));
+    }
+
+    /**
+     * Store a task
+     *
+     * @return Response 
+     */
+    public function store_task(TaskRequest $request)
+    {
+
+        // return Str::random(20) . uniqid();
+
+        $task = new Task();
+        $task->title = $request->title;
+        $task->details = $request->details;
+
+        /**Generate Slug for the title */
+        $task->slug = Str::random(25) . uniqid();
+
+        /**Check for uniqueness of the slug....If Not, Append a random unique id based on the microtime */
+        if (Task::where('slug', $task->slug)->first()) {
+            $task->slug = $task->slug . '-' . uniqid();
+        }
+
+        // store the task in 'tasks table'
+        $task->save();
+
+        /**For Storing task and client */
+        $taskClient = new TaskUser();
+        $taskClient->task_id = $task->id;
+        $taskClient->user_id = $request->client_name;
+        $taskClient->save();
+
+        $taskUser = new TaskUser();
+        $taskUser->task_id = $task->id;
+        $taskUser->user_id = $request->user_name;
+        $taskUser->save();
+
+        return redirect()->back()->with('success', "Task ($task->title) is added successfully");
+    }
+
+    /**
+     * Task edit form
+     *
+     * @param [type] $id
+     * @return view
+     */
+    public function edit_task($id)
+    {
+        $task = Task::with('users')->whereId($id)->first();
+        $clients = User::whereUserType(1)->latest()->get();
+        // return $task;
+        $users = User::whereUserType(2)->latest()->get();
+        return view('admin.task.edit', compact('task', 'clients', 'users'));
+    }
+
+    /**
+     * Update a Task
+     *
+     * @param [type] $id
+     * @return view
+     */
+    public function update_task(TaskRequest $request, $id)
+    {
+        $task = Task::whereId($id)->first();
+
+        // return $task;
+
+        $task->title = $request->title;
+        $task->details = $request->details;
+
+        // store the task in 'tasks table'
+        $task->save();
+
+        /**For Storing task and client */
+        $taskClient = TaskUser::where('task_id', $task->id)->get();
+        // return $taskClient;
+        $loop = 2 - count($taskClient);
+        //  return $loop;
+
+        switch ($loop) {
+            case 0:
+                $taskCLientUpdate = TaskUser::find($taskClient[0]->id); 
+                $taskCLientUpdate->user_id = $request->client_name;
+                $taskCLientUpdate->save();
+
+                $taskCLientUpdate = TaskUser::find($taskClient[1]->id);
+                $taskCLientUpdate->user_id = $request->user_name;
+                $taskCLientUpdate->save();
+                break;
+            case 1:
+                $taskCLientUpdate = TaskUser::find($taskClient[0]->id);
+                $taskCLientUpdate->user_id = $request->client_name;
+                $taskCLientUpdate->save();
+
+                $taskCLientUpdate = new TaskUser();
+                $taskCLientUpdate->task_id = $task->id;
+                $taskCLientUpdate->user_id = $request->user_name;
+                $taskCLientUpdate->save();
+                
+                break;
+            
+            case 2:
+                $taskCLientUpdate = new TaskUser();
+                $taskCLientUpdate->task_id = $task->id;
+                $taskCLientUpdate->user_id = $request->client_name;
+                $taskCLientUpdate->save();
+
+                $taskCLientUpdate = new TaskUser();
+                $taskCLientUpdate->task_id = $task->id;
+                $taskCLientUpdate->user_id = $request->user_name;
+                $taskCLientUpdate->save();
+
+                break;
+        }
+
+        return redirect()->back()->with('success', "Task ($task->title) is updated successfully");
+    }
+
+    /**
+     * Delete a task
+     *
+     * @param [type] $id
+     * @return void
+     */
+    public function delete_task($id)
+    {
+        $task = Task::find($id);
+        $task->delete();
+        return redirect()->back()->with('success', "Task ($task->title) is deleted successfully");
     }
 }
