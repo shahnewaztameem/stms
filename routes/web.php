@@ -22,7 +22,7 @@ Auth::routes(['register' => false]);
 
 Route::group(['middleware' => ['auth']], function () {
 
-    
+
     Route::get('/home', function () {
         $user_type = auth()->user()->user_type;
         /**
@@ -76,7 +76,7 @@ Route::group(['middleware' => ['auth']], function () {
             Route::get('admin/notify-client/{id}',  'AdminController@notify_client')->name('admin.notify.client');
         });
     });
-    
+
     // CLIENT ROUTES 
     Route::group(['prefix' => 'client'], function () {
         Route::group(['middleware' => ['client']], function () {
@@ -88,7 +88,7 @@ Route::group(['middleware' => ['auth']], function () {
             Route::delete('task/feedback/{id}', 'ClientController@delete_feedback')->name('client.feedback.delete');
         });
     });
-    
+
     // USER ROUTES
     Route::group(['prefix' => 'user'], function () {
         Route::group(['middleware' => ['user']], function () {

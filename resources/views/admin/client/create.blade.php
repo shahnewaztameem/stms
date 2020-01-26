@@ -7,7 +7,7 @@
     <div class="card">
      <div class="card-body">
       <h3 class="text-center my-3">
-       Create New User
+       Create New Client
       </h3>
 
       @if( Session::get('success') )
