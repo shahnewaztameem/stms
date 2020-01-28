@@ -125,12 +125,21 @@
                             </a>
 
                             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                                {{-- <div class="dropdown-item">
+                                <div class="dropdown-item">
                                     <p class="mb-0">{{ auth()->user()->name }}</p>
                                 </div>
                                 <!-- /.dropdown-item -->
 
-                                <div role="separator" class="dropdown-divider"></div> --}}
+                                @if (auth()->user()->user_type == 1)
+                                    
+                                    <div role="separator" class="dropdown-divider"></div>
+
+                                    <a class="dropdown-item" href="{{ route('client.change.pass') }}">
+                                        Change Password
+                                    </a>
+                                @endif
+
+                                <div role="separator" class="dropdown-divider"></div>
 
                                 <a class="dropdown-item" href="{{ route('logout') }}"
                                    onclick="event.preventDefault();document.getElementById('logout-form').submit();">{{ __('Logout') }}</a>

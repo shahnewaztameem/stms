@@ -86,6 +86,9 @@ Route::group(['middleware' => ['auth']], function () {
     // CLIENT ROUTES 
     Route::group(['prefix' => 'client'], function () {
         Route::group(['middleware' => ['client']], function () {
+            Route::get('/change-pass', 'ClientController@change_pass')->name('client.change.pass');
+            Route::post('/change-pass', 'ClientController@store_pass');
+
             Route::get('/task/all', 'ClientController@index')->name('client.home');
             Route::get('/task/view/{slug}', 'ClientController@view')->name('client.task.view');
             Route::post('/task/feedback/{id}', 'ClientController@store_feedback')->name('client.feedback');

@@ -6,6 +6,7 @@ use App\ClientFeedback;
 use App\Task;
 use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class ClientController extends Controller
 {
@@ -72,5 +73,33 @@ class ClientController extends Controller
         $feedback = ClientFeedback::find($id);
         $feedback->delete();
         return redirect()->back()->with('success', "Your feedback is deleted successfully");
+    }
+
+    /**
+     * Change password form for client
+     *
+     * @return void
+     */
+    public function change_pass()
+    {
+        return view('client.change_pass');
+    }
+
+    /**
+     * Store the new password
+     *
+     * @return void
+     */
+    public function store_pass(Request $request)
+    {
+        $request->validate([
+            'password' => 'bail | required | min: 6 | confirmed'
+        ]);
+
+        $user = User::find(auth()->id());
+        $user->password = Hash::make($request->password);
+        $user->save();
+
+        return redirect()->back()->with('success', "Your password is changed successfully");
     }
 }
