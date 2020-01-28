@@ -16,6 +16,13 @@
         </div>
       @endif
 
+      
+      @if( Session::get('err') )
+      <div class="alert alert-danger container" id="div3">
+        <strong>Error!</strong> {{Session::get('err')}}
+      </div>
+      @endif
+
       @if ($errors->any())
       <div class="form-group row">
         <div class="col-md-12">
@@ -32,7 +39,7 @@
 
       
 
-      <form method="POST" action="{{ route('admin.task.create') }}">
+      <form method="POST" action="{{ route('admin.task.create') }}" enctype="multipart/form-data">
        @csrf
        <div class="form-group">
           <select name="client_name" id="client_name" class="selectpicker form-control select-search" data-live-search="true">
@@ -60,11 +67,27 @@
         </select>
       </div>
 
-       <button type="submit" class="btn btn-primary">Create Task</button>
+      <div class="custom-file mb-3">
+        <label class="custom-file-label" for="file_upload">Choose file...</label>
+        <input type="file" name="task_files[]" class="custom-file-input" id="file_upload" multiple required>
+      </div>
+
+      <button type="submit" class="btn btn-primary">Create Task</button>
       </form>
      </div>
     </div>
    </div>
  </div>
 </div>
+@endsection
+
+
+@section('customJS')
+<script>
+  // For name of the file appear on select
+  $(".custom-file-input").on("change", function() {
+    var fileName = this.files.length;
+    $(this).siblings(".custom-file-label").addClass("selected").html(fileName +' files selected');
+  });
+  </script>
 @endsection

@@ -42,9 +42,43 @@
         </div>
         <div class="card-body">
           <p class="card-text">{{ $task->details }}</p>
+
+          <div role="separator" class="dropdown-divider"></div>
+          
+          @if (count($task->task_files))
+            <p class="card-text"><strong>Attached Files: </strong></p>
+            <ul class="list-group">
+              @foreach ($task->task_files as $file)
+                <li class="list-group-item list-group-item-default">
+                  <div class="row">
+                    <div class="col-10">
+                        <a href="{{ asset($file->file_url) }}" target="_blank">{{ $file->file_url }}</a>
+                    </div>
+                    <div class="col-2">
+                      <center>
+
+                        {{-- <a href="{{route('user.file.edit', [$task->id, $file->id])}}" class="edit-btn" data-toggle="tooltip" data-placement="bottom" title="Edit Feedback">
+                            <i class="fa fa-edit" style="font-size: 1.3rem"></i></span>
+                        </a> --}}
+                        
+                        {{-- {!! Form::open(['method' => 'DELETE','route'=> ['admin.file.delete', $file->id], 'style' => 'display:inline']) !!}
+                        {!! Form::button('<i class="fa fa-trash" style="font-size: 1.3rem; color: red"></i></span>',['class'=> 'delete-btn','type' => 'submit','data-toggle'=>'tooltip', 'data-placement'=>'bottom', 'title'=>'Remove File','onclick'=>'return confirm("Are you want to delete?")'])  !!}
+                        {!! Form::close()!!} --}}
+                      </center>
+                    </div>
+                  </div>
+                </li>
+                
+              @endforeach
+            </ul>
+          @endif
+          
+          <div role="separator" class="dropdown-divider"></div>
+
           @if(count($task->users) > 1)
             <a href="{{ route('admin.notify.client', $task->id) }}" class="btn btn-primary">Notify Client</a>
-          @endif 
+          @endif
+
         </div>
       </div>
       @endforeach

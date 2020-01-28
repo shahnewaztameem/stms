@@ -55,7 +55,7 @@ class ClientController extends Controller
         $feedback->user_id = auth()->id();
         $feedback->rating = $request->star;
         $feedback->comment = $request->comment;
-        
+
         $feedback->save();
 
         return redirect()->back()->with('success', "Thanks for your feedback");
@@ -72,6 +72,5 @@ class ClientController extends Controller
         $feedback = ClientFeedback::find($id);
         $feedback->delete();
         return redirect()->back()->with('success', "Your feedback is deleted successfully");
-
     }
 }

@@ -4,13 +4,16 @@ namespace App\Http\Controllers;
 
 use App\Task;
 use App\User;
+use App\TaskFile;
+use App\TaskUser;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Http\Requests\TaskRequest;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Requests\CreateUserRequest;
 use App\Notifications\ClientTaskNotification;
-use App\TaskUser;
+use App\NotifyClient;
 
 class AdminController extends Controller
 {
@@ -75,7 +78,7 @@ class AdminController extends Controller
 
         $request->validate([
             'name' => 'bail | nullable | max: 100',
-            'email' => 'bail | nullable | email | max: 30 | unique:users,email,'.$user->id,
+            'email' => 'bail | nullable | email | max: 30 | unique:users,email,' . $user->id,
             'password' => 'bail | nullable | min: 6 | max: 100 | confirmed'
         ]);
 
@@ -162,7 +165,7 @@ class AdminController extends Controller
 
         $request->validate([
             'name' => 'bail | nullable | max: 100',
-            'email' => 'bail | nullable | email | max: 30 | unique:users,email,'.$client->id,
+            'email' => 'bail | nullable | email | max: 30 | unique:users,email,' . $client->id,
             'password' => 'bail | nullable | min: 6 | max: 100 | confirmed'
         ]);
 
@@ -229,7 +232,7 @@ class AdminController extends Controller
         $task->details = $request->details;
 
         /**Generate Slug for the title */
-        $task->slug = Str::random(35) . uniqid();
+        $task->slug = Str::slug($request->title);
 
         /**Check for uniqueness of the slug....If Not, Append a random unique id based on the microtime */
         if (Task::where('slug', $task->slug)->first()) {
@@ -250,6 +253,27 @@ class AdminController extends Controller
         $taskUser->user_id = $request->user_name;
         $taskUser->save();
 
+
+        if ($request->hasFile('task_files')) {
+            // return $request;
+            $i = 0;
+            $destinationPath = public_path() . '/img/task/';
+            foreach ($request->task_files as $task_file) {
+                $i++;
+                $input['imagename'] = 'Task_' . $task->id . "_" . Str::random(5) . $i . '.' . $task_file->getClientOriginalExtension();
+
+                $task_file->move($destinationPath, $input['imagename']);
+
+                $fileurl = 'img/task/' . $input['imagename'];
+                $file = new TaskFile();
+                $file->task_id = $task->id;
+                $file->user_id = auth()->id();
+                $file->file_url = $fileurl;
+                $file->save();
+            }
+        } else {
+            return redirect()->back()->with('err', "No file found");
+        }
         return redirect()->back()->with('success', "Task ($task->title) is added successfully");
     }
 
@@ -280,7 +304,18 @@ class AdminController extends Controller
 
         // return $task;
 
+        if ($task->title != $request->title) {
+            /**Generate Slug for the title */
+            $task->slug = Str::slug($request->title);
+
+            /**Check for uniqueness of the slug....If Not, Append a random unique id based on the microtime */
+            if (Task::where('slug', $task->slug)->first()) {
+                $task->slug = $task->slug . '-' . uniqid();
+            }
+        }
+
         $task->title = $request->title;
+
         $task->details = $request->details;
 
         // store the task in 'tasks table'
@@ -294,7 +329,7 @@ class AdminController extends Controller
 
         switch ($loop) {
             case 0:
-                $taskCLientUpdate = TaskUser::find($taskClient[0]->id); 
+                $taskCLientUpdate = TaskUser::find($taskClient[0]->id);
                 $taskCLientUpdate->user_id = $request->client_name;
                 $taskCLientUpdate->save();
 
@@ -311,9 +346,9 @@ class AdminController extends Controller
                 $taskCLientUpdate->task_id = $task->id;
                 $taskCLientUpdate->user_id = $request->user_name;
                 $taskCLientUpdate->save();
-                
+
                 break;
-            
+
             case 2:
                 $taskCLientUpdate = new TaskUser();
                 $taskCLientUpdate->task_id = $task->id;
@@ -328,6 +363,25 @@ class AdminController extends Controller
                 break;
         }
 
+        if ($request->hasFile('task_files')) {
+            // return $request;
+            $i = 0;
+            $destinationPath = public_path() . '/img/task/';
+            foreach ($request->task_files as $task_file) {
+                $i++;
+                $input['imagename'] = 'Task_' . $task->id . "_" . Str::random(5) . $i . '.' . $task_file->getClientOriginalExtension();
+
+                $task_file->move($destinationPath, $input['imagename']);
+
+                $fileurl = 'img/task/' . $input['imagename'];
+                $file = new TaskFile();
+                $file->task_id = $task->id;
+                $file->user_id = auth()->id();
+                $file->file_url = $fileurl;
+                $file->save();
+            }
+        }
+
         return redirect()->back()->with('success', "Task ($task->title) is updated successfully");
     }
 
@@ -340,8 +394,43 @@ class AdminController extends Controller
     public function delete_task($id)
     {
         $task = Task::find($id);
+        $taskFiles = TaskFile::where('task_id', $id)->get();
+
+        foreach ($taskFiles as $file) {
+            $filePath = public_path('\\');
+            // return $filePath . $file->file_url;
+
+            if (File::exists($filePath . $file->file_url)) {
+                File::delete($filePath . $file->file_url);
+            }
+
+            $file->delete();
+        }
+
         $task->delete();
         return redirect()->back()->with('success', "Task ($task->title) is deleted successfully");
+    }
+
+
+    /**
+     * Delete a file
+     *
+     * @param [type] $id
+     * @return void
+     */
+    public function delete_file($id)
+    {
+        $file = TaskFile::find($id);
+
+        $filePath = public_path('\\');
+        // return $filePath . $file->file_url;
+
+        if (File::exists($filePath . $file->file_url)) {
+            File::delete($filePath . $file->file_url);
+        }
+
+        $file->delete();
+        return redirect()->back()->with('success', "File ($file->file_url) is deleted successfully");
     }
 
     public function notify_client($id)
@@ -349,7 +438,15 @@ class AdminController extends Controller
         $task = Task::whereId($id)->with('users')->first();
         $client = User::find($task->users[0]->id);
         // return $client;
-        $client->notify(new ClientTaskNotification($task));
+        $notifyClient = NotifyClient::where('task_id', $task->id)->first();
+        if (!$notifyClient) {
+            $notifyClient = new NotifyClient();
+            $notifyClient->task_id = $task->id;
+            $notifyClient->user_id = $client->id;
+            $notifyClient->hash_url = Str::random(35) . "_" . $task->id . "_" . uniqid();
+            $notifyClient->save();
+        }
+        $client->notify(new ClientTaskNotification($task, $notifyClient));
         return redirect()->back()->with('success', "Client ($client->name) is notified successfully");
     }
 }

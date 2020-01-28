@@ -20,6 +20,10 @@ Route::get('/', function () {
 
 Auth::routes(['register' => false]);
 
+/**CLIENT NOTIFICATION ROUTES - FROM THE LINK*/
+Route::get('task-notify/{hash_url}',  'Auth\LoginController@task_notify')->name('client.task.notify');
+
+
 Route::group(['middleware' => ['auth']], function () {
 
 
@@ -71,6 +75,8 @@ Route::group(['middleware' => ['auth']], function () {
             Route::get('task/edit/{id}', 'AdminController@edit_task')->name('admin.task.edit');
             Route::post('task/edit/{id}', 'AdminController@update_task');
             Route::delete('task/delete/{id}', 'AdminController@delete_task')->name('admin.task.delete');
+            Route::delete('task/file/delete/{id}', 'AdminController@delete_file')->name('admin.file.delete');
+
 
             // NOTIFY CLIENT
             Route::get('admin/notify-client/{id}',  'AdminController@notify_client')->name('admin.notify.client');

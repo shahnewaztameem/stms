@@ -11,14 +11,16 @@ class ClientTaskNotification extends Notification implements ShouldQueue
 {
     use Queueable;
     private $taskDetails;
+    private $hashURL;
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct($taskDetails)
+    public function __construct($taskDetails, $hashURL)
     {
         $this->taskDetails = $taskDetails;
+        $this->hashURL = $hashURL;
     }
 
     /**
@@ -40,11 +42,11 @@ class ClientTaskNotification extends Notification implements ShouldQueue
      */
     public function toMail($notifiable)
     {
-        $url = url('/client/task/view/'.$this->taskDetails->slug);
+        $url = url('/task-notify/' . $this->hashURL->hash_url);
         return (new MailMessage)
             ->subject('Notification For New Task')
             ->greeting('Hello!')
-            ->line('Your task has been created and Assigned to '.$this->taskDetails->users[1]->name)
+            ->line('Your task has been created and Assigned to ' . $this->taskDetails->users[1]->name)
             ->line('Task Title: ' . $this->taskDetails->title)
             ->line('Task Details: ' . $this->taskDetails->details)
             ->action('See Details', $url)
