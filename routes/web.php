@@ -70,6 +70,7 @@ Route::group(['middleware' => ['auth']], function () {
 
             // ADMIN-TASK-CONTROLS
             Route::get('task/all', 'AdminController@all_task')->name('admin.task.all');
+            Route::get('task/view/{slug}', 'AdminController@view_task')->name('admin.task.view');
             Route::get('task/create', 'AdminController@create_task')->name('admin.task.create');
             Route::post('task/create', 'AdminController@store_task');
             Route::get('task/edit/{id}', 'AdminController@edit_task')->name('admin.task.edit');
@@ -102,7 +103,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::group(['prefix' => 'user'], function () {
         Route::group(['middleware' => ['user']], function () {
             Route::get('task/all', 'UserController@index')->name('user.home');
-            Route::get('task/view/{id}', 'UserController@view')->name('user.task.view');
+            Route::get('task/view/{slug}', 'UserController@view')->name('user.task.view');
             Route::post('task/file/{id}', 'UserController@store_file')->name('user.file.create');
             // Route::get('task/file/edit/{task_id}/{id}', 'UserController@edit_file')->name('user.file.edit');
             // Route::post('task/file/edit/{task_id}/{id}', 'UserController@update_file');

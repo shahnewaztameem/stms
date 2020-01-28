@@ -25,6 +25,10 @@
           </div>
           <div class="col-2">
           <center>
+            <a href="{{route('admin.task.view', $task->slug)}}" class="add-btn" data-toggle="tooltip" data-placement="bottom" title="View Task">
+                <i class="fa fa-eye" style="font-size: 1.3rem;color: teal"></i></span>
+            </a>
+
             <a href="{{route('admin.task.create')}}" class="add-btn" data-toggle="tooltip" data-placement="bottom" title="Add Task">
                 <i class="fa fa-plus" style="font-size: 1.3rem;color: teal"></i></span>
             </a>
@@ -43,9 +47,9 @@
         <div class="card-body">
           <p class="card-text">{{ $task->details }}</p>
 
-          <div role="separator" class="dropdown-divider"></div>
           
           @if (count($task->task_files))
+          <div role="separator" class="dropdown-divider"></div>
             <p class="card-text"><strong>Attached Files: </strong></p>
             <ul class="list-group">
               @foreach ($task->task_files as $file)
@@ -71,9 +75,9 @@
                 
               @endforeach
             </ul>
+            <div role="separator" class="dropdown-divider"></div>
           @endif
           
-          <div role="separator" class="dropdown-divider"></div>
 
           @if(count($task->users) > 1)
             <a href="{{ route('admin.notify.client', $task->id) }}" class="btn btn-primary">Notify Client</a>

@@ -15,7 +15,7 @@
         <div class="row">
           <div class="col-10">
           <blockquote class="blockquote mb-0">
-            <h3><a href="{{ route('user.task.view', $task->id) }}">{{ $task->title }} </a><small class="text-muted posted-text"> Posted {{ $task->created_at->diffForHumans() }}</small></h3>
+            <h3><a href="{{ route('user.task.view', $task->slug) }}">{{ $task->title }} </a><small class="text-muted posted-text"> Posted {{ $task->created_at->diffForHumans() }}</small></h3>
             
             {{-- @if (count($task->users))    
             <footer class="blockquote-footer">{{ $task->users[0]->name }}</cite></footer>
@@ -25,7 +25,7 @@
           </div>
           <div class="col-2">
           <center>
-            <a href="{{route('user.task.view', $task->id)}}" class="add-btn" data-toggle="tooltip" data-placement="bottom" title="View Task">
+            <a href="{{route('user.task.view', $task->slug)}}" class="add-btn" data-toggle="tooltip" data-placement="bottom" title="View Task">
                 <i class="fa fa-eye" style="font-size: 1.3rem;color: teal"></i></span>
             </a>
           </center>

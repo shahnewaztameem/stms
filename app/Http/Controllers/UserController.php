@@ -29,9 +29,9 @@ class UserController extends Controller
      * @param [type] $slug
      * @return void
      */
-    public function view($id)
+    public function view($slug)
     {
-        $task = Task::where('id', $id)->with('users', 'task_files', 'feedback')->first();
+        $task = Task::where('slug', $slug)->with('users', 'task_files', 'feedback')->first();
         // return $task;
         return view('user.view_task', compact('task'));
     }
@@ -56,7 +56,7 @@ class UserController extends Controller
             $destinationPath = public_path() . '/img/task/';
             foreach ($request->task_files as $task_file) {
                 $i++;
-                $input['imagename'] = 'Task_'.$id . "_".Str::random(5) . $i . '.' . $task_file->getClientOriginalExtension();
+                $input['imagename'] = 'Task_' . $id . "_" . Str::random(5) . $i . '.' . $task_file->getClientOriginalExtension();
 
                 $task_file->move($destinationPath, $input['imagename']);
 
@@ -65,14 +65,12 @@ class UserController extends Controller
                 $file->task_id = $id;
                 $file->user_id = auth()->id();
                 $file->file_url = $fileurl;
-                $file->save();   
-
-            }            
+                $file->save();
+            }
             return redirect()->back()->with('success', "File uploaded successfully");
         }
 
         return redirect()->back()->with('err', "No file found");
-
     }
 
     /**
@@ -84,16 +82,15 @@ class UserController extends Controller
     public function delete_file($id)
     {
         $file = TaskFile::find($id);
-        
+
         $filePath = public_path('\\');
         // return $filePath . $file->file_url;
-        
+
         if (File::exists($filePath . $file->file_url)) {
             File::delete($filePath . $file->file_url);
         }
 
         $file->delete();
         return redirect()->back()->with('success', "File ($file->file_url) is deleted successfully");
-
     }
 }

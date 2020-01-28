@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\ClientFeedback;
+use App\Notifications\FeedbackNotification;
 use App\Task;
 use App\User;
 use Illuminate\Http\Request;
@@ -59,7 +60,25 @@ class ClientController extends Controller
 
         $feedback->save();
 
+        $this->emailUserAndAdmin($id);
+
         return redirect()->back()->with('success', "Thanks for your feedback");
+    }
+
+    /**
+     * Email The assigned user and Admin 
+     * After storing a feedback.
+     * 
+     * @param [type] $task_id
+     * @return void
+     */
+    public function emailUserAndAdmin($task_id)
+    {
+        $task = Task::where('id', $task_id)->with('users')->first();
+        $user = User::find($task->users[1]->id);
+        $user->notify(new FeedbackNotification($user, $task));
+        $admin = User::where('user_type', 0)->first();
+        $admin->notify(new FeedbackNotification($admin, $task));
     }
 
     /**

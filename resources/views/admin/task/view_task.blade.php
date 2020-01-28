@@ -66,7 +66,7 @@
                               <i class="fa fa-edit" style="font-size: 1.3rem"></i></span>
                           </a> --}}
                           
-                          {!! Form::open(['method' => 'DELETE','route'=> ['user.file.delete', $file->id], 'style' => 'display:inline']) !!}
+                          {!! Form::open(['method' => 'DELETE','route'=> ['admin.file.delete', $file->id], 'style' => 'display:inline']) !!}
                           {!! Form::button('<i class="fa fa-trash" style="font-size: 1.3rem; color: red"></i></span>',['class'=> 'delete-btn','type' => 'submit','data-toggle'=>'tooltip', 'data-placement'=>'bottom', 'title'=>'Remove File','onclick'=>'return confirm("Are you want to delete?")'])  !!}
                           {!! Form::close()!!}
                         </center>

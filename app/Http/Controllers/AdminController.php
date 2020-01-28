@@ -277,6 +277,20 @@ class AdminController extends Controller
         return redirect()->back()->with('success', "Task ($task->title) is added successfully");
     }
 
+
+    /**
+     * View a single task 
+     * 
+     * @param [type] $slug
+     * @return void
+     */
+    public function view_task($slug)
+    {
+        $task = Task::where('slug', $slug)->with('users', 'task_files', 'feedback')->first();
+        // return $task;
+        return view('admin.task.view_task', compact('task'));
+    }
+
     /**
      * Task edit form
      *
