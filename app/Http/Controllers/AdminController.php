@@ -6,14 +6,17 @@ use App\Task;
 use App\User;
 use App\TaskFile;
 use App\TaskUser;
+use App\NotifyClient;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Http\Requests\TaskRequest;
+use App\Http\Resources\UserResource;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Requests\CreateUserRequest;
+use App\Http\Resources\TaskResource;
 use App\Notifications\ClientTaskNotification;
-use App\NotifyClient;
+use Symfony\Component\HttpFoundation\Response;
 
 class AdminController extends Controller
 {
@@ -25,8 +28,9 @@ class AdminController extends Controller
      */
     public function index()
     {
-        $users = User::whereUserType(2)->latest()->get();
-        return view('admin.home', compact('users'));
+        return UserResource::collection(User::whereUserType(2)->latest()->get());
+        // $users = User::whereUserType(2)->latest()->get();
+        // return view('admin.home', compact('users'));
     }
 
     /**
@@ -49,7 +53,8 @@ class AdminController extends Controller
         $request['user_type'] = 2;
         $request['password'] = Hash::make($request->password);
         $user = User::create($request->all());
-        return redirect()->back()->with('success', "User ($user->name) is added successfully");
+        // return redirect()->back()->with('success', "User ($user->name) is added successfully");
+        return response(['user' => new UserResource($user)], Response::HTTP_CREATED);
     }
 
     /**
@@ -60,8 +65,9 @@ class AdminController extends Controller
      */
     public function edit_user($id)
     {
-        $user = User::find($id);
-        return view('admin.user.edit', compact('user'));
+        return new UserResource(User::find($id));
+        // $user = User::find($id);
+        // return view('admin.user.edit', compact('user'));
     }
 
     /**
@@ -88,7 +94,10 @@ class AdminController extends Controller
             $user->password = Hash::make($request->password);
         }
         $user->save();
-        return redirect()->back()->with('success', "User ($user->name) is updated successfully");
+
+        return response(['user' => new UserResource($user)], Response::HTTP_OK);
+
+        // return redirect()->back()->with('success', "User ($user->name) is updated successfully");
     }
 
     /**
@@ -101,7 +110,10 @@ class AdminController extends Controller
     {
         $user = User::find($id);
         $user->delete();
-        return redirect()->back()->with('success', "User ($user->name) is deleted successfully");
+
+        return response(null, Response::HTTP_NO_CONTENT);
+
+        // return redirect()->back()->with('success', "User ($user->name) is deleted successfully");
     }
     /** USER MODULE END HERE  */
 
@@ -114,8 +126,9 @@ class AdminController extends Controller
      */
     public function client_list()
     {
-        $clients = User::whereUserType(1)->latest()->get();
-        return view('admin.client.client_list', compact('clients'));
+        return UserResource::collection(User::whereUserType(1)->latest()->get());
+        // $clients = User::whereUserType(1)->latest()->get();
+        // return view('admin.client.client_list', compact('clients'));
     }
 
     /**
@@ -138,7 +151,11 @@ class AdminController extends Controller
         $request['user_type'] = 1;
         $request['password'] = Hash::make($request->password);
         $client = User::create($request->all());
-        return redirect()->back()->with('success', "Client ($client->name) is added successfully");
+
+        return response(['client' => new UserResource($client)], Response::HTTP_CREATED);
+
+
+        // return redirect()->back()->with('success', "Client ($client->name) is added successfully");
     }
 
     /**
@@ -149,8 +166,10 @@ class AdminController extends Controller
      */
     public function edit_client($id)
     {
-        $client = User::find($id);
-        return view('admin.client.edit', compact('client'));
+        return new UserResource(User::find($id));
+
+        // $client = User::find($id);
+        // return view('admin.client.edit', compact('client'));
     }
 
     /**
@@ -175,7 +194,11 @@ class AdminController extends Controller
             $client->password = Hash::make($request->password);
         }
         $client->save();
-        return redirect()->back()->with('success', "Client ($client->name) is updated successfully");
+
+        return response(['client' => new UserResource($client)], Response::HTTP_OK);
+
+
+        // return redirect()->back()->with('success', "Client ($client->name) is updated successfully");
     }
 
     /**
@@ -188,7 +211,10 @@ class AdminController extends Controller
     {
         $client = User::find($id);
         $client->delete();
-        return redirect()->back()->with('success', "Client ($client->name) is deleted successfully");
+
+        return response(null, Response::HTTP_NO_CONTENT);
+
+        // return redirect()->back()->with('success', "Client ($client->name) is deleted successfully");
     }
     /** CLIENT MODULE END HERE */
 
@@ -200,9 +226,10 @@ class AdminController extends Controller
      */
     public function all_task()
     {
-        $tasks = Task::with('users', 'task_files')->latest()->paginate(10);
-        // return $tasks;
-        return view('admin.task.all_tasks', compact('tasks'));
+        return TaskResource::collection(Task::with('users', 'task_files', 'feedback')->latest()->paginate(10));
+        // $tasks = Task::with('users', 'task_files')->latest()->paginate(10);
+        // // return $tasks;
+        // return view('admin.task.all_tasks', compact('tasks'));
     }
 
     /**
@@ -271,10 +298,15 @@ class AdminController extends Controller
                 $file->file_url = $fileurl;
                 $file->save();
             }
-        } else {
-            return redirect()->back()->with('err', "No file found");
-        }
-        return redirect()->back()->with('success', "Task ($task->title) is added successfully");
+        } 
+
+        return response(['task' => new TaskResource(Task::whereId($task->id)->with('users', 'task_files')->first())], Response::HTTP_CREATED);
+
+
+        // else {
+        //     return redirect()->back()->with('err', "No file found");
+        // }
+        // return redirect()->back()->with('success', "Task ($task->title) is added successfully");
     }
 
 
@@ -286,9 +318,10 @@ class AdminController extends Controller
      */
     public function view_task($slug)
     {
-        $task = Task::where('slug', $slug)->with('users', 'task_files', 'feedback')->first();
-        // return $task;
-        return view('admin.task.view_task', compact('task'));
+        return new TaskResource(Task::where('slug', $slug)->with('users', 'task_files', 'feedback')->first());
+        // $task = Task::where('slug', $slug)->with('users', 'task_files', 'feedback')->first();
+        // // return $task;
+        // return view('admin.task.view_task', compact('task'));
     }
 
     /**
@@ -396,7 +429,10 @@ class AdminController extends Controller
             }
         }
 
-        return redirect()->back()->with('success', "Task ($task->title) is updated successfully");
+        // return new TaskResource(Task::where('slug', $task->slug)->with('users', 'task_files', 'feedback')->first());
+        return response(['task' => new TaskResource(Task::where('slug', $task->slug)->with('users', 'task_files', 'feedback')->first())], Response::HTTP_OK);
+
+        // return redirect()->back()->with('success', "Task ($task->title) is updated successfully");
     }
 
     /**
@@ -410,19 +446,24 @@ class AdminController extends Controller
         $task = Task::find($id);
         $taskFiles = TaskFile::where('task_id', $id)->get();
 
-        foreach ($taskFiles as $file) {
-            $filePath = public_path('\\');
-            // return $filePath . $file->file_url;
-
-            if (File::exists($filePath . $file->file_url)) {
-                File::delete($filePath . $file->file_url);
+        if ($taskFiles) {
+            foreach ($taskFiles as $file) {
+                $filePath = public_path('\\');
+                // return $filePath . $file->file_url;
+    
+                if (File::exists($filePath . $file->file_url)) {
+                    File::delete($filePath . $file->file_url);
+                }
+    
+                $file->delete();
             }
-
-            $file->delete();
         }
 
         $task->delete();
-        return redirect()->back()->with('success', "Task ($task->title) is deleted successfully");
+
+        return response(null, Response::HTTP_NO_CONTENT);
+
+        // return redirect()->back()->with('success', "Task ($task->title) is deleted successfully");
     }
 
 
@@ -444,7 +485,10 @@ class AdminController extends Controller
         }
 
         $file->delete();
-        return redirect()->back()->with('success', "File ($file->file_url) is deleted successfully");
+        
+        return response(null, Response::HTTP_NO_CONTENT);
+
+        // return redirect()->back()->with('success', "File ($file->file_url) is deleted successfully");
     }
 
     public function notify_client($id)
@@ -461,6 +505,10 @@ class AdminController extends Controller
             $notifyClient->save();
         }
         $client->notify(new ClientTaskNotification($task, $notifyClient));
-        return redirect()->back()->with('success', "Client ($client->name) is notified successfully");
+
+        return response(['success' => 'Client ($client->name) is notified successfully'], Response::HTTP_ACCEPTED);
+
+
+        // return redirect()->back()->with('success', "Client ($client->name) is notified successfully");
     }
 }
