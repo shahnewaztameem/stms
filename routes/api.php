@@ -39,11 +39,18 @@ Route::put('update-task/{id}', 'AdminController@update_task');
 Route::delete('delete-task/{id}', 'AdminController@delete_task');
 
 // DELETE SINGLE FILE - ADMIN
-Route::delete('delete-file/{id}', 'AdminController@delete_file');
+Route::delete('delete-file/{file_id}', 'AdminController@delete_file');
 
 // NOTIFY CLIENT - ADMIN
-Route::get('notify-client/{id}', 'AdminController@notify_client');
+Route::get('notify-client/{task_id}', 'AdminController@notify_client');
 
+/**CLIENT ROUTES FOR CLIENT */
+// PASSWORD CHANGE FOR CLIENT
+Route::get('all-tasks', 'ClientController@index');
+Route::post('pass-change', 'ClientController@store_pass');
+Route::get('view-task-client/{slug}', 'ClientController@view');
+Route::post('store-feedback/{task_id}', 'ClientController@store_feedback');
+Route::delete('delete-file/{feedback_id}', 'ClientController@delete_feedback');
 
 
 

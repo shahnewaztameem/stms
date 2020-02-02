@@ -2,12 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\ClientFeedback;
-use App\Notifications\FeedbackNotification;
 use App\Task;
 use App\User;
+use App\ClientFeedback;
+use App\Http\Resources\ClientResource;
+use App\Http\Resources\TaskResource;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use App\Notifications\FeedbackNotification;
+use Symfony\Component\HttpFoundation\Response;
 
 class ClientController extends Controller
 {
@@ -18,9 +21,12 @@ class ClientController extends Controller
      */
     public function index()
     {
-        $user = User::whereId(auth()->id())->with('tasks')->first();
-        // return $user;
-        return view('client.home', compact('user'));
+        return new ClientResource(User::whereId(18)->with('tasks', 'tasks.users', 'tasks.task_files', 'tasks.feedback')->first());
+        // return ClientResource::collection(User::whereId(auth()->id())->with('tasks')->first());
+
+        // $user = User::whereId(auth()->id())->with('tasks')->first();
+        // // return $user;
+        // return view('client.home', compact('user'));
     }
 
     /**
@@ -32,9 +38,11 @@ class ClientController extends Controller
      */
     public function view($slug)
     {
-        $task = Task::where('slug', $slug)->with('users', 'task_files', 'feedback')->first();
-        // return $task;
-        return view('client.view_task', compact('task'));
+        return new TaskResource(Task::where('slug', $slug)->with('users', 'task_files', 'feedback')->first());
+
+        // $task = Task::where('slug', $slug)->with('users', 'task_files', 'feedback')->first();
+        // // return $task;
+        // return view('client.view_task', compact('task'));
     }
 
     /**
@@ -62,7 +70,9 @@ class ClientController extends Controller
 
         $this->emailUserAndAdmin($id);
 
-        return redirect()->back()->with('success', "Thanks for your feedback");
+        return response(['success' => "Thanks for your feedback"], Response::HTTP_CREATED);
+        
+        // return redirect()->back()->with('success', "Thanks for your feedback");
     }
 
     /**
@@ -91,7 +101,10 @@ class ClientController extends Controller
     {
         $feedback = ClientFeedback::find($id);
         $feedback->delete();
-        return redirect()->back()->with('success', "Your feedback is deleted successfully");
+
+        return response(null, Response::HTTP_NO_CONTENT);
+
+        // return redirect()->back()->with('success', "Your feedback is deleted successfully");
     }
 
     /**
@@ -116,9 +129,12 @@ class ClientController extends Controller
         ]);
 
         $user = User::find(auth()->id());
+        // $user = User::find(auth()->id());
         $user->password = Hash::make($request->password);
         $user->save();
 
-        return redirect()->back()->with('success', "Your password is changed successfully");
+        return response(['success' => "Your password is changed successfully"], Response::HTTP_ACCEPTED);
+
+        // return redirect()->back()->with('success', "Your password is changed successfully");
     }
 }

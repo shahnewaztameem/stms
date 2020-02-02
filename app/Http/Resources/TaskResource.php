@@ -22,7 +22,7 @@ class TaskResource extends JsonResource
             'slug' => $this->slug,
             'details' => $this->details,
             'created_at' => $this->created_at->diffForhumans(),
-            'feedback' => $this->feedback,
+            'feedback' => new FeedbackResource($this->feedback),
             'users' => UserResource::collection($this->users),
             'task_files' => FileResource::collection($this->task_files),
         ];
