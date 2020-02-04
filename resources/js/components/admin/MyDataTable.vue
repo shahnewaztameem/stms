@@ -1,6 +1,10 @@
 <template>
   <b-container fluid>
 
+      <div v-if="success" class="alert alert-success container" id="div3">
+        <strong>Success!</strong> {{success}}
+      </div>
+
       <!-- User Interface controls -->
       <b-row class="mb-2">
         <b-col lg="6" class="my-1">
@@ -79,16 +83,16 @@
           </b-button>
 
           <b-button size="sm" @click="info(row.item, row.index, $event.target)" class="mr-1 btn-danger">
-            Delete User
+            Delete {{ userOrClient(row.item.user_type) }}
           </b-button>
 
         </template>
       </b-table>
 
       <!-- Delete modal -->
-      <b-modal :id="infoModal.id" :title="infoModal.title" ok-only @ok="deleteUser(infoModal.userID)" @hide="resetInfoModal">
+      <b-modal :id="infoModal.id" :title="infoModal.title" ok-only @ok="deleteUser(infoModal.userID, infoModal.index)" @hide="resetInfoModal">
         <!-- <pre>{{ infoModal.content }}</pre> -->
-        <div class="alert alert-danger">
+        <div style="color: red">
           Do you want to delete?
         </div>
       </b-modal>
@@ -126,8 +130,8 @@
         ],
         totalRows: 1,
         currentPage: 1,
-        perPage: 5,
-        pageOptions: [5, 10, 25, 50],
+        perPage: 10,
+        pageOptions: [10, 20, 30, 40, 50],
         sortBy: '',
         sortDesc: false,
         sortDirection: 'asc',
@@ -137,8 +141,10 @@
           id: 'info-modal',
           title: '',
           content: '',
-          userID: ''
-        }
+          userID: '',
+          index: ''
+        },
+        success: ''
       }
     },
     computed: {
@@ -162,7 +168,8 @@
     methods: {
       info(item, index, button) {
         this.infoModal.userID = item.id;
-        this.infoModal.title = `Delete User: <strong>${item.name}</strong>`
+        this.infoModal.index = index;
+        this.infoModal.title = `Delete - <strong>${item.name}</strong>`
         this.infoModal.content = JSON.stringify(item, null, 2)
         this.$root.$emit('bv::show::modal', this.infoModal.id, button)
       },
@@ -170,26 +177,27 @@
         this.infoModal.title = ''
         this.infoModal.content = ''
          this.infoModal.userID = ''
+         this.infoModal.index = ''
       },
       onFiltered(filteredItems) {
         // Trigger pagination to update the number of buttons/pages due to filtering
         this.totalRows = filteredItems.length
         this.currentPage = 1
       },
-      getAllUsers(){
-        axios.get('/api/admin/users')
-          .then((res)=>{
-            console.log(res.data);
-            this.items = res.data.data
-            this.totalRows = this.items.length
+      deleteUser(id, index){
+        // console.log(id, index)
+        axios.delete(`/api/admin/delete-user/${id}`)
+          .then(res => {
+            this.success = `User is deleted successfully`;
+            this.items.splice(index, 1);
           })
-          .catch((err)=>console.log(err))
-      },
-      deleteUser(id){
-        console.log(id);
+          .catch(err => console.log(err))
       },
       editUser(id){
         this.$router.push({name: 'edituser', params: {id}});
+      },
+      userOrClient(userType){
+        return userType == 2 ? 'User' : 'Client';
       }
     }
   }

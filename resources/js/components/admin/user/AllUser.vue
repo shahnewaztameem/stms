@@ -5,6 +5,8 @@
     </div>
 
     <div v-else>
+        <h2 class="text-center">All Users List</h2>
+        <div role="separator" class="dropdown-divider"></div>
         <div v-if="success" class="alert alert-success container" id="div3">
             <strong>Success!</strong> {{success}}
         </div>
