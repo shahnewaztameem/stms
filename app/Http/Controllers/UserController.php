@@ -7,7 +7,9 @@ use App\User;
 use App\TaskFile;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use App\Http\Resources\TaskResource;
 use Illuminate\Support\Facades\File;
+use App\Http\Resources\ClientResource;
 
 class UserController extends Controller
 {
@@ -18,9 +20,11 @@ class UserController extends Controller
      */
     public function index()
     {
-        $user = User::whereId(auth()->id())->with('tasks')->first();
-        // return $user;
-        return view('user.home', compact('user'));
+        return new ClientResource(User::whereId(auth()->id())->with('tasks', 'tasks.users', 'tasks.task_files', 'tasks.feedback')->first());
+
+        // $user = User::whereId(auth()->id())->with('tasks')->first();
+        // // return $user;
+        // return view('user.home', compact('user'));
     }
 
     /**
@@ -31,9 +35,11 @@ class UserController extends Controller
      */
     public function view($slug)
     {
-        $task = Task::where('slug', $slug)->with('users', 'task_files', 'feedback')->first();
-        // return $task;
-        return view('user.view_task', compact('task'));
+        return new TaskResource(Task::where('slug', $slug)->with('users', 'task_files', 'feedback')->first());
+
+        // $task = Task::where('slug', $slug)->with('users', 'task_files', 'feedback')->first();
+        // // return $task;
+        // return view('user.view_task', compact('task'));
     }
 
     /**

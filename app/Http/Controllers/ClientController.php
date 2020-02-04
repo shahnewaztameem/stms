@@ -21,7 +21,7 @@ class ClientController extends Controller
      */
     public function index()
     {
-        return new ClientResource(User::whereId(18)->with('tasks', 'tasks.users', 'tasks.task_files', 'tasks.feedback')->first());
+        return new ClientResource(User::whereId(auth()->id())->with('tasks', 'tasks.users', 'tasks.task_files', 'tasks.feedback')->first());
         // return ClientResource::collection(User::whereId(auth()->id())->with('tasks')->first());
 
         // $user = User::whereId(auth()->id())->with('tasks')->first();
@@ -71,7 +71,7 @@ class ClientController extends Controller
         $this->emailUserAndAdmin($id);
 
         return response(['success' => "Thanks for your feedback"], Response::HTTP_CREATED);
-        
+
         // return redirect()->back()->with('success', "Thanks for your feedback");
     }
 

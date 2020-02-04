@@ -17,6 +17,25 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+
+
+Route::group([
+
+    'middleware' => 'api',
+    'prefix' => 'auth'
+
+], function ($router) {
+
+    Route::post('login', 'AuthController@login');
+    Route::post('logout', 'AuthController@logout');
+    Route::post('refresh', 'AuthController@refresh');
+    Route::post('me', 'AuthController@me');
+});
+
+
+
+
 /**USER API ROUTES - ADMIN */
 Route::get('users', 'AdminController@index');
 Route::post('store-user', 'AdminController@store_user');
@@ -44,15 +63,14 @@ Route::delete('delete-file/{file_id}', 'AdminController@delete_file');
 // NOTIFY CLIENT - ADMIN
 Route::get('notify-client/{task_id}', 'AdminController@notify_client');
 
-/**CLIENT ROUTES FOR CLIENT */
-// PASSWORD CHANGE FOR CLIENT
+/**CLIENT API ROUTES FOR CLIENT */
 Route::get('all-tasks', 'ClientController@index');
+// PASSWORD CHANGE FOR CLIENT
 Route::post('pass-change', 'ClientController@store_pass');
 Route::get('view-task-client/{slug}', 'ClientController@view');
 Route::post('store-feedback/{task_id}', 'ClientController@store_feedback');
 Route::delete('delete-file/{feedback_id}', 'ClientController@delete_feedback');
 
-
-
-
-
+/**USER API ROUTES FOR USER */
+Route::get('all-tasks', 'UserController@index');
+Route::get('view-task-user/{slug}', 'UserController@view');
