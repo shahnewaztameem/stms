@@ -4,10 +4,7 @@
 // Variables
 @import 'variables';
 
-// Bootstrap
-@import '~bootstrap/scss/bootstrap';
-@import '~bootstrap-select/sass/bootstrap-select';
-
-@import 'datatable';
-@import 'rating';
-@import 'dashboard';
+// Webpack example
+@import '~bootstrap';
+@import '~bootstrap-vue';
+@import 'dashboard'
