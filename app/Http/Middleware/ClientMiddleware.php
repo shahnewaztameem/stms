@@ -3,6 +3,7 @@
 namespace App\Http\Middleware;
 
 use Closure;
+use Symfony\Component\HttpFoundation\Response;
 
 class ClientMiddleware
 {
@@ -18,7 +19,6 @@ class ClientMiddleware
         if (auth()->user()->user_type == 1) {
             return $next($request);
         }
-        return redirect()->route('login');
-
+        return response(['error' => 'Not Allowed'], Response::HTTP_BAD_REQUEST);
     }
 }
