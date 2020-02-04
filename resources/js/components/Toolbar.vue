@@ -11,8 +11,8 @@
 
         <b-nav-item v-if="!login" to="/login">Login</b-nav-item>
         <b-navbar-nav v-else>
-          <b-nav-item to="/home">Home</b-nav-item>
-          <b-nav-item to="/client">Clients</b-nav-item>
+          <b-nav-item to="/admin/all-user">Home</b-nav-item>
+          <b-nav-item to="/admin/all-client">Clients</b-nav-item>
 
           <b-nav-item-dropdown text="Tasks" right>
             <b-dropdown-item href="#">All Tasks</b-dropdown-item>

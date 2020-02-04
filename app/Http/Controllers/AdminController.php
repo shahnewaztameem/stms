@@ -298,7 +298,7 @@ class AdminController extends Controller
                 $file->file_url = $fileurl;
                 $file->save();
             }
-        } 
+        }
 
         return response(['task' => new TaskResource(Task::whereId($task->id)->with('users', 'task_files')->first())], Response::HTTP_CREATED);
 
@@ -450,11 +450,11 @@ class AdminController extends Controller
             foreach ($taskFiles as $file) {
                 $filePath = public_path('\\');
                 // return $filePath . $file->file_url;
-    
+
                 if (File::exists($filePath . $file->file_url)) {
                     File::delete($filePath . $file->file_url);
                 }
-    
+
                 $file->delete();
             }
         }
@@ -485,7 +485,7 @@ class AdminController extends Controller
         }
 
         $file->delete();
-        
+
         return response(null, Response::HTTP_NO_CONTENT);
 
         // return redirect()->back()->with('success', "File ($file->file_url) is deleted successfully");
