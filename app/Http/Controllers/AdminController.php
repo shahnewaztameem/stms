@@ -415,7 +415,7 @@ class AdminController extends Controller
                 break;
         }
 
-        if ($request->hasFile('task_files')) {
+        if ($request->task_files) {
             // return $request;
             $i = 0;
             $destinationPath = public_path() . '/img/task/';
@@ -511,7 +511,7 @@ class AdminController extends Controller
         }
         $client->notify(new ClientTaskNotification($task, $notifyClient));
 
-        return response(['success' => 'Client ($client->name) is notified successfully'], Response::HTTP_ACCEPTED);
+        return response(['success' => "Client ($client->name) is notified successfully"], Response::HTTP_ACCEPTED);
 
 
         // return redirect()->back()->with('success', "Client ($client->name) is notified successfully");

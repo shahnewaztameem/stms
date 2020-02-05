@@ -59,7 +59,7 @@ Route::group([
         Route::get('tasks', 'AdminController@all_task');
         Route::post('store-task', 'AdminController@store_task');
         Route::get('view-task/{slug}', 'AdminController@view_task');
-        Route::put('update-task/{id}', 'AdminController@update_task');
+        Route::post('update-task/{id}', 'AdminController@update_task');
         Route::delete('delete-task/{id}', 'AdminController@delete_task');
 
         // DELETE SINGLE FILE - ADMIN

@@ -13,6 +13,8 @@ import allclient from '../components/admin/client/AllClient'
 import addclient from '../components/admin/client/AddClient'
 import alltask from '../components/admin/task/AllTask'
 import addtask from '../components/admin/task/AddTask'
+import viewtask from '../components/admin/task/ViewTask'
+import edittask from '../components/admin/task/EditTask'
 
 Vue.use(VueRouter);
 
@@ -29,6 +31,8 @@ const routes = [
       {path: 'add-client', component: addclient},
       {path: 'all-task', component: alltask},
       {path: 'add-task', component: addtask},
+      {path: 'view-task/:slug', component: viewtask, name: 'viewtask-admin'},
+      {path: 'edit-task/:slug', component: edittask, name: 'edittask-admin'},
     ]
   },
   

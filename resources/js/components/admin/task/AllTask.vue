@@ -32,7 +32,7 @@
                 <b-icon-pencil></b-icon-pencil>
             </button>
 
-            <button @click="deleteTask(task.slug)" class="edit-btn h1 text-danger" data-toggle="tooltip" data-placement="bottom" title="Delete Task">
+            <button @click="deleteTask(task.id)" class="edit-btn h1 text-danger" data-toggle="tooltip" data-placement="bottom" title="Delete Task">
                 <b-icon-trash-fill></b-icon-trash-fill>
             </button>
 
@@ -70,7 +70,7 @@
          </div>
           
 
-         <a v-if="task.users.length > 1" href="#" @click="notifyClient(task.id)" class="btn btn-primary">Notify Client</a>
+         <button v-if="task.users.length > 1" @click="notifyClient(task.id)" class="btn btn-primary">Notify Client</button>
 
         </div>
       </div>
@@ -117,20 +117,26 @@ export default {
     })
     .catch(err => console.log(err))
   },
-  viewTask(id){
-
+  viewTask(slug){
+   this.$router.push({name: 'viewtask-admin', params: {slug}});
   },
-  editTask(id){
-
+  editTask(slug){
+   this.$router.push({name: 'edittask-admin', params: {slug}});
   },
   deleteTask(id){
-
+   axios.delete(`/api/admin/delete-task/${id}`)
+    .then(res => this.getAllTasks())
+    .catch(err => console.log(err))
   },
   deleteFile(id){
 
   },
   notifyClient(id){
-
+    axios.get(`/api/admin/notify-client/${id}`)
+    .then(res => {
+     this.success = res.data.success;
+    })
+    .catch(err => console.log(err))
   },
   updatePage(){
    this.getAllTasks();
