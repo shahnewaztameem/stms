@@ -7,8 +7,7 @@
     <b-collapse id="nav-collapse" is-nav>
       <!-- Right aligned nav items -->
       <b-navbar-nav class="ml-auto">
-
-        <b-nav-item v-if="!login" to="/login">Login</b-nav-item>
+        <b-nav-item v-if="!login" to="/login" :class="toggleLoginClass">Login</b-nav-item>
         <b-navbar-nav v-else>
 
           <b-nav-item-dropdown text="Users" :class="toggleAdminUserClass" right>
@@ -48,6 +47,7 @@ export default {
   data(){
     return{
       mainProps: { blank: true, blankColor: '#777', width: 30, height: 30, class: 'm1' },
+      loginRoute: ['/login'],
       adminUserRoute: ['/admin/all-user', '/admin/add-user'],
       adminClientrRoute: ['/admin/all-client', '/admin/add-client'],
       adminTaskRoute: ['/admin/all-tasks', '/admin/add-task'],
@@ -59,6 +59,9 @@ export default {
     },
     name(){
       return User.name();
+    },
+    toggleLoginClass(){
+      return this.loginRoute.indexOf(this.$route.path) > -1 ? 'activeRoute' : '';
     },
     toggleAdminUserClass(){
       return this.adminUserRoute.indexOf(this.$route.path) > -1 ? 'activeRoute' : '';

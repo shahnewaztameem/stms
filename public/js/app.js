@@ -2000,7 +2000,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -2011,6 +2010,7 @@ __webpack_require__.r(__webpack_exports__);
         height: 30,
         "class": 'm1'
       },
+      loginRoute: ['/login'],
       adminUserRoute: ['/admin/all-user', '/admin/add-user'],
       adminClientrRoute: ['/admin/all-client', '/admin/add-client'],
       adminTaskRoute: ['/admin/all-tasks', '/admin/add-task']
@@ -2022,6 +2022,9 @@ __webpack_require__.r(__webpack_exports__);
     },
     name: function name() {
       return User.name();
+    },
+    toggleLoginClass: function toggleLoginClass() {
+      return this.loginRoute.indexOf(this.$route.path) > -1 ? 'activeRoute' : '';
     },
     toggleAdminUserClass: function toggleAdminUserClass() {
       return this.adminUserRoute.indexOf(this.$route.path) > -1 ? 'activeRoute' : '';
@@ -73749,9 +73752,14 @@ var render = function() {
                 { staticClass: "ml-auto" },
                 [
                   !_vm.login
-                    ? _c("b-nav-item", { attrs: { to: "/login" } }, [
-                        _vm._v("Login")
-                      ])
+                    ? _c(
+                        "b-nav-item",
+                        {
+                          class: _vm.toggleLoginClass,
+                          attrs: { to: "/login" }
+                        },
+                        [_vm._v("Login")]
+                      )
                     : _c(
                         "b-navbar-nav",
                         [
