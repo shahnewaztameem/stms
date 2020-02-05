@@ -116,6 +116,6 @@ Route::view('/', 'home');
 Route::view('/{any}', 'home');
 Route::view('/{any}/{param}', 'home');
 
-Route::fallback(function () {
-    return view('home');
-});
+// Route::fallback(function () {
+//     return view('home');
+// });
