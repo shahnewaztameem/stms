@@ -2,7 +2,7 @@
    <div class="col-md-8">
        
     <div v-if="!user" class="text-center" style="overflow:hidden">
-    <b-spinner variant="info" style="width: 4rem; height: 4rem;" label="Text Centered"></b-spinner>
+      <b-spinner variant="info" style="width: 4rem; height: 4rem;" label="Text Centered"></b-spinner>
     </div>
 
     <div v-else class="card">

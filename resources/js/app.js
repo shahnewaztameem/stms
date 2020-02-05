@@ -6,8 +6,9 @@
 
 require('./bootstrap');
 
-window.Vue = require('vue');
+require('bootstrap-select/dist/js/bootstrap-select.min');
 
+window.Vue = require('vue');
 import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
 
 // Install BootstrapVue

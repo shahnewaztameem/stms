@@ -1,7 +1,7 @@
 <template>
 <div>
   <b-navbar toggleable="lg" type="dark" class="navbar navbar-expand-md navbar-light custom-navbar-design bg-white shadow-sm">
-    <b-navbar-brand to="/">STMS</b-navbar-brand>
+    <b-navbar-brand style="font-size: 2rem" to="/">STMS</b-navbar-brand>
     <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
 
     <b-collapse id="nav-collapse" is-nav>
@@ -22,8 +22,8 @@
           </b-nav-item-dropdown>
 
           <b-nav-item-dropdown text="Tasks" :class="toggleAdminTaskClass" right>
-            <b-dropdown-item href="#">All Tasks</b-dropdown-item>
-            <b-dropdown-item href="#">Add Task</b-dropdown-item>
+            <b-dropdown-item to="/admin/all-task">All Tasks</b-dropdown-item>
+            <b-dropdown-item to="/admin/add-task">Add Task</b-dropdown-item>
           </b-nav-item-dropdown>
 
           <b-nav-item-dropdown right>

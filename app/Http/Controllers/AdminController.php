@@ -10,11 +10,12 @@ use App\NotifyClient;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Http\Requests\TaskRequest;
+use App\Http\Resources\TaskResource;
 use App\Http\Resources\UserResource;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Requests\CreateUserRequest;
-use App\Http\Resources\TaskResource;
+use Symfony\Component\Console\Input\Input;
 use App\Notifications\ClientTaskNotification;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -253,6 +254,10 @@ class AdminController extends Controller
     {
 
         // return Str::random(20) . uniqid();
+        // return explode(",",  $request->task_files) ;
+        if (!$request->task_files) {
+            return response(['error' => 'File is required'], Response::HTTP_FAILED_DEPENDENCY);
+        }
 
         $task = new Task();
         $task->title = $request->title;
@@ -281,7 +286,7 @@ class AdminController extends Controller
         $taskUser->save();
 
 
-        if ($request->hasFile('task_files')) {
+        if ($request->has('task_files')) {
             // return $request;
             $i = 0;
             $destinationPath = public_path() . '/img/task/';

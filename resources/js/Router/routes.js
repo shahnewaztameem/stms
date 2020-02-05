@@ -11,6 +11,7 @@ import alluser from '../components/admin/user/AllUser'
 import adduser from '../components/admin/user/AddUser'
 import allclient from '../components/admin/client/AllClient'
 import addclient from '../components/admin/client/AddClient'
+import addtask from '../components/admin/task/AddTask'
 
 Vue.use(VueRouter);
 
@@ -25,6 +26,7 @@ const routes = [
       {path: 'edit/:id', component: edituser, name: 'edituser'},
       {path: 'all-client', component: allclient},
       {path: 'add-client', component: addclient},
+      {path: 'add-task', component: addtask},
     ]
   },
   

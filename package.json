@@ -28,6 +28,7 @@
     "dependencies": {
         "bootstrap-select": "^1.13.12",
         "bootstrap-vue": "^2.4.0",
-        "vue-router": "^3.1.5"
+        "vue-router": "^3.1.5",
+        "vue-search-select": "^2.9.3"
     }
 }

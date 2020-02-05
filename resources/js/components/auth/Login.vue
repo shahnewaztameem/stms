@@ -87,7 +87,7 @@
       login(){
         User.login(this.form)
           .then(res => {
-            res == true ? window.location = '/home/all-user' : this.error = res.error;
+            res == true ? window.location = '/admin/all-user' : this.error = res.error;
           })
       //  console.log(this.error);
       }
