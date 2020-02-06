@@ -79,7 +79,7 @@ Route::group([
         Route::post('pass-change', 'ClientController@store_pass');
         Route::get('view-task-client/{slug}', 'ClientController@view');
         Route::post('store-feedback/{task_id}', 'ClientController@store_feedback');
-        Route::delete('delete-file/{feedback_id}', 'ClientController@delete_feedback');
+        Route::delete('delete-feedback/{feedback_id}', 'ClientController@delete_feedback');
     });
 
     Route::group([

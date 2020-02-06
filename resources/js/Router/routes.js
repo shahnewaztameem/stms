@@ -16,6 +16,10 @@ import addtask from '../components/admin/task/AddTask'
 import viewtask from '../components/admin/task/ViewTask'
 import edittask from '../components/admin/task/EditTask'
 
+import client from '../components/client/ClientHome'
+import clientTask from '../components/client/AllTask'
+import viewTaskClient from '../components/client/ViewTask'
+
 Vue.use(VueRouter);
 
 const routes = [
@@ -35,7 +39,13 @@ const routes = [
       {path: 'edit-task/:slug', component: edittask, name: 'edittask-admin'},
     ]
   },
-  
+  { path: '/client', component: client,
+    children: [
+      {path: 'home', component: clientTask, name: 'client-home'},
+      {path: 'view-task/:slug', component: viewTaskClient, name: 'viewtask-client'},
+
+    ]
+  }
   ]
 
   const router = new VueRouter({

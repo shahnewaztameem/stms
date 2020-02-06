@@ -39,9 +39,18 @@
 
                         <div class="form-group row mb-0">
                             <div class="col-md-8 offset-md-2">
-                                <button type="submit" class="btn btn-primary">
-                                    Account Login
-                                </button>
+                              
+                                <span v-if="!loading">
+                                  <button type="submit" class="btn btn-primary">
+                                      Account Login
+                                  </button>
+                                </span>
+                                <span v-else>
+                                  <b-button variant="primary" disabled>
+                                      <b-spinner small type="grow"></b-spinner>
+                                      Loading....
+                                  </b-button>
+                                </span>
                             </div>
                         </div>
                     </form>
@@ -62,6 +71,7 @@
               password: '',
             },
             error: [],
+            loading: false,
         }
     },
     computed: {
@@ -85,9 +95,26 @@
         this.error = [];
       },
       login(){
+        this.loading = true;
         User.login(this.form)
           .then(res => {
-            res == true ? window.location = '/admin/all-user' : this.error = res.error;
+
+            if (res == true) {
+              if (User.type() == 0) {
+                window.location = '/admin/all-user'
+              }
+              else if (User.type() == 1) {
+                window.location = '/client/home'
+              }
+              else if (User.type() == 2) {
+                window.location = '/'
+              }else{
+                window.location = '/'
+              }
+            }else{
+              this.error = res.error;
+            }
+            this.loading = false;
           })
       //  console.log(this.error);
       }

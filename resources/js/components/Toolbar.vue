@@ -9,21 +9,31 @@
       <b-navbar-nav class="ml-auto">
         <b-nav-item v-if="!login" to="/login" :class="toggleLoginClass">Login</b-nav-item>
         <b-navbar-nav v-else>
+          <b-navbar-nav v-if="userType == 0">
+            <b-nav-item-dropdown text="Users" :class="toggleAdminUserClass" right>
+              <b-dropdown-item to="/admin/all-user">All Users</b-dropdown-item>
+              <b-dropdown-item to="/admin/add-user">Add User</b-dropdown-item>
+            </b-nav-item-dropdown>
 
-          <b-nav-item-dropdown text="Users" :class="toggleAdminUserClass" right>
-            <b-dropdown-item to="/admin/all-user">All Users</b-dropdown-item>
-            <b-dropdown-item to="/admin/add-user">Add User</b-dropdown-item>
-          </b-nav-item-dropdown>
+            <b-nav-item-dropdown text="Clients" :class="toggleAdminClientClass" right>
+              <b-dropdown-item to="/admin/all-client">All Clients</b-dropdown-item>
+              <b-dropdown-item to="/admin/add-client">Add Client</b-dropdown-item>
+            </b-nav-item-dropdown>
 
-          <b-nav-item-dropdown text="Clients" :class="toggleAdminClientClass" right>
-            <b-dropdown-item to="/admin/all-client">All Clients</b-dropdown-item>
-            <b-dropdown-item to="/admin/add-client">Add Client</b-dropdown-item>
-          </b-nav-item-dropdown>
+            <b-nav-item-dropdown text="Tasks" :class="toggleAdminTaskClass" right>
+              <b-dropdown-item to="/admin/all-task">All Tasks</b-dropdown-item>
+              <b-dropdown-item to="/admin/add-task">Add Task</b-dropdown-item>
+            </b-nav-item-dropdown>
+          </b-navbar-nav>
 
-          <b-nav-item-dropdown text="Tasks" :class="toggleAdminTaskClass" right>
-            <b-dropdown-item to="/admin/all-task">All Tasks</b-dropdown-item>
-            <b-dropdown-item to="/admin/add-task">Add Task</b-dropdown-item>
-          </b-nav-item-dropdown>
+          <!-- CLIENT MENU -->
+          <b-navbar-nav v-if="userType == 1">
+              <b-nav-item to="/client/home" :class="toggleClientHomeClass">Home</b-nav-item>
+              <b-nav-item to="/client/change-pass" :class="toggleClientChangePassClass">Change Password</b-nav-item>
+          </b-navbar-nav>
+
+          <b-navbar-nav v-if="userType == 2">
+          </b-navbar-nav>
 
           <b-nav-item-dropdown right>
             <!-- Using 'button-content' slot -->
@@ -60,6 +70,9 @@ export default {
     name(){
       return User.name();
     },
+    userType(){
+      return User.type() ? User.type() : User.logout();
+    },
     toggleLoginClass(){
       return this.loginRoute.indexOf(this.$route.path) > -1 ? 'activeRoute' : '';
     },
@@ -71,6 +84,12 @@ export default {
     },
     toggleAdminTaskClass(){
       return this.adminTaskRoute.indexOf(this.$route.path) > -1 ? 'activeRoute' : '';
+    },
+    toggleClientHomeClass(){
+      return this.$route.path == '/client/home' ? 'activeRoute' : '';
+    },
+    toggleClientChangePassClass(){
+      return this.$route.path == '/client/change-pass' ? 'activeRoute' : '';
     },
   },
   created(){
