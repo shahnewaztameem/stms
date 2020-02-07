@@ -2,8 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Task;
 use App\User;
+use App\NotifyClient;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Symfony\Component\HttpFoundation\Response;
 
 class AuthController extends Controller
 {
@@ -14,7 +18,7 @@ class AuthController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('jwt', ['except' => ['login', 'signup']]);
+        $this->middleware('jwt', ['except' => ['login', 'signup', 'login_from_notification']]);
     }
 
     /**
@@ -82,5 +86,26 @@ class AuthController extends Controller
             'user_name' => auth()->user()->name,
             'user_type' => auth()->user()->user_type,
         ]);
+    }
+
+    
+    public function login_from_notification($hash_url)
+    {
+        $clientNotify = NotifyClient::where('hash_url', $hash_url)->first();
+        if ($clientNotify) {
+            if (auth()->user()) {
+                Auth::logout();
+            }
+            $task = Task::where('id', $clientNotify->task_id)->with('users')->first();
+            $user = User::find($task->users[0]->id);
+            $data = [];
+            array_push($data, $user);
+            array_push($data, $task);
+            // return $task;
+            return response()->json($data, Response::HTTP_FOUND);   
+        } else {
+            return response()->json(null, Response::HTTP_NOT_FOUND);
+        }
+        // return redirect()->route('client.task.view', $task->slug);
     }
 }

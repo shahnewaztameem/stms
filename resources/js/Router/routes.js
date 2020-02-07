@@ -19,12 +19,16 @@ import edittask from '../components/admin/task/EditTask'
 import client from '../components/client/ClientHome'
 import clientTask from '../components/client/AllTask'
 import viewTaskClient from '../components/client/ViewTask'
+import changePass from '../components/client/ChangePass'
+
+import directLogin from '../components/auth/DirectLogin'
 
 Vue.use(VueRouter);
 
 const routes = [
   { path: '/', component: home, name: 'home'},
   { path: '/login', component: login, name: 'login'},
+  { path: '/task-notify/:slug', component: directLogin, name: 'directlogin'},
   { path: '/logout', component: logout},
   { path: '/admin', component: admin,
     children: [
@@ -43,6 +47,7 @@ const routes = [
     children: [
       {path: 'home', component: clientTask, name: 'client-home'},
       {path: 'view-task/:slug', component: viewTaskClient, name: 'viewtask-client'},
+      {path: 'change-pass', component: changePass, name: 'changepass'},
 
     ]
   }

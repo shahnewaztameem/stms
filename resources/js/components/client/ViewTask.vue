@@ -187,7 +187,7 @@ export default {
  },
  methods: {
   getTask(){
-   axios.get(`/api/client/view-task-client//${this.$route.params.slug}`)
+   axios.get(`/api/client/view-task-client/${this.$route.params.slug}`)
     .then(res => {
      this.task = res.data.data
     })
