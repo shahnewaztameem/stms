@@ -28,41 +28,41 @@
        @csrf
    
        <div class="form-group row">
-        <label for="title" class="col-sm-2 col-form-label">Project Title: </label>
-        <div class="col-sm-10">
-          <input type="text" class="form-control" name="title" id="title" value="{{ old('title') }}" placeholder="Project Title">
-        </div>
+          <label for="title" class="col-sm-2 col-form-label">Project Title: </label>
+          <div class="col-sm-10">
+            <input type="text" class="form-control" name="title" id="title" value="{{ old('title') }}" placeholder="Project Title">
+          </div>
        </div>
        
        <div class="form-group row">
-        <label for="details" class="col-sm-2 col-form-label">Project Details: </label>
-        <div class="col-sm-10">
-          <textarea name="details" class="form-control" id="details" cols="30" rows="4" placeholder="Other details">{{ old('details') }}</textarea>
-        </div>
+          <label for="details" class="col-sm-2 col-form-label">Project Details: </label>
+          <div class="col-sm-10">
+            <textarea name="details" class="form-control" id="details" cols="30" rows="4" placeholder="Other details">{{ old('details') }}</textarea>
+          </div>
        </div>
            
        <div class="form-group row">
-        <label for="client_name" class="col-sm-2 col-form-label">Client: </label>
-        <div class="col-sm-10">
-         <select name="client_name" id="client_name" class="selectpicker form-control select-search" data-live-search="true">
-          <option value="">Please Choose</option>
-          @foreach ($clients as $client)
-            <option value="{{ $client->id }}">{{ $client->name }}</option>
-          @endforeach
-         </select>
-        </div>
+          <label for="client_name" class="col-sm-2 col-form-label">Client: </label>
+          <div class="col-sm-10">
+          <select name="client_name" id="client_name" class="selectpicker form-control select-search" data-live-search="true">
+            <option value="">Please Choose</option>
+            @foreach ($clients as $client)
+              <option value="{{ $client->id }}">{{ $client->name }}</option>
+            @endforeach
+          </select>
+          </div>
        </div>
            
        <div class="form-group row">
-        <label for="client_name" class="col-sm-2 col-form-label">Project Manager: </label>
-        <div class="col-sm-10">
-         <select name="client_name" id="client_name" class="selectpicker form-control select-search" data-live-search="true">
-          <option value="">Please Choose</option>
-          @foreach ($users as $user)
-            <option value="{{ $user->id }}">{{ $user->name }}</option>
-          @endforeach
-         </select>
-        </div>
+          <label for="client_name" class="col-sm-2 col-form-label">Project Manager: </label>
+          <div class="col-sm-10">
+          <select name="client_name" id="client_name" class="selectpicker form-control select-search" data-live-search="true">
+            <option value="">Please Choose</option>
+            @foreach ($users as $user)
+              <option value="{{ $user->id }}">{{ $user->name }}</option>
+            @endforeach
+          </select>
+          </div>
        </div>
    
        <div class="row justify-content-end">
@@ -72,8 +72,5 @@
       </form>
    </div>
  </div>
-  <div class="card-body">
-
-  </div>
  </div>
 </div>

@@ -32,8 +32,8 @@
         <div class="col-sm-10">
          <select name="title" id="title" class="selectpicker form-control select-search" data-live-search="true">
           <option value="">Please Choose</option>
-          @foreach ($users as $user)
-            <option value="{{ $user->id }}">{{ $user->name }}</option>
+          @foreach ($tasks as $task)
+            <option value="{{ $task->id }}">{{ $task->title }}</option>
           @endforeach
          </select>
         </div>
@@ -42,7 +42,7 @@
        <div class="form-group row">
         <label for="details" class="col-sm-2 col-form-label">Project Details: </label>
         <div class="col-sm-10">
-          <textarea name="details" class="form-control" id="details" cols="30" rows="4" placeholder="Other details">{{ old('details') }}</textarea>
+          <textarea name="details" class="form-control" id="details" cols="30" rows="3" placeholder="Other details">{{ old('details') }}</textarea>
         </div>
        </div>
            
@@ -83,6 +83,17 @@
          </select>
         </div>
        </div>
+      
+       <div class="form-group row">
+        <label for="client_name" class="col-sm-2 col-form-label">Wireframes: </label>
+        <div class="col-sm-10">
+          <div class="custom-file mb-3">
+            <label class="custom-file-label" for="file_upload">Choose file...</label>
+            <input type="file" name="task_files[]" class="custom-file-input" id="file_upload" multiple required>
+          </div>
+        </div>
+       </div>
+       
    
        <div class="row justify-content-end">
          <button type="submit" class="btn btn-primary mr-2">Cancel</button>

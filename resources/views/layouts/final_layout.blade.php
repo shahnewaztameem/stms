@@ -35,6 +35,7 @@
    <div class="content">
     <nav class="sidebar">
         <ul class="side-nav">
+        {{--  ADMIN MENUS  --}}
           @if (auth()->user()->user_type == 0)
             <li class="side-nav__item @if (request()->is('admin/home')) side-nav__item--active @endif">
                 <a href="{{ route('admin.home') }}" class="side-nav__link">
@@ -72,11 +73,11 @@
         </ul>
     </nav>
 
+    {{--  PAGE CONTENTS  --}}
     <main class="main-view py-4">
       <div class="container-fluid">
           @yield('content')
       </div>
-      <!-- /.container -->
      </main>
    </div>
 

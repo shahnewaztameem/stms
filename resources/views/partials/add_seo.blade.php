@@ -31,9 +31,9 @@
         <div class="col-sm-10">
           <select name="title" id="title" class="selectpicker form-control select-search" data-live-search="true">
            <option value="">Please Choose</option>
-           @foreach ($users as $user)
-             <option value="{{ $user->id }}">{{ $user->name }}</option>
-           @endforeach
+            @foreach ($tasks as $task)
+              <option value="{{ $task->id }}">{{ $task->title }}</option>
+            @endforeach
           </select>
         </div>
        </div>
@@ -71,8 +71,5 @@
       </form>
    </div>
  </div>
-  <div class="card-body">
-
-  </div>
  </div>
 </div>

@@ -29,7 +29,7 @@
         @include('partials.add_design')
        </div>
        <div class="tab-pane fade" id="nav-development" role="tabpanel" aria-labelledby="nav-development-tab">
-        DEVELOPENT
+        @include('partials.add_development')
        </div>
        <div class="tab-pane fade" id="nav-seo" role="tabpanel" aria-labelledby="nav-seo-tab">
         @include('partials.add_seo')

@@ -234,7 +234,8 @@ class AdminController extends Controller
     {
         $clients = User::whereUserType(1)->latest()->get();
         $users = User::whereUserType(2)->latest()->get();
-        return view('admin.task.add_task', compact('clients', 'users'));
+        $tasks = Task::latest()->get();
+        return view('admin.task.add_task', compact('clients', 'users', 'tasks'));
     }
     
     /**

@@ -9,7 +9,7 @@
     <strong>Designs</strong>
    </div>
    <div class="col-2">
-    <a href="{{route('admin.client.create')}}" data-toggle="tooltip" data-placement="bottom" title="Add client">
+    <a href="{{route('admin.task.add')}}" data-toggle="tooltip" data-placement="bottom" title="Add task">
      <span><i class="fa fa-plus" style="font-size: 1.3rem"></i></span>
     </a>
    </div>
@@ -21,7 +21,7 @@
     <strong>Developements</strong>
    </div>
    <div class="col-2">
-    <a href="{{route('admin.client.create')}}" data-toggle="tooltip" data-placement="bottom" title="Add client">
+    <a href="{{route('admin.task.add')}}" data-toggle="tooltip" data-placement="bottom" title="Add task">
      <span><i class="fa fa-plus" style="font-size: 1.3rem"></i></span>
     </a>
    </div>
@@ -33,7 +33,7 @@
     <strong>SEO</strong>
    </div>
    <div class="col-2">
-    <a href="{{route('admin.client.create')}}" data-toggle="tooltip" data-placement="bottom" title="Add client">
+    <a href="{{route('admin.task.add')}}" data-toggle="tooltip" data-placement="bottom" title="Add task">
      <span><i class="fa fa-plus" style="font-size: 1.3rem"></i></span>
     </a>
    </div>
