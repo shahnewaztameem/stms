@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\DesignPhase;
 use App\Http\Requests\CreateClientRequest;
 use App\Task;
 use App\User;
@@ -251,7 +252,7 @@ class AdminController extends Controller
     }
 
     /**
-     * Store a task
+     * Store a project details
      *
      * @return Response 
      */
@@ -272,44 +273,91 @@ class AdminController extends Controller
             $task->slug = $task->slug . '-' . uniqid();
         }
 
+        $task->project_manager_id = $request->project_manager_name;
+        $task->client_id = $request->client_name;
+
         // store the task in 'tasks table'
         $task->save();
 
-        /**For Storing task and client */
-        $taskClient = new TaskUser();
-        $taskClient->task_id = $task->id;
-        $taskClient->user_id = $request->client_name;
-        $taskClient->save();
-
-        $taskUser = new TaskUser();
-        $taskUser->task_id = $task->id;
-        $taskUser->user_id = $request->user_name;
-        $taskUser->save();
-
-
-        if ($request->hasFile('task_files')) {
-            // return $request;
-            $i = 0;
-            $destinationPath = public_path() . '/img/task/';
-            foreach ($request->task_files as $task_file) {
-                $i++;
-                $input['imagename'] = 'Task_' . $task->id . "_" . Str::random(5) . $i . '.' . $task_file->getClientOriginalExtension();
-
-                $task_file->move($destinationPath, $input['imagename']);
-
-                $fileurl = 'img/task/' . $input['imagename'];
-                $file = new TaskFile();
-                $file->task_id = $task->id;
-                $file->user_id = auth()->id();
-                $file->file_url = $fileurl;
-                $file->save();
-            }
-        } else {
-            return redirect()->back()->with('err', "No file found");
-        }
         return redirect()->back()->with('success', "Task ($task->title) is added successfully");
     }
 
+    /**
+     * Store/Update Design phase data
+     *
+     * @param Request $request
+     * @return void
+     */
+    public function store_design_phase(Request $request)
+    {
+        // return route('admin.task.create-design-phase')."#nav-design";
+        $request->validate([
+            'project_title' => 'required',
+            'start_date' => 'required | date',
+            'end_date' => 'required | date',
+            'project_manager_name' => 'required'
+        ]);
+
+        $designPhase = DesignPhase::whereTaskId($request->project_title)->with('task')->first();
+
+        // UPDATE TASK
+        if($designPhase){
+            $designPhase->start_date = $request->start_date;
+            $designPhase->end_date = $request->end_date;
+            $designPhase->design_pm_id = $request->project_manager_name;
+            $designPhase->save();
+
+            if ($request->hasFile('task_files')) {
+                // return $request;
+                $i = 0;
+                $destinationPath = public_path() . '/img/task/';
+                foreach ($request->task_files as $task_file) {
+                    $i++;
+                    $input['imagename'] = 'Task_' . $designPhase->task->id . "_" . Str::random(5) . $i . '.' . $task_file->getClientOriginalExtension();
+
+                    $task_file->move($destinationPath, $input['imagename']);
+
+                    $fileurl = 'img/task/' . $input['imagename'];
+                    $file = new TaskFile();
+                    $file->task_id = $designPhase->task->id;
+                    $file->user_id = auth()->id();
+                    $file->file_url = $fileurl;
+                    $file->save();
+                }
+            }
+            return redirect()->back()->with('successDesign', "Design Phase for ($designPhase->task->title) is updated successfully");
+        }else{
+            // STORE A TASK 
+            if ($request->hasFile('task_files')) {
+                $designPhase = new DesignPhase();
+                $designPhase->task_id = $request->project_title;
+                $designPhase->start_date = $request->start_date;
+                $designPhase->end_date = $request->end_date;
+                $designPhase->design_pm_id = $request->project_manager_name;
+                $designPhase->save();
+
+                $i = 0;
+                $destinationPath = public_path() . '/img/task/';
+                foreach ($request->task_files as $task_file) {
+                    $i++;
+                    $input['imagename'] = 'Task_' . $designPhase->task_id . "_" . Str::random(5) . $i . '.' . $task_file->getClientOriginalExtension();
+
+                    $task_file->move($destinationPath, $input['imagename']);
+
+                    $fileurl = 'img/task/' . $input['imagename'];
+                    $file = new TaskFile();
+                    $file->task_id = $designPhase->task_id;
+                    $file->user_id = auth()->id();
+                    $file->file_url = $fileurl;
+                    $file->save();
+                }
+                $task = Task::find($designPhase->task_id);
+                return redirect()->back()->with('successDesign', "Design Phase for ($task->title) is added successfully");
+            }else{
+                return redirect()->back()->with('errDesign', "No wireframes found");
+            }
+        }
+    }
 
     /**
      * View a single task 

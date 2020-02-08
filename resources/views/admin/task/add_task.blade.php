@@ -6,7 +6,7 @@
       <nav>
        <div class="nav nav-tabs" id="nav-tab" role="tablist">
          <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-project" role="tab" aria-controls="nav-project" aria-selected="true">Project</a>
-         <a class="nav-item nav-link" id="nav-design-tab" data-toggle="tab" href="#nav-design" role="tab" aria-controls="nav-design" aria-selected="false">Design</a>
+         <a class="nav-item nav-link" id="nav-design-tab" data-toggle="pill" href="#nav-design" role="tab" aria-controls="nav-design" aria-selected="false">Design</a>
          <a class="nav-item nav-link" id="nav-development-tab" data-toggle="tab" href="#nav-development" role="tab" aria-controls="nav-development" aria-selected="false">Development</a>
          <a class="nav-item nav-link" id="nav-seo-tab" data-toggle="tab" href="#nav-seo" role="tab" aria-controls="nav-seo" aria-selected="false">SEO</a>
        </div>
@@ -38,7 +38,7 @@
      </div>
     </div>
 @endsection
-
+{{--  
 @section('customJS')
     <script>
      $('.datepicker').datepicker({
@@ -51,4 +51,4 @@
       $(this).siblings(".custom-file-label").addClass("selected").html(fileName +' files selected');
     });
     </script>
-@endsection
+@endsection  --}}

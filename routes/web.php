@@ -1,5 +1,6 @@
 <?php
 
+use App\Task;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -78,7 +79,8 @@ Route::group(['middleware' => ['auth']], function () {
             Route::get('task/all', 'AdminController@all_task')->name('admin.task.all');
             Route::get('task/view/{slug}', 'AdminController@view_task')->name('admin.task.view');
             Route::get('task/create', 'AdminController@create_task')->name('admin.task.create');
-            Route::post('task/create', 'AdminController@store_task');
+            Route::post('task/create', 'AdminController@store_task')->name('admin.task.create');
+            Route::post('task/create-design-phase', 'AdminController@store_design_phase')->name('admin.task.create-design-phase');
             Route::get('task/edit/{id}', 'AdminController@edit_task')->name('admin.task.edit');
             Route::post('task/edit/{id}', 'AdminController@update_task');
             Route::delete('task/delete/{id}', 'AdminController@delete_task')->name('admin.task.delete');
@@ -116,4 +118,13 @@ Route::group(['middleware' => ['auth']], function () {
             Route::delete('task/file/delete/{id}', 'UserController@delete_file')->name('user.file.delete');
         });
     });
+});
+
+Route::get('/project-details/design/{id}', function ($id) {
+    $task = Task::whereId($id)->with('design_phase')->first();
+    if($task){
+        return response()->json(['data' => $task]);
+    }else{
+        return response()->json(['data' => 'No data found']);
+    }
 });

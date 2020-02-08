@@ -15,7 +15,7 @@ class DesignPhase extends Model
         return $this->belongsTo(User::class, 'id', 'user_id');
     }
 
-    public function tasks()
+    public function task()
     {
         return $this->belongsTo(Task::class, 'id', 'task_id');
     }

@@ -24,10 +24,10 @@ class TaskRequest extends FormRequest
     public function rules()
     {
         return [
-            'client_name' => 'required',
             'title' => 'bail | required | max: 150',
             'details' => 'bail | required',
-            'user_name' => 'required',
+            'client_name' => 'required',
+            'project_manager_name' => 'required',
         ];
     }
 }

@@ -54,9 +54,9 @@
        </div>
            
        <div class="form-group row">
-          <label for="client_name" class="col-sm-2 col-form-label">Project Manager: </label>
+          <label for="project_manager_name" class="col-sm-2 col-form-label">Project Manager: </label>
           <div class="col-sm-10">
-          <select name="client_name" id="client_name" class="selectpicker form-control select-search" data-live-search="true">
+          <select name="project_manager_name" id="project_manager_name" class="selectpicker form-control select-search" data-live-search="true">
             <option value="">Please Choose</option>
             @foreach ($users as $user)
               <option value="{{ $user->id }}">{{ $user->name }}</option>
