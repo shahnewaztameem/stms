@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CreateClientRequest;
 use App\Task;
 use App\User;
 use App\TaskFile;
@@ -91,11 +92,16 @@ class AdminController extends Controller
         $request->validate([
             'name' => 'bail | nullable | max: 100',
             'email' => 'bail | nullable | email | max: 30 | unique:users,email,' . $user->id,
-            'password' => 'bail | nullable | min: 6 | max: 100 | confirmed'
+            'phone_number' => 'bail | nullable | max: 16 | min: 8',
+            'other_info' => 'bail | nullable | max: 250',
+            'password' => 'bail | nullable | min: 6 | max: 100 | confirmed',
         ]);
 
         $user->name = $request->name ?? $user->name;
         $user->email = $request->email ?? $user->email;
+        $user->phone_number = $request->phone_number ?? $user->phone_number;
+        $user->user_type = $request->user_type ?? $user->user_type;
+        $user->other_info = $request->other_info ?? $user->other_info;
         if ($request->password) {
             $user->password = Hash::make($request->password);
         }
@@ -137,8 +143,8 @@ class AdminController extends Controller
      */
     public function create_client()
     {
-        // return view('admin.client.create');
-        return view('admin.client.add_user');
+        return view('admin.client.create');
+        // return view('admin.client.add_user');
     }
 
     /**
@@ -146,7 +152,7 @@ class AdminController extends Controller
      *
      * @return Response 
      */
-    public function store_client(CreateUserRequest $request)
+    public function store_client(CreateClientRequest $request)
     {
         $request['user_type'] = 1;
         $request['password'] = Hash::make($request->password);
@@ -178,12 +184,18 @@ class AdminController extends Controller
 
         $request->validate([
             'name' => 'bail | nullable | max: 100',
+            'company' => 'bail | required | max: 100',
             'email' => 'bail | nullable | email | max: 30 | unique:users,email,' . $client->id,
-            'password' => 'bail | nullable | min: 6 | max: 100 | confirmed'
+            'phone_number' => 'bail | nullable | max: 16 | min: 8',
+            'other_info' => 'bail | nullable | max: 250',
+            'password' => 'bail | nullable | min: 6 | max: 100 | confirmed',
         ]);
 
         $client->name = $request->name ?? $client->name;
+        $client->company = $request->company ?? $client->company;
         $client->email = $request->email ?? $client->email;
+        $client->phone_number = $request->phone_number ?? $client->phone_number;
+        $client->other_info = $request->other_info ?? $client->other_info;
         if ($request->password) {
             $client->password = Hash::make($request->password);
         }

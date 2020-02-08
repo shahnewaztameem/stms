@@ -67,11 +67,11 @@ Route::group(['middleware' => ['auth']], function () {
 
             //ADMIN-CLIENT-CONTROLS
             Route::get('client-list', 'AdminController@client_list')->name('admin.client.list');
-            Route::get('client-list/client-create', 'AdminController@create_client')->name('admin.client.create');
-            Route::post('client-list/client-create', 'AdminController@store_client');
-            Route::get('client-list/client-edit/{id}', 'AdminController@edit_client')->name('admin.client.edit');
-            Route::post('client-list/client-edit/{id}', 'AdminController@update_client');
-            Route::delete('client-list/client-delete/{id}', 'AdminController@delete_client')->name('admin.client.delete');
+            Route::get('client/client-create', 'AdminController@create_client')->name('admin.client.create');
+            Route::post('client/client-create', 'AdminController@store_client');
+            Route::get('client/client-edit/{id}', 'AdminController@edit_client')->name('admin.client.edit');
+            Route::post('client/client-edit/{id}', 'AdminController@update_client');
+            Route::delete('client/client-delete/{id}', 'AdminController@delete_client')->name('admin.client.delete');
 
             // ADMIN-TASK-CONTROLS
             Route::get('task/all', 'AdminController@all_task')->name('admin.task.all');

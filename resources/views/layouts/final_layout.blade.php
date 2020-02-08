@@ -39,8 +39,8 @@
                     <span>Dashboard</span>
                 </a>
             </li>
-            <li class="side-nav__item">
-                <a href="#" class="side-nav__link">
+            <li class="side-nav__item @if (request()->is('admin/client-list') || request()->is('admin/client/*')) side-nav__item--active @endif">
+                <a href="{{ route('admin.client.list') }}" class="side-nav__link">
                     <span>Clients</span>
                 </a>
             </li>
@@ -55,6 +55,18 @@
                 </a>
             </li>
            @endif
+
+           <li class="side-nav__item">
+            <a class="side-nav__link" href="{{ route('logout') }}"
+                                   onclick="event.preventDefault();document.getElementById('logout-form').submit();">{{ __('Logout') }}
+             </a>
+
+             <form id="logout-form" action="{{ route('logout') }}" method="POST"
+                   style="display: none;">
+                 @csrf
+             </form>
+           </li>
+
         </ul>
     </nav>
 

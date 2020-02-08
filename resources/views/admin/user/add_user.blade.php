@@ -3,7 +3,7 @@
 @section('content')
 <div class="row justify-content-end pb-3 mr-3">
   <a href="{{route('admin.user.list')}}" class="btn btn-success" data-toggle="tooltip" data-placement="bottom" title="Manager's List">
-   <span>MANAGER"S LIST</span>
+   <span>MANAGER'S LIST</span>
   </a>
 </div>
 

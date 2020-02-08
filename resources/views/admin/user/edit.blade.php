@@ -3,7 +3,7 @@
 @section('content')
 <div class="row justify-content-end pb-3 mr-3">
   <a href="{{route('admin.user.list')}}" class="btn btn-success" data-toggle="tooltip" data-placement="bottom" title="Manager's List">
-   <span>MANAGER"S LIST</span>
+   <span>MANAGER'S LIST</span>
   </a>
 </div>
 
@@ -31,7 +31,7 @@
      </div>
    @endif
 
-   <form method="POST" action="{{ route('admin.user.create') }}">
+   <form method="POST" action="{{ route('admin.user.edit', $user->id) }}">
     @csrf
 
     <div class="form-group row">
@@ -56,6 +56,7 @@
      </div>
     </div>
 
+    @if (auth()->user()->id != $user->id)
     <div class="form-group row">
      <label for="staticUserType" class="col-sm-2 col-form-label">Priviliges: </label>
      <div class="col-sm-10">
@@ -69,6 +70,7 @@
        </div>
      </div>
     </div>
+    @endif
     
     <div class="form-group row">
      <label for="other_info" class="col-sm-2 col-form-label">Other Details: </label>
@@ -80,14 +82,14 @@
     <div class="form-group row">
      <label for="password" class="col-sm-2 col-form-label">Password: </label>
      <div class="col-sm-10">
-       <input id="password" type="password" class="form-control" name="password" required autocomplete="new-password" placeholder="Password">
+       <input id="password" type="password" class="form-control" name="password" autocomplete="new-password" placeholder="Password">
      </div>
     </div>
         
     <div class="form-group row">
      <label for="password_confirmation" class="col-sm-2 col-form-label">Re-Type Password: </label>
      <div class="col-sm-10">
-       <input id="password_confirmation" type="password" class="form-control" name="password_confirmation" required autocomplete="new-password" placeholder="Re-Type Password">
+       <input id="password_confirmation" type="password" class="form-control" name="password_confirmation" autocomplete="new-password" placeholder="Re-Type Password">
      </div>
     </div>
 
