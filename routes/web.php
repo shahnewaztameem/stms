@@ -74,6 +74,7 @@ Route::group(['middleware' => ['auth']], function () {
             Route::delete('client/client-delete/{id}', 'AdminController@delete_client')->name('admin.client.delete');
 
             // ADMIN-TASK-CONTROLS
+            Route::get('task/add-task', 'AdminController@add_task')->name('admin.task.add');
             Route::get('task/all', 'AdminController@all_task')->name('admin.task.all');
             Route::get('task/view/{slug}', 'AdminController@view_task')->name('admin.task.view');
             Route::get('task/create', 'AdminController@create_task')->name('admin.task.create');

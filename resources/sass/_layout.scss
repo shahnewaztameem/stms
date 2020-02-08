@@ -186,3 +186,22 @@
     background-color: #fff;
     flex: 1;
 }
+
+.project{
+    display: flex;
+    &__nav{
+        order: 1;
+        
+        @media screen and (max-width: $bp-medium) {
+            order: 2;
+        }
+    }
+    &__btn{
+        order: 2;
+
+        @media screen and (max-width: $bp-medium) {
+            order: 1;
+            margin-bottom: 1rem;
+        }
+    }
+}

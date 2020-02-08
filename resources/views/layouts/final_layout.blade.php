@@ -10,6 +10,8 @@
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <!-- Fontawesome CDN -->
     <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css" integrity="sha256-siyOpF/pBWUPgIcQi17TLBkjvNgNQArcmwJB8YvkAgg=" crossorigin="anonymous" />
     <!-- Styles -->
     <link href="{{ mix('/css/app.css') }}" rel="stylesheet">
     
@@ -40,12 +42,12 @@
                 </a>
             </li>
             <li class="side-nav__item @if (request()->is('admin/client-list') || request()->is('admin/client/*')) side-nav__item--active @endif">
-                <a href="{{ route('admin.client.list') }}" class="side-nav__link">
+                <a href="{{ route('admin.client.create') }}" class="side-nav__link">
                     <span>Clients</span>
                 </a>
             </li>
-            <li class="side-nav__item">
-                <a href="#" class="side-nav__link">
+            <li class="side-nav__item @if (request()->is('admin/add-task') || request()->is('admin/task/*')) side-nav__item--active @endif">
+                <a href="{{ route('admin.task.add') }}" class="side-nav__link">
                     <span>Projects</span>
                 </a>
             </li>
@@ -58,7 +60,7 @@
 
            <li class="side-nav__item">
             <a class="side-nav__link" href="{{ route('logout') }}"
-                                   onclick="event.preventDefault();document.getElementById('logout-form').submit();">{{ __('Logout') }}
+              onclick="event.preventDefault();document.getElementById('logout-form').submit();">{{ __('Logout') }}
              </a>
 
              <form id="logout-form" action="{{ route('logout') }}" method="POST"
@@ -106,7 +108,8 @@
           } );
       </script>
 
-
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
       @yield('customJS')
   </div>
 </body>

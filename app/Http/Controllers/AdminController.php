@@ -230,6 +230,13 @@ class AdminController extends Controller
         return view('admin.task.all_tasks', compact('tasks'));
     }
 
+    public function add_task()
+    {
+        $clients = User::whereUserType(1)->latest()->get();
+        $users = User::whereUserType(2)->latest()->get();
+        return view('admin.task.add_task', compact('clients', 'users'));
+    }
+    
     /**
      * Task create form
      *

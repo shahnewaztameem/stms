@@ -18,7 +18,7 @@
  <div class="col-sm-4">
   <div class="row">
    <div class="col-10">
-    <strong>Developemnts</strong>
+    <strong>Developements</strong>
    </div>
    <div class="col-2">
     <a href="{{route('admin.client.create')}}" data-toggle="tooltip" data-placement="bottom" title="Add client">
