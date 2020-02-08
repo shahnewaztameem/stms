@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateClientFeedbackTable extends Migration
+class CreateDevelopmentPhasesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,11 @@ class CreateClientFeedbackTable extends Migration
      */
     public function up()
     {
-        Schema::create('client_feedback', function (Blueprint $table) {
+        Schema::create('development_phases', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('task_id');
             $table->foreign('task_id')->references('id')->on('tasks')->onDelete('cascade');
-            $table->unsignedBigInteger('user_id');
-            $table->foreign('user_id')->references('id')->on('users');
-            $table->string('comment');
+            $table->string('repo_url');
             $table->timestamps();
         });
     }
@@ -31,6 +29,6 @@ class CreateClientFeedbackTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('client_feedback');
+        Schema::dropIfExists('development_phases');
     }
 }

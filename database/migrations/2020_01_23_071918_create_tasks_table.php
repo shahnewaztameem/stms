@@ -18,6 +18,11 @@ class CreateTasksTable extends Migration
             $table->string('title');
             $table->string('slug');
             $table->text('details');
+            $table->unsignedBigInteger('project_manager_id');
+            $table->foreign('project_manager_id')->references('id')->on('users');
+            $table->unsignedBigInteger('client_id');
+            $table->foreign('client_id')->references('id')->on('users');
+            $table->boolean('notity_enable')->default(true);
             $table->timestamps();
         });
     }

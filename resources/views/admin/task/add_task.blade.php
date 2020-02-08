@@ -44,5 +44,11 @@
      $('.datepicker').datepicker({
       format: 'yyyy/mm/dd'
      });
+
+     // For name of the file appear on select
+    $(".custom-file-input").on("change", function() {
+      var fileName = this.files.length;
+      $(this).siblings(".custom-file-label").addClass("selected").html(fileName +' files selected');
+    });
     </script>
 @endsection

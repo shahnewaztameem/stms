@@ -51,7 +51,7 @@
         <div class="row col-sm-10">
          <div class="col-5">
           <div class="input-group" style="border-bottom: none">
-           <input type="text" class="form-control datepicker" name="date_from" placeholder="Start Date">
+           <input type="text" class="form-control datepicker" name="start_date" placeholder="Start Date">
            <div class="input-group-append">
              <span class="input-group-text" style="border: 1px solid #ced4da">
               <i class="fa fa-calendar" style="font-size: 1.3rem"></i>
@@ -61,7 +61,7 @@
           </div>
           <div class="col-5">
            <div class="input-group" style="border-bottom: none">
-            <input type="text" class="form-control datepicker" name="date_to" placeholder="End Date">
+            <input type="text" class="form-control datepicker" name="end_date" placeholder="End Date">
             <div class="input-group-append">
               <span class="input-group-text" style="border: 1px solid #ced4da">
                <i class="fa fa-calendar" style="font-size: 1.3rem"></i>
@@ -85,7 +85,7 @@
        </div>
       
        <div class="form-group row">
-        <label for="client_name" class="col-sm-2 col-form-label">Wireframes: </label>
+        <label class="col-sm-2 col-form-label">Wireframes: </label>
         <div class="col-sm-10">
           <div class="custom-file mb-3">
             <label class="custom-file-label" for="file_upload">Choose file...</label>
