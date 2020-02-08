@@ -28,6 +28,17 @@ class AdminController extends Controller
         $users = User::whereUserType(2)->latest()->get();
         return view('admin.home', compact('users'));
     }
+    
+    /**
+     * Show all the users
+     * 
+     * @return view with all users
+     */
+    public function user_list()
+    {
+        $users = User::whereIn('user_type', [0, 2])->latest()->get();
+        return view('admin.user.user_list', compact('users'));
+    }
 
     /**
      * User create form
@@ -36,7 +47,8 @@ class AdminController extends Controller
      */
     public function create_user()
     {
-        return view('admin.user.create');
+        // return view('admin.user.create');
+        return view('admin.user.add_user');
     }
 
     /**
@@ -46,7 +58,7 @@ class AdminController extends Controller
      */
     public function store_user(CreateUserRequest $request)
     {
-        $request['user_type'] = 2;
+        // $request['user_type'] = 2;
         $request['password'] = Hash::make($request->password);
         $user = User::create($request->all());
         return redirect()->back()->with('success', "User ($user->name) is added successfully");
@@ -125,7 +137,8 @@ class AdminController extends Controller
      */
     public function create_client()
     {
-        return view('admin.client.create');
+        // return view('admin.client.create');
+        return view('admin.client.add_user');
     }
 
     /**

@@ -12,7 +12,7 @@ This project is developed using laravel framefork.  A simple task management sys
 6.  php artisan migrate --seed
     `This will create some dummy users & tasks`
 7.  php artisan tinker
-8.  App\User::create(['name'=> 'Admin', 'email'=>'admin@stms.com', 'password'=>'$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'user_type'=> 0])
+8.  App\User::create(['name'=> 'Admin', 'email'=>'admin@stms.com', 'phone_number' => '01521448961', 'user_type'=> 0, 'other_info' => '8888 Cummings Vista Apt. 101, Susanbury, NY 95473', 'password'=>'$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi'])
     `Login with these credentials Email: admin@stms.com, Password: password` 
 
 9. exit

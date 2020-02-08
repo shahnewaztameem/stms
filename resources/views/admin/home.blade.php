@@ -1,52 +1,74 @@
-@extends('layouts.app')
+@extends('layouts.final_layout')
 
 @section('content')
-<div class="container" style="overflow-x:auto">
-    <div class="row justify-content-center">
-        <div class="col-md-10">
-                
-            @if( Session::get('success') )
-                <div class="alert alert-success container" id="div3">
-                    <strong>Success!</strong> {{Session::get('success')}}
-                </div>
-            @endif
-            <table id="example" class="table table-striped table-bordered" style="width:100%">
-                <thead>
-                    <tr>
-                        <th>#</th>
-                        <th>Name</th>
-                        <th>Email</th>
-                        <th>Member Since</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach ($users as $index => $user)
-                        <tr>
-                            <td>{{ $index + 1 }}</td>
-                            <td>{{ $user->name }}</td>
-                            <td>{{ $user->email }}</td>
-                            <td>{{ $user->created_at->diffForHumans() }}</td>
-                            <td>
-                                <center>
-                                <a href="{{route('admin.user.create')}}" class="btn btn-info" data-toggle="tooltip" data-placement="bottom" title="Add User">
-                                    <i class="fa fa-user-plus" style="font-size: 1.3rem"></i></span>
-                                </a>
 
-                                <a href="{{route('admin.user.edit',$user->id)}}" class="btn btn-success" data-toggle="tooltip" data-placement="bottom" title="Edit User">
-                                    <i class="fa fa-edit" style="font-size: 1.3rem"></i></span>
-                                </a>
-                                
-                                {!! Form::open(['method' => 'DELETE','route'=> ['admin.user.delete', $user->id], 'style' => 'display:inline']) !!}
-                                {!! Form::button('<i class="fa fa-trash" style="font-size: 1.3rem; color: currentColor"></i></span>',['class'=> 'btn btn-danger','type' => 'submit','data-toggle'=>'tooltip', 'data-placement'=>'bottom', 'title'=>'Remove User','onclick'=>'return confirm("Are you want to delete?")'])  !!}
-                                {!! Form::close()!!}
-                                </center>
-                            </td>
-                        </tr>
-                    @endforeach
-                </tbody>
-            </table>
-        </div>
-    </div>
+<div class="row pb-3">
+ <div class="col-sm-4">
+  <div class="row">
+   <div class="col-10">
+    <strong>Designs</strong>
+   </div>
+   <div class="col-2">
+    <a href="{{route('admin.client.create')}}" data-toggle="tooltip" data-placement="bottom" title="Add client">
+     <span><i class="fa fa-plus" style="font-size: 1.3rem"></i></span>
+    </a>
+   </div>
+  </div>
+ </div>
+ <div class="col-sm-4">
+  <div class="row">
+   <div class="col-10">
+    <strong>Developemnts</strong>
+   </div>
+   <div class="col-2">
+    <a href="{{route('admin.client.create')}}" data-toggle="tooltip" data-placement="bottom" title="Add client">
+     <span><i class="fa fa-plus" style="font-size: 1.3rem"></i></span>
+    </a>
+   </div>
+  </div>
+ </div>
+ <div class="col-sm-4">
+  <div class="row">
+   <div class="col-10">
+    <strong>SEO</strong>
+   </div>
+   <div class="col-2">
+    <a href="{{route('admin.client.create')}}" data-toggle="tooltip" data-placement="bottom" title="Add client">
+     <span><i class="fa fa-plus" style="font-size: 1.3rem"></i></span>
+    </a>
+   </div>
+  </div>
+ </div>
+</div>
+
+<div class="row">
+ <div class="col-sm-4">
+   <div class="card">
+     <div class="card-body">
+       <h5 class="card-title">Special title treatment</h5>
+       <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+       <a href="#" class="btn btn-primary">Go somewhere</a>
+     </div>
+   </div>
+ </div>
+ <div class="col-sm-4 pt-xs-2 pt-sm-0">
+   <div class="card">
+     <div class="card-body">
+       <h5 class="card-title">Special title treatment</h5>
+       <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+       <a href="#" class="btn btn-primary">Go somewhere</a>
+     </div>
+   </div>
+ </div>
+
+ <div class="col-sm-4 pt-xs-2 pt-sm-0">
+   <div class="card">
+     <div class="card-body">
+       <h5 class="card-title">Special title treatment</h5>
+       <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+       <a href="#" class="btn btn-primary">Go somewhere</a>
+     </div>
+   </div>
+ </div>
 </div>
 @endsection

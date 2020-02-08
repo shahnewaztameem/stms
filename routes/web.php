@@ -14,6 +14,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::get('/layout', function () {
+    return view('layouts.final_layout');
+});
+
 Route::get('/', function () {
     return redirect('/home');
 });
@@ -52,13 +56,14 @@ Route::group(['middleware' => ['auth']], function () {
     Route::group(['prefix' => 'admin'], function () {
         Route::group(['middleware' => ['admin']], function () {
             Route::get('/home', 'AdminController@index')->name('admin.home');
-
+            
             //ADMIN-USER-CONTROLS
-            Route::get('home/user-create', 'AdminController@create_user')->name('admin.user.create');
-            Route::post('home/user-create', 'AdminController@store_user');
-            Route::get('home/user-edit/{id}', 'AdminController@edit_user')->name('admin.user.edit');
-            Route::post('home/user-edit/{id}', 'AdminController@update_user');
-            Route::delete('home/user-delete/{id}', 'AdminController@delete_user')->name('admin.user.delete');
+            Route::get('/manager-list', 'AdminController@user_list')->name('admin.user.list');
+            Route::get('user/user-create', 'AdminController@create_user')->name('admin.user.create');
+            Route::post('user/user-create', 'AdminController@store_user');
+            Route::get('user/user-edit/{id}', 'AdminController@edit_user')->name('admin.user.edit');
+            Route::post('user/user-edit/{id}', 'AdminController@update_user');
+            Route::delete('user/user-delete/{id}', 'AdminController@delete_user')->name('admin.user.delete');
 
             //ADMIN-CLIENT-CONTROLS
             Route::get('client-list', 'AdminController@client_list')->name('admin.client.list');
