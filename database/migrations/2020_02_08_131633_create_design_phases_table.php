@@ -21,6 +21,7 @@ class CreateDesignPhasesTable extends Migration
             $table->date('end_date');
             $table->unsignedBigInteger('design_pm_id');
             $table->foreign('design_pm_id')->references('id')->on('users');
+            $table->boolean('show_to_client')->default(0);
             $table->timestamps();
         });
     }

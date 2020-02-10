@@ -20,7 +20,7 @@ class CreateSEOPhasesTable extends Migration
             $table->foreign('task_id')->references('id')->on('tasks')->onDelete('cascade');
             $table->unsignedBigInteger('seo_pm_id');
             $table->foreign('seo_pm_id')->references('id')->on('users');
-
+            $table->boolean('show_to_client')->default(0);
             $table->timestamps();
         });
     }

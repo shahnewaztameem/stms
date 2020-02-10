@@ -12,9 +12,14 @@ use Illuminate\Database\Eloquent\Model;
 
 class Task extends Model
 {
-    public function users()
+    public function project_manager()
     {
-        return $this->belongsToMany(User::class);
+        return $this->belongsTo(User::class, 'project_manager_id', 'id');
+    }
+
+    public function client()
+    {
+        return $this->belongsTo(User::class, 'client_id', 'id');
     }
 
     public function task_files()

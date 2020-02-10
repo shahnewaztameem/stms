@@ -1,7 +1,17 @@
 <div class="row mt-2">
  <div class="col-12">
   <div class="card">
-     <h3 class="card-header">Add Project Design</h3>
+    <div class="card-header">
+      <div class="d-flex justify-content-between">
+        <span class="h3">Add Project Design</span>
+        <div>
+          <div class="custom-control custom-switch">
+            <input type="checkbox" class="custom-control-input" id="customSwitch1">
+            <label class="custom-control-label" for="customSwitch1">Show To Client</label>
+          </div>
+        </div>
+      </div>
+    </div>
      <div class="card-body">
    
       @if( Session::get('successDesign') )
@@ -79,12 +89,12 @@
         </div>
            
        <div class="form-group row">
-        <label for="project_manager_name" class="col-sm-2 col-form-label">Project Manager: </label>
-        <div class="col-sm-10">
-         <select name="project_manager_name" id="project_manager_name" class="selectpicker form-control select-search" data-live-search="true">
+        <label for="design_pm_name" class="col-sm-2 col-form-label">Design Project Manager: </label>
+        <div class="col-sm-10" id="design_pm_user">
+         <select name="design_pm_name" id="design_pm_name" class="selectpicker form-control select-search" data-live-search="true">
           <option value="">Please Choose</option>
           @foreach ($users as $user)
-            <option id="{{ $user->id }}" value='{{ $user->id }}'>{{ $user->name }}</option>
+            <option value='{{ $user->id }}'>{{ $user->name }}</option>
           @endforeach
          </select>
         </div>
@@ -130,20 +140,31 @@
             type: 'GET',
             url: '/project-details/design/'+event.target.value,
             success: (res) => {
-              // console.log(res.data.details);
+              console.log(res);
               let task = res.data;
               $('#design_details').val(task.details);
 
               if (task.design_phase) {
                 $('#start_date').val(task.design_phase.start_date);
                 $('#end_date').val(task.design_phase.end_date);
-                // $(`'#project_manager_name option[value="${task.design_phase.design_pm_id}"]'`).prop('selected', true);
-                $(`'#${task.design_phase.design_pm_id}'`).attr('selected', 'selected');
+                $("#design_pm_name").val(task.design_phase.design_pm_id);
+                $("button[data-id='design_pm_name'] div.filter-option-inner-inner").html(task.design_phase.design_pm.name);
+              }else{
+                $('#start_date').val('');
+                $('#end_date').val('');
+                $("#design_pm_name").val('');
+                $("button[data-id='design_pm_name'] div.filter-option-inner-inner").html("Please Choose");
               }
             },
             error: (err) => console.log(err)
           });
         }
+        $('#design_details').val('');
+        $('#start_date').val('');
+        $('#end_date').val('');
+        $("#design_pm_name").val('');
+        $("button[data-id='design_pm_name'] div.filter-option-inner-inner").html("Please Choose");
+
       })
     </script>
 @endsection

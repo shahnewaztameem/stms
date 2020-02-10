@@ -1,6 +1,7 @@
 <?php
 
 use App\Task;
+use App\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -121,7 +122,7 @@ Route::group(['middleware' => ['auth']], function () {
 });
 
 Route::get('/project-details/design/{id}', function ($id) {
-    $task = Task::whereId($id)->with('design_phase')->first();
+    $task = Task::whereId($id)->with('design_phase', 'design_phase.design_pm')->first();
     if($task){
         return response()->json(['data' => $task]);
     }else{

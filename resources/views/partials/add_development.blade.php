@@ -1,7 +1,17 @@
 <div class="row mt-2">
  <div class="col-12">
   <div class="card">
-     <h3 class="card-header">Add Development URL</h3>
+       <div class="card-header">
+      <div class="d-flex justify-content-between">
+        <span class="h3">Add Development Details</span>
+        <div>
+          <div class="custom-control custom-switch">
+            <input type="checkbox" class="custom-control-input" id="customSwitch1">
+            <label class="custom-control-label" for="customSwitch1">Show To Client</label>
+          </div>
+        </div>
+      </div>
+    </div>
      <div class="card-body">
    
       @if( Session::get('success') )

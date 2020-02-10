@@ -3,6 +3,7 @@
 namespace App;
 
 use App\Task;
+use App\DesignPhase;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -38,8 +39,18 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    public function tasks()
+    public function client_tasks()
     {
-        return $this->belongsToMany(Task::class);
+        return $this->hasMany(Task::class, 'client_id', 'id');
+    }
+
+    public function pm_tasks()
+    {
+        return $this->hasMany(Task::class, 'project_manager_id', 'id');
+    }
+
+    public function design_phase()
+    {
+        return $this->hasMany(DesignPhase::class, 'design_pm_id', 'id');
     }
 }
