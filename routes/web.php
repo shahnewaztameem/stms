@@ -91,6 +91,9 @@ Route::group(['middleware' => ['auth']], function () {
             Route::get('task/edit/{id}', 'AdminController@edit_task')->name('admin.task.edit');
             Route::post('task/edit/{id}', 'AdminController@update_task');
             Route::delete('task/delete/{id}', 'AdminController@delete_task')->name('admin.task.delete');
+            Route::delete('task/delete-design/{id}', 'AdminController@delete_design_phase')->name('admin.task.delete-design');
+            Route::delete('task/delete-dev/{id}', 'AdminController@delete_dev_phase')->name('admin.task.delete-dev');
+            Route::delete('task/delete-seo/{id}', 'AdminController@delete_seo_phase')->name('admin.task.delete-seo');
             Route::delete('task/file/delete/{id}', 'AdminController@delete_file')->name('admin.file.delete');
 
 

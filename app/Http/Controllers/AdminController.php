@@ -30,8 +30,14 @@ class AdminController extends Controller
      */
     public function index()
     {
-        $users = User::whereUserType(2)->latest()->get();
-        return view('admin.home', compact('users'));
+        $tasks = Task::with('client', 'project_manager',
+                'task_files',
+                'design_phase', 'design_phase.design_pm',
+                'development_phase', 'development_phase.dev_pm',
+                'seo_phase', 'seo_phase.seo_pm',
+                'feedback')
+                ->latest()->paginate(9);
+        return view('admin.home', compact('tasks'));
     }
 
     /**
@@ -491,7 +497,14 @@ class AdminController extends Controller
      */
     public function view_task($slug)
     {
-        $task = Task::where('slug', $slug)->with('users', 'task_files', 'feedback')->first();
+        $task = Task::where('slug', $slug)
+                ->with('client', 'project_manager',
+                'task_files',
+                'design_phase', 'design_phase.design_pm',
+                'development_phase', 'development_phase.dev_pm',
+                'seo_phase', 'seo_phase.seo_pm',
+                'feedback')
+                ->first();
         // return $task;
         return view('admin.task.view_task', compact('task'));
     }
@@ -504,7 +517,7 @@ class AdminController extends Controller
      */
     public function edit_task($id)
     {
-        $task = Task::with('users')->whereId($id)->first();
+        $task = Task::whereId($id)->first();
         $clients = User::whereUserType(1)->latest()->get();
         // return $task;
         $users = User::whereUserType(2)->latest()->get();
@@ -534,72 +547,12 @@ class AdminController extends Controller
         }
 
         $task->title = $request->title;
-
         $task->details = $request->details;
+        $task->client_id = $request->client_name;
+        $task->project_manager_id = $request->project_manager_name;
 
         // store the task in 'tasks table'
         $task->save();
-
-        /**For Storing task and client */
-        $taskClient = TaskUser::where('task_id', $task->id)->get();
-        // return $taskClient;
-        $loop = 2 - count($taskClient);
-        //  return $loop;
-
-        switch ($loop) {
-            case 0:
-                $taskCLientUpdate = TaskUser::find($taskClient[0]->id);
-                $taskCLientUpdate->user_id = $request->client_name;
-                $taskCLientUpdate->save();
-
-                $taskCLientUpdate = TaskUser::find($taskClient[1]->id);
-                $taskCLientUpdate->user_id = $request->user_name;
-                $taskCLientUpdate->save();
-                break;
-            case 1:
-                $taskCLientUpdate = TaskUser::find($taskClient[0]->id);
-                $taskCLientUpdate->user_id = $request->client_name;
-                $taskCLientUpdate->save();
-
-                $taskCLientUpdate = new TaskUser();
-                $taskCLientUpdate->task_id = $task->id;
-                $taskCLientUpdate->user_id = $request->user_name;
-                $taskCLientUpdate->save();
-
-                break;
-
-            case 2:
-                $taskCLientUpdate = new TaskUser();
-                $taskCLientUpdate->task_id = $task->id;
-                $taskCLientUpdate->user_id = $request->client_name;
-                $taskCLientUpdate->save();
-
-                $taskCLientUpdate = new TaskUser();
-                $taskCLientUpdate->task_id = $task->id;
-                $taskCLientUpdate->user_id = $request->user_name;
-                $taskCLientUpdate->save();
-
-                break;
-        }
-
-        if ($request->hasFile('task_files')) {
-            // return $request;
-            $i = 0;
-            $destinationPath = public_path() . '/img/task/';
-            foreach ($request->task_files as $task_file) {
-                $i++;
-                $input['imagename'] = 'Task_' . $task->id . "_" . Str::random(5) . $i . '.' . $task_file->getClientOriginalExtension();
-
-                $task_file->move($destinationPath, $input['imagename']);
-
-                $fileurl = 'img/task/' . $input['imagename'];
-                $file = new TaskFile();
-                $file->task_id = $task->id;
-                $file->user_id = auth()->id();
-                $file->file_url = $fileurl;
-                $file->save();
-            }
-        }
 
         return redirect()->back()->with('success', "Task ($task->title) is updated successfully");
     }
@@ -628,6 +581,63 @@ class AdminController extends Controller
 
         $task->delete();
         return redirect()->back()->with('success', "Task ($task->title) is deleted successfully");
+    }
+
+    /**
+     * Delete a Design Phase
+     *
+     * @param [type] $id
+     * @return void
+     */
+    public function delete_design_phase($id)
+    {
+        $designPhase = DesignPhase::with('task')->whereId($id)->first();
+        $taskTitle = $designPhase->task->title;
+        $taskFiles = TaskFile::where('task_id', $designPhase->task_id)->get();
+
+        foreach ($taskFiles as $file) {
+            $filePath = public_path('\\');
+            // return $filePath . $file->file_url;
+
+            if (File::exists($filePath . $file->file_url)) {
+                File::delete($filePath . $file->file_url);
+            }
+
+            $file->delete();
+        }
+
+        $designPhase->delete();
+        return redirect()->back()->with('success', "Design Phase for ($taskTitle) is deleted successfully");
+    }
+
+    /**
+     * Delete a Development Phase
+     *
+     * @param [type] $id
+     * @return void
+     */
+    public function delete_dev_phase($id)
+    {
+        $devPhase = DevelopmentPhase::with('task')->whereId($id)->first();
+        $taskTitle = $devPhase->task->title;
+
+        $devPhase->delete();
+        return redirect()->back()->with('success', "Development Phase for ($taskTitle) is deleted successfully");
+    }
+
+    /**
+     * Delete a SEO Phase
+     *
+     * @param [type] $id
+     * @return void
+     */
+    public function delete_seo_phase($id)
+    {
+        $seoPhase = SEOPhase::with('task')->whereId($id)->first();
+        $taskTitle = $seoPhase->task->title;
+
+        $seoPhase->delete();
+        return redirect()->back()->with('success', "SEO Phase for ($taskTitle) is deleted successfully");
     }
 
 

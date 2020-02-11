@@ -21,7 +21,6 @@
       </thead>
       <tbody>
           @foreach ($tasks as $index => $task)
-
             @if ($task->design_phase)    
               <tr>
                 <td>{{ $index + 1 }}</td>
@@ -34,19 +33,18 @@
                 <td>{{$task->design_phase->start_date}}</td>
                 <td>
                     <center>
+                        <a href="{{route('admin.task.view', $task->slug)}}" data-toggle="tooltip" data-placement="bottom" title="View Project">
+                            <i class="fa fa-eye" style="font-size: 1.3rem"></i>
+                        </a>
 
-                     <a href="{{route('admin.user.create')}}" data-toggle="tooltip" data-placement="bottom" title="Add client">
-                      <i class="fa fa-user-plus" style="font-size: 1.3rem"></i></span>
-                     </a>
-
-                     <a href="{{route('admin.user.edit',$task->id)}}" data-toggle="tooltip" data-placement="bottom" title="Edit User">
-                         <i class="fa fa-edit" style="font-size: 1.3rem"></i></span>
-                     </a>
-                      {!! Form::open(['method' => 'DELETE','route'=> ['admin.user.delete', $task->id], 'style' => 'display:inline']) !!}
-                      {!! Form::button('<i class="fa fa-trash" style="font-size: 1.3rem; color: red"></i></span>',['class'=> 'delete-btn','type' => 'submit','data-toggle'=>'tooltip', 'data-placement'=>'bottom', 'title'=>'Remove task','onclick'=>'return confirm("Are you want to delete?")'])  !!}
-                      {!! Form::close()!!}
+                        <a href="{{route('admin.task.edit',$task->id)}}" data-toggle="tooltip" data-placement="bottom" title="Edit Project">
+                            <i class="fa fa-edit" style="font-size: 1.3rem"></i>
+                        </a>
+                        {!! Form::open(['method' => 'DELETE','route'=> ['admin.task.delete-design', $task->design_phase->id], 'style' => 'display:inline']) !!}
+                        {!! Form::button('<i class="fa fa-trash" style="font-size: 1.3rem; color: red"></i>',['class'=> 'delete-btn','type' => 'submit','data-toggle'=>'tooltip', 'data-placement'=>'bottom', 'title'=>'Remove Design Phase','onclick'=>'return confirm("Are you want to delete?")'])  !!}
+                        {!! Form::close()!!}
                     </center>
-                  </td>
+                </td>
               </tr>
             @endif   
             @if($task->development_phase)
@@ -69,17 +67,16 @@
                     </td>
                     <td>
                         <center>
+                            <a href="{{route('admin.task.view', $task->slug)}}" data-toggle="tooltip" data-placement="bottom" title="View Project">
+                                <i class="fa fa-eye" style="font-size: 1.3rem"></i>
+                            </a>
 
-                        <a href="{{route('admin.user.create')}}" data-toggle="tooltip" data-placement="bottom" title="Add client">
-                        <i class="fa fa-user-plus" style="font-size: 1.3rem"></i></span>
-                        </a>
-
-                        <a href="{{route('admin.user.edit',$task->id)}}" data-toggle="tooltip" data-placement="bottom" title="Edit User">
-                            <i class="fa fa-edit" style="font-size: 1.3rem"></i></span>
-                        </a>
-                        {!! Form::open(['method' => 'DELETE','route'=> ['admin.user.delete', $task->id], 'style' => 'display:inline']) !!}
-                        {!! Form::button('<i class="fa fa-trash" style="font-size: 1.3rem; color: red"></i></span>',['class'=> 'delete-btn','type' => 'submit','data-toggle'=>'tooltip', 'data-placement'=>'bottom', 'title'=>'Remove task','onclick'=>'return confirm("Are you want to delete?")'])  !!}
-                        {!! Form::close()!!}
+                            <a href="{{route('admin.task.edit',$task->id)}}" data-toggle="tooltip" data-placement="bottom" title="Edit Project">
+                                <i class="fa fa-edit" style="font-size: 1.3rem"></i>
+                            </a>
+                            {!! Form::open(['method' => 'DELETE','route'=> ['admin.task.delete-dev', $task->development_phase->id], 'style' => 'display:inline']) !!}
+                            {!! Form::button('<i class="fa fa-trash" style="font-size: 1.3rem; color: red"></i>',['class'=> 'delete-btn','type' => 'submit','data-toggle'=>'tooltip', 'data-placement'=>'bottom', 'title'=>'Remove Development','onclick'=>'return confirm("Are you want to delete?")'])  !!}
+                            {!! Form::close()!!}
                         </center>
                     </td>
                 </tr>
@@ -104,17 +101,16 @@
                     </td>
                     <td>
                         <center>
+                            <a href="{{route('admin.task.view', $task->slug)}}" data-toggle="tooltip" data-placement="bottom" title="View Project">
+                                <i class="fa fa-eye" style="font-size: 1.3rem"></i>
+                            </a>
 
-                        <a href="{{route('admin.user.create')}}" data-toggle="tooltip" data-placement="bottom" title="Add client">
-                        <i class="fa fa-user-plus" style="font-size: 1.3rem"></i></span>
-                        </a>
-
-                        <a href="{{route('admin.user.edit',$task->id)}}" data-toggle="tooltip" data-placement="bottom" title="Edit User">
-                            <i class="fa fa-edit" style="font-size: 1.3rem"></i></span>
-                        </a>
-                        {!! Form::open(['method' => 'DELETE','route'=> ['admin.user.delete', $task->id], 'style' => 'display:inline']) !!}
-                        {!! Form::button('<i class="fa fa-trash" style="font-size: 1.3rem; color: red"></i></span>',['class'=> 'delete-btn','type' => 'submit','data-toggle'=>'tooltip', 'data-placement'=>'bottom', 'title'=>'Remove task','onclick'=>'return confirm("Are you want to delete?")'])  !!}
-                        {!! Form::close()!!}
+                            <a href="{{route('admin.task.edit',$task->id)}}" data-toggle="tooltip" data-placement="bottom" title="Edit Project">
+                                <i class="fa fa-edit" style="font-size: 1.3rem"></i>
+                            </a>
+                            {!! Form::open(['method' => 'DELETE','route'=> ['admin.task.delete-seo', $task->seo_phase->id], 'style' => 'display:inline']) !!}
+                            {!! Form::button('<i class="fa fa-trash" style="font-size: 1.3rem; color: red"></i>',['class'=> 'delete-btn','type' => 'submit','data-toggle'=>'tooltip', 'data-placement'=>'bottom', 'title'=>'Remove SEO phase','onclick'=>'return confirm("Are you want to delete?")'])  !!}
+                            {!! Form::close()!!}
                         </center>
                     </td>
                 </tr>
@@ -131,17 +127,16 @@
                     <td>Not Set</td>
                     <td>
                         <center>
+                            <a href="{{route('admin.task.view', $task->slug)}}" data-toggle="tooltip" data-placement="bottom" title="View Project">
+                                <i class="fa fa-eye" style="font-size: 1.3rem"></i>
+                            </a>
 
-                        <a href="{{route('admin.user.create')}}" data-toggle="tooltip" data-placement="bottom" title="Add client">
-                        <i class="fa fa-user-plus" style="font-size: 1.3rem"></i></span>
-                        </a>
-
-                        <a href="{{route('admin.user.edit',$task->id)}}" data-toggle="tooltip" data-placement="bottom" title="Edit User">
-                            <i class="fa fa-edit" style="font-size: 1.3rem"></i></span>
-                        </a>
-                        {!! Form::open(['method' => 'DELETE','route'=> ['admin.user.delete', $task->id], 'style' => 'display:inline']) !!}
-                        {!! Form::button('<i class="fa fa-trash" style="font-size: 1.3rem; color: red"></i></span>',['class'=> 'delete-btn','type' => 'submit','data-toggle'=>'tooltip', 'data-placement'=>'bottom', 'title'=>'Remove task','onclick'=>'return confirm("Are you want to delete?")'])  !!}
-                        {!! Form::close()!!}
+                            <a href="{{route('admin.task.edit',$task->id)}}" data-toggle="tooltip" data-placement="bottom" title="Edit Project">
+                                <i class="fa fa-edit" style="font-size: 1.3rem"></i>
+                            </a>
+                            {{-- {!! Form::open(['method' => 'DELETE','route'=> ['admin.task.delete', $task->id], 'style' => 'display:inline']) !!}
+                            {!! Form::button('<i class="fa fa-trash" style="font-size: 1.3rem; color: red"></i>',['class'=> 'delete-btn','type' => 'submit','data-toggle'=>'tooltip', 'data-placement'=>'bottom', 'title'=>'Remove Project','onclick'=>'return confirm("Are you want to delete?")'])  !!}
+                            {!! Form::close()!!} --}}
                         </center>
                     </td>
                 </tr> 

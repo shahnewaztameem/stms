@@ -68,7 +68,7 @@
        <div class="form-group row">
         <label for="design_details" class="col-sm-2 col-form-label">Project Details: </label>
         <div class="col-sm-10">
-          <textarea name="design_details" class="form-control" id="design_details" readonly cols="30" rows="3" placeholder="Other details"></textarea>
+          <textarea name="design_details" class="form-control" id="design_details" readonly cols="30" rows="3" placeholder="Project details"></textarea>
         </div>
        </div>
            
@@ -77,7 +77,7 @@
         <div class="row col-sm-10">
          <div class="col-5">
           <div class="input-group" style="border-bottom: none">
-           <input type="text" class="form-control datepicker" name="start_date" id="start_date" placeholder="Start Date">
+           <input type="text" class="form-control datepicker" name="start_date" id="start_date" placeholder="Start Date" autocomplete="off">
            <div class="input-group-append">
              <span class="input-group-text" style="border: 1px solid #ced4da">
               <i class="fa fa-calendar" style="font-size: 1.3rem"></i>
@@ -87,7 +87,7 @@
           </div>
           <div class="col-5">
            <div class="input-group" style="border-bottom: none">
-            <input type="text" class="form-control datepicker" name="end_date" id="end_date" placeholder="End Date">
+            <input type="text" class="form-control datepicker" name="end_date" id="end_date" placeholder="End Date" autocomplete="off">
             <div class="input-group-append">
               <span class="input-group-text" style="border: 1px solid #ced4da">
                <i class="fa fa-calendar" style="font-size: 1.3rem"></i>

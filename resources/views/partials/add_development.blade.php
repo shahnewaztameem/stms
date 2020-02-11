@@ -68,7 +68,7 @@
         <div class="form-group row">
          <label for="dev_project_details" class="col-sm-2 col-form-label">Project Details: </label>
          <div class="col-sm-10">
-           <textarea name="project_details" class="form-control" id="dev_project_details" readonly cols="30" rows="3" placeholder="Other details"></textarea>
+           <textarea name="project_details" class="form-control" id="dev_project_details" readonly cols="30" rows="3" placeholder="Project details"></textarea>
          </div>
         </div>
             
