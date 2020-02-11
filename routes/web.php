@@ -58,7 +58,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::group(['prefix' => 'admin'], function () {
         Route::group(['middleware' => ['admin']], function () {
             Route::get('/home', 'AdminController@index')->name('admin.home');
-            
+
             //ADMIN-USER-CONTROLS
             Route::get('/manager-list', 'AdminController@user_list')->name('admin.user.list');
             Route::get('user/user-create', 'AdminController@create_user')->name('admin.user.create');
@@ -81,7 +81,13 @@ Route::group(['middleware' => ['auth']], function () {
             Route::get('task/view/{slug}', 'AdminController@view_task')->name('admin.task.view');
             Route::get('task/create', 'AdminController@create_task')->name('admin.task.create');
             Route::post('task/create', 'AdminController@store_task')->name('admin.task.create');
+
             Route::post('task/create-design-phase', 'AdminController@store_design_phase')->name('admin.task.create-design-phase');
+
+            Route::post('task/create-development-phase', 'AdminController@store_development_phase')->name('admin.task.create-development-phase');
+
+            Route::post('task/create-seo-phase', 'AdminController@store_seo_phase')->name('admin.task.create-seo-phase');
+
             Route::get('task/edit/{id}', 'AdminController@edit_task')->name('admin.task.edit');
             Route::post('task/edit/{id}', 'AdminController@update_task');
             Route::delete('task/delete/{id}', 'AdminController@delete_task')->name('admin.task.delete');
@@ -123,9 +129,27 @@ Route::group(['middleware' => ['auth']], function () {
 
 Route::get('/project-details/design/{id}', function ($id) {
     $task = Task::whereId($id)->with('design_phase', 'design_phase.design_pm')->first();
-    if($task){
+    if ($task) {
         return response()->json(['data' => $task]);
-    }else{
+    } else {
+        return response()->json(['data' => 'No data found']);
+    }
+});
+
+Route::get('/project-details/development/{id}', function ($id) {
+    $task = Task::whereId($id)->with('development_phase', 'development_phase.dev_pm')->first();
+    if ($task) {
+        return response()->json(['data' => $task]);
+    } else {
+        return response()->json(['data' => 'No data found']);
+    }
+});
+
+Route::get('/project-details/seo/{id}', function ($id) {
+    $task = Task::whereId($id)->with('seo_phase', 'seo_phase.seo_pm')->first();
+    if ($task) {
+        return response()->json(['data' => $task]);
+    } else {
         return response()->json(['data' => 'No data found']);
     }
 });

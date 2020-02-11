@@ -9,19 +9,21 @@
             <strong>Success!</strong> {{Session::get('success')}}
         </div>
       @endif
-   
-      @if ($errors->any())
-       <div class="form-group row">
-         <div class="col-md-12">
-           <div class="alert alert-danger">
-             <ul>
-               @foreach ($errors->all() as $error)
-                 <li>{{ $error }}</li>
-               @endforeach
-             </ul>
-           </div>
-         </div>
-        </div>
+
+      @if( !(Session::get('tab') == "design" || Session::get('tab') == "development" || Session::get('tab') == "seo") )
+        @if ($errors->any())
+        <div class="form-group row">
+          <div class="col-md-12">
+            <div class="alert alert-danger">
+              <ul>
+                @foreach ($errors->all() as $error)
+                  <li>{{ $error }}</li>
+                @endforeach
+              </ul>
+            </div>
+          </div>
+          </div>
+        @endif
       @endif
    
       <form method="POST" action="{{ route('admin.task.create') }}">

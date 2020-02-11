@@ -12,7 +12,7 @@
           <tr>
               <th>#</th>
               <th>Project</th>
-              <th>Client</th>
+              <th>Client Name</th>
               <th>Phase</th>
               <th>Project Manager</th>
               <th>Start Date</th>
@@ -21,29 +21,131 @@
       </thead>
       <tbody>
           @foreach ($tasks as $index => $task)
+
+            @if ($task->design_phase)    
               <tr>
-                  <td>{{ $index + 1 }}</td>
-                  <td>{{ $task->title }}</td>
-                  <td>{{ $task->client }}</td>
-                  <td>{{ $task->phase }}</td>
-                  <td>{{ $task->user }}</td>
-                  <td>{{ $task->start_date }}</td>
-                  <td>
+                <td>{{ $index + 1 }}</td>
+                <td>{{ $task->title }}</td>
+                <td>{{ $task->client->name }}</td>
+                <td>
+                    Design
+                </td>
+                <td>{{ $task->design_phase->design_pm->name }}</td>
+                <td>{{$task->design_phase->start_date}}</td>
+                <td>
                     <center>
 
                      <a href="{{route('admin.user.create')}}" data-toggle="tooltip" data-placement="bottom" title="Add client">
                       <i class="fa fa-user-plus" style="font-size: 1.3rem"></i></span>
                      </a>
 
-                     <a href="{{route('admin.user.edit',$user->id)}}" data-toggle="tooltip" data-placement="bottom" title="Edit User">
+                     <a href="{{route('admin.user.edit',$task->id)}}" data-toggle="tooltip" data-placement="bottom" title="Edit User">
                          <i class="fa fa-edit" style="font-size: 1.3rem"></i></span>
                      </a>
-                      {!! Form::open(['method' => 'DELETE','route'=> ['admin.user.delete', $user->id], 'style' => 'display:inline']) !!}
+                      {!! Form::open(['method' => 'DELETE','route'=> ['admin.user.delete', $task->id], 'style' => 'display:inline']) !!}
                       {!! Form::button('<i class="fa fa-trash" style="font-size: 1.3rem; color: red"></i></span>',['class'=> 'delete-btn','type' => 'submit','data-toggle'=>'tooltip', 'data-placement'=>'bottom', 'title'=>'Remove task','onclick'=>'return confirm("Are you want to delete?")'])  !!}
                       {!! Form::close()!!}
                     </center>
                   </td>
               </tr>
+            @endif   
+            @if($task->development_phase)
+                <tr>
+                    <td>{{ $index + 1 }}</td>
+                    <td>{{ $task->title }}</td>
+                    <td>{{ $task->client->name }}</td>
+                    <td>
+                        Development
+                    </td>
+                    <td>
+                        {{ $task->development_phase->dev_pm->name }}
+                    </td>
+                    <td>
+                        @if ($task->design_phase)    
+                        {{$task->design_phase->start_date}}
+                        @else
+                            Not Set
+                        @endif
+                    </td>
+                    <td>
+                        <center>
+
+                        <a href="{{route('admin.user.create')}}" data-toggle="tooltip" data-placement="bottom" title="Add client">
+                        <i class="fa fa-user-plus" style="font-size: 1.3rem"></i></span>
+                        </a>
+
+                        <a href="{{route('admin.user.edit',$task->id)}}" data-toggle="tooltip" data-placement="bottom" title="Edit User">
+                            <i class="fa fa-edit" style="font-size: 1.3rem"></i></span>
+                        </a>
+                        {!! Form::open(['method' => 'DELETE','route'=> ['admin.user.delete', $task->id], 'style' => 'display:inline']) !!}
+                        {!! Form::button('<i class="fa fa-trash" style="font-size: 1.3rem; color: red"></i></span>',['class'=> 'delete-btn','type' => 'submit','data-toggle'=>'tooltip', 'data-placement'=>'bottom', 'title'=>'Remove task','onclick'=>'return confirm("Are you want to delete?")'])  !!}
+                        {!! Form::close()!!}
+                        </center>
+                    </td>
+                </tr>
+            @endif
+            @if($task->seo_phase)
+                <tr>
+                    <td>{{ $index + 1 }}</td>
+                    <td>{{ $task->title }}</td>
+                    <td>{{ $task->client->name }}</td>
+                    <td>
+                        SEO
+                    </td>
+                    <td>
+                        {{ $task->seo_phase->seo_pm->name }}
+                    </td>
+                    <td>
+                        @if ($task->design_phase)    
+                        {{$task->design_phase->start_date}}
+                        @else
+                            Not Set
+                        @endif
+                    </td>
+                    <td>
+                        <center>
+
+                        <a href="{{route('admin.user.create')}}" data-toggle="tooltip" data-placement="bottom" title="Add client">
+                        <i class="fa fa-user-plus" style="font-size: 1.3rem"></i></span>
+                        </a>
+
+                        <a href="{{route('admin.user.edit',$task->id)}}" data-toggle="tooltip" data-placement="bottom" title="Edit User">
+                            <i class="fa fa-edit" style="font-size: 1.3rem"></i></span>
+                        </a>
+                        {!! Form::open(['method' => 'DELETE','route'=> ['admin.user.delete', $task->id], 'style' => 'display:inline']) !!}
+                        {!! Form::button('<i class="fa fa-trash" style="font-size: 1.3rem; color: red"></i></span>',['class'=> 'delete-btn','type' => 'submit','data-toggle'=>'tooltip', 'data-placement'=>'bottom', 'title'=>'Remove task','onclick'=>'return confirm("Are you want to delete?")'])  !!}
+                        {!! Form::close()!!}
+                        </center>
+                    </td>
+                </tr>
+            @endif
+            @if(!$task->design_phase && !$task->development_phase && !$task->seo_phase)
+                <tr>
+                    <td>{{ $index + 1 }}</td>
+                    <td>{{ $task->title }}</td>
+                    <td>{{ $task->client->name }}</td>
+                    <td>
+                        Initial(Set other)
+                    </td>
+                    <td>{{ $task->project_manager->name }}</td>
+                    <td>Not Set</td>
+                    <td>
+                        <center>
+
+                        <a href="{{route('admin.user.create')}}" data-toggle="tooltip" data-placement="bottom" title="Add client">
+                        <i class="fa fa-user-plus" style="font-size: 1.3rem"></i></span>
+                        </a>
+
+                        <a href="{{route('admin.user.edit',$task->id)}}" data-toggle="tooltip" data-placement="bottom" title="Edit User">
+                            <i class="fa fa-edit" style="font-size: 1.3rem"></i></span>
+                        </a>
+                        {!! Form::open(['method' => 'DELETE','route'=> ['admin.user.delete', $task->id], 'style' => 'display:inline']) !!}
+                        {!! Form::button('<i class="fa fa-trash" style="font-size: 1.3rem; color: red"></i></span>',['class'=> 'delete-btn','type' => 'submit','data-toggle'=>'tooltip', 'data-placement'=>'bottom', 'title'=>'Remove task','onclick'=>'return confirm("Are you want to delete?")'])  !!}
+                        {!! Form::close()!!}
+                        </center>
+                    </td>
+                </tr> 
+            @endif
           @endforeach
       </tbody>
   </table>

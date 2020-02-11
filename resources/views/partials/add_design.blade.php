@@ -1,13 +1,14 @@
 <div class="row mt-2">
  <div class="col-12">
   <div class="card">
+  <form method="POST" action="{{ route('admin.task.create-design-phase') }}" enctype="multipart/form-data">
     <div class="card-header">
       <div class="d-flex justify-content-between">
         <span class="h3">Add Project Design</span>
         <div>
           <div class="custom-control custom-switch">
-            <input type="checkbox" class="custom-control-input" id="customSwitch1">
-            <label class="custom-control-label" for="customSwitch1">Show To Client</label>
+            <input type="checkbox" name="show_to_client" class="custom-control-input" id="customSwitchDesign">
+            <label class="custom-control-label" for="customSwitchDesign">Show To Client</label>
           </div>
         </div>
       </div>
@@ -15,32 +16,41 @@
      <div class="card-body">
    
       @if( Session::get('successDesign') )
-        <div class="alert alert-success container" id="div3">
-            <strong>Success!</strong> {{Session::get('successDesign')}}
+        <div class="form-group row">
+            <div class="col-md-12">
+              <div class="alert alert-success" id="div3">
+                  <strong>Success!</strong> {{Session::get('successDesign')}}
+              </div>
+            </div>
         </div>
       @endif
    
       @if( Session::get('errDesign') )
-        <div class="alert alert-danger container" id="div3">
-            <strong>Success!</strong> {{Session::get('errDesign')}}
+        <div class="form-group row">
+          <div class="col-md-12">
+            <div class="alert alert-danger" id="div3">
+              <strong>Error!</strong> {{Session::get('errDesign')}}
+            </div>
+          </div>
         </div>
       @endif
    
-      @if ($errors->any())
-       <div class="form-group row">
-         <div class="col-md-12">
-           <div class="alert alert-danger">
-             <ul>
-               @foreach ($errors->all() as $error)
-                 <li>{{ $error }}</li>
-               @endforeach
-             </ul>
-           </div>
-         </div>
-        </div>
+      @if( Session::get('tab') == "design")
+        @if ($errors->any())
+        <div class="form-group row">
+          <div class="col-md-12">
+            <div class="alert alert-danger">
+              <ul>
+                @foreach ($errors->all() as $error)
+                  <li>{{ $error }}</li>
+                @endforeach
+              </ul>
+            </div>
+          </div>
+          </div>
+        @endif
       @endif
    
-      <form method="POST" action="{{ route('admin.task.create-design-phase') }}" enctype="multipart/form-data">
        @csrf
    
        <div class="form-group row">
@@ -145,6 +155,11 @@
               $('#design_details').val(task.details);
 
               if (task.design_phase) {
+                if(task.design_phase.show_to_client){
+                  $('#customSwitchDesign').attr('checked', 'checked');
+                }else{
+                  $('#customSwitchDesign').removeAttr('checked');
+                }
                 $('#start_date').val(task.design_phase.start_date);
                 $('#end_date').val(task.design_phase.end_date);
                 $("#design_pm_name").val(task.design_phase.design_pm_id);
@@ -153,6 +168,7 @@
                 $('#start_date').val('');
                 $('#end_date').val('');
                 $("#design_pm_name").val('');
+                $('#customSwitchDesign').removeAttr('checked');
                 $("button[data-id='design_pm_name'] div.filter-option-inner-inner").html("Please Choose");
               }
             },
@@ -163,7 +179,92 @@
         $('#start_date').val('');
         $('#end_date').val('');
         $("#design_pm_name").val('');
+        $('#customSwitchDesign').removeAttr('checked');
         $("button[data-id='design_pm_name'] div.filter-option-inner-inner").html("Please Choose");
+
+      })
+    </script>
+
+{{-- DEVELOPMENT PAGE SCRIPT  --}}
+    <script>
+      $('#dev_project_title').on('change', (event) => {
+        // console.log(event.target.value);
+        if (event.target.value) {
+          $.ajax({
+            type: 'GET',
+            url: '/project-details/development/'+event.target.value,
+            success: (res) => {
+              console.log(res);
+              let task = res.data;
+              $('#dev_project_details').val(task.details);
+
+              if (task.development_phase) {
+                if(task.development_phase.show_to_client){
+                  $('#customSwitchDevelopment').attr('checked', 'checked');
+                }else{
+                  $('#customSwitchDevelopment').removeAttr('checked');
+                }
+                $('#repo_url').val(task.development_phase.repo_url);
+                $("#dev_pm_name").val(task.development_phase.dev_pm_id);
+                $("button[data-id='dev_pm_name'] div.filter-option-inner-inner").html(task.development_phase.dev_pm.name);
+              }else{
+                $('#repo_url').val('');
+    
+                $("#dev_pm_name").val('');
+                $('#customSwitchDevelopment').removeAttr('checked');
+                $("button[data-id='dev_pm_name'] div.filter-option-inner-inner").html("Please Choose");
+              }
+            },
+            error: (err) => console.log(err)
+          });
+        }
+        $('#customSwitchDevelopment').removeAttr('checked');
+        $('#dev_project_details').val('');
+        $('#repo_url').val('');
+        $("#dev_pm_name").val('');
+        $("button[data-id='dev_pm_name'] div.filter-option-inner-inner").html("Please Choose");
+
+      })
+    </script>
+
+{{-- SEO PAGE SCRIPT  --}}
+    <script>
+      $('#seo_project_title').on('change', (event) => {
+        // console.log(event.target.value);
+        if (event.target.value) {
+          $.ajax({
+            type: 'GET',
+            url: '/project-details/seo/'+event.target.value,
+            success: (res) => {
+              console.log(res);
+              let task = res.data;
+              $('#seo_project_details').val(task.details);
+
+              if (task.seo_phase) {
+                if(task.seo_phase.show_to_client){
+                  $('#customSwitchSEO').attr('checked', 'checked');
+                }else{
+                  $('#customSwitchSEO').removeAttr('checked');
+                }
+                $('#seo_keywords').val(task.seo_phase.seo_keywords);
+                $("#seo_pm_name").val(task.seo_phase.seo_pm_id);
+                $("button[data-id='seo_pm_name'] div.filter-option-inner-inner").html(task.seo_phase.seo_pm.name);
+              }else{
+                $('#seo_keywords').val('');
+    
+                $("#seo_pm_name").val('');
+                $('#customSwitchSEO').removeAttr('checked');
+                $("button[data-id='seo_pm_name'] div.filter-option-inner-inner").html("Please Choose");
+              }
+            },
+            error: (err) => console.log(err)
+          });
+        }
+        $('#customSwitchSEO').removeAttr('checked');
+        $('#seo_project_details').val('');
+        $('#seo_keywords').val('');
+        $("#seo_pm_name").val('');
+        $("button[data-id='seo_pm_name'] div.filter-option-inner-inner").html("Please Choose");
 
       })
     </script>

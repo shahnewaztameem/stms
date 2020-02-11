@@ -10,13 +10,13 @@ class DevelopmentPhase extends Model
 {
     protected $guarded = [];
 
-    public function user()
+    public function dev_pm()
     {
-        return $this->belongsTo(User::class, 'id', 'user_id');
+        return $this->belongsTo(User::class, 'dev_pm_id', 'id');
     }
 
     public function task()
     {
-        return $this->belongsTo(Task::class, 'id', 'task_id');
+        return $this->belongsTo(Task::class, 'task_id', 'id');
     }
 }
