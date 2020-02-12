@@ -108,7 +108,11 @@ Route::group(['middleware' => ['auth']], function () {
             Route::get('/change-pass', 'ClientController@change_pass')->name('client.change.pass');
             Route::post('/change-pass', 'ClientController@store_pass');
 
-            Route::get('/task/all', 'ClientController@index')->name('client.home');
+            Route::get('/home', 'ClientController@index')->name('client.home');
+            Route::get('/tasks', 'ClientController@all_task')->name('client.tasks');
+            Route::get('/task/design', 'ClientController@design_phase')->name('client.task.design');
+            Route::get('/task/dev', 'ClientController@dev_phase')->name('client.task.dev');
+            Route::get('/task/seo', 'ClientController@seo_phase')->name('client.task.seo');
             Route::get('/task/view/{slug}', 'ClientController@view')->name('client.task.view');
             Route::post('/task/feedback/{id}', 'ClientController@store_feedback')->name('client.feedback');
             // Route::get('task/feedback/edit/{task_id}/{id}', 'ClientController@edit_feedback')->name('client.feedback.edit');

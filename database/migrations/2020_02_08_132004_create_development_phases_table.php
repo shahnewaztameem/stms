@@ -18,6 +18,8 @@ class CreateDevelopmentPhasesTable extends Migration
             $table->unsignedBigInteger('task_id');
             $table->foreign('task_id')->references('id')->on('tasks')->onDelete('cascade');
             $table->string('repo_url');
+            $table->date('dev_start_date');
+            $table->date('dev_end_date');
             $table->unsignedBigInteger('dev_pm_id');
             $table->foreign('dev_pm_id')->references('id')->on('users');
             $table->boolean('show_to_client')->default(0);

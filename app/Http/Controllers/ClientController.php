@@ -18,9 +18,11 @@ class ClientController extends Controller
      */
     public function index()
     {
-        $user = User::whereId(auth()->id())->with('tasks')->first();
+        $client = auth()->user();
         // return $user;
-        return view('client.home', compact('user'));
+        $tasks = Task::where('client_id', auth()->user()->id)->with('design_phase', 'development_phase', 'seo_phase')->get();
+        // return $tasks;
+        return view('client.home', compact('client', 'tasks'));
     }
 
     /**
@@ -32,7 +34,20 @@ class ClientController extends Controller
      */
     public function view($slug)
     {
-        $task = Task::where('slug', $slug)->with('users', 'task_files', 'feedback')->first();
+        $task = Task::where('slug', $slug)
+            ->with(
+                'client',
+                'project_manager',
+                'task_files',
+                'design_phase',
+                'design_phase.design_pm',
+                'development_phase',
+                'development_phase.dev_pm',
+                'seo_phase',
+                'seo_phase.seo_pm',
+                'feedback'
+            )
+            ->first();
         // return $task;
         return view('client.view_task', compact('task'));
     }
@@ -120,5 +135,41 @@ class ClientController extends Controller
         $user->save();
 
         return redirect()->back()->with('success', "Your password is changed successfully");
+    }
+
+    /**
+     * Get All the task-design phase
+     *
+     * @return projectList
+     */
+    public function design_phase()
+    {
+        $tasks = Task::where('client_id', auth()->user()->id)->with('design_phase', 'design_phase.design_pm')->latest()->paginate(6);
+        // return $tasks;
+        return view('client.design_phase', compact('tasks'));
+    }
+
+    /**
+     * Get All the task-development phase
+     *
+     * @return projectList
+     */
+    public function dev_phase()
+    {
+        $tasks = Task::where('client_id', auth()->user()->id)->with('development_phase', 'development_phase.dev_pm')->latest()->paginate(6);
+        // return $tasks;
+        return view('client.dev_phase', compact('tasks'));
+    }
+
+    /**
+     * Get All the task-seo phase
+     *
+     * @return projectList
+     */
+    public function seo_phase()
+    {
+        $tasks = Task::where('client_id', auth()->user()->id)->with('seo_phase', 'seo_phase.seo_pm')->latest()->paginate(6);
+        // return $tasks;
+        return view('client.seo_phase', compact('tasks'));
     }
 }

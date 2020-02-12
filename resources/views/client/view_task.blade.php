@@ -1,147 +1,183 @@
-@extends('layouts.app')
+@extends('layouts.final_layout')
 
 @section('content')
 <div class="container">
- <div class="row justify-content-center">
-   <div class="col-md-10">
-      @if( Session::get('success') )
+  <div class="row">
+    @if( Session::get('success') )
       <div class="alert alert-success container" id="div3">
         <strong>Success!</strong> {{Session::get('success')}}
       </div>
-      @endif
+    @endif
 
-      <div class="card mb-3">
-       <div class="card-body">
+    <div class="card mb-3" style="width: 100%">
+      <div class="card-body">
 
         <blockquote class="blockquote mb-0">
-         <h3>{{ $task->title }}<small class="text-muted posted-text"> Posted {{ $task->created_at->diffForHumans() }}</small>
-         </h3>
+        <h3>{{ $task->title }}<small class="text-muted posted-text"> created {{ $task->created_at->diffForHumans() }}</small>
+        </h3>
         </blockquote>
 
         <div role="separator" class="dropdown-divider"></div>
 
-         <p class="card-text">{{ $task->details }}</p>
+        <p class="card-text">{{ $task->details }}</p>
 
-         <div role="separator" class="dropdown-divider"></div>
-         
-         @if (count($task->users) > 1)
-          <p class="card-text"><strong>Assigned User Info: </strong></p> 
-           @foreach ($task->users as $user)
-            @if ($user->user_type == 2)
-            <p class="card-text">User Name: {{ $user->name }}</p>
-            <p class="card-text">User Email: {{ $user->email }}</p>
-            @endif
-           @endforeach
-          @endif
-
-
-
-          @if (count($task->task_files))
-          
-          <div role="separator" class="dropdown-divider"></div>
-          
-          <p class="card-text"><strong>Attachment From User: </strong></p>
-          <ul class="list-group">
-            @foreach ($task->task_files as $file)
-             <li class="list-group-item list-group-item-default">
-              <a href="{{ asset($file->file_url) }}" target="_blank">{{ $file->file_url }}</a>
-             </li>
-             
-             <div role="separator" class="dropdown-divider"></div>
-            @endforeach
-          </ul>
-          @endif
-
-       </div>
-      </div>
-
-      <div class="card">
-       <div class="card-body">
+        <div role="separator" class="dropdown-divider"></div>
         
+        @if ($task->project_manager)
+          <p class="card-text"><strong>PM Info: </strong></p> 
+          <p class="card-text"><strong>PM Name:</strong> {{ $task->project_manager->name }}</p>
+          <p class="card-text"><strong>PM Number:</strong> {{ $task->project_manager->phone_number }}</p>
+          <p class="card-text"><strong>PM Email:</strong> {{ $task->project_manager->email }}</p>
+        @endif
+
+
         @if ($task->feedback)
-        <div class="row">
-         <div class="col-10">
-          <strong>You Rate :</strong> {{$task->feedback->rating}}/5
-          <p class="card-text"><strong>Comment :</strong>{{ $task->feedback->comment }}</p>
-         </div>
-         <div class="col-2">
-          <center>
-
-           {{-- <a href="{{route('client.feedback.edit', [$task->id, $task->feedback->id])}}" class="edit-btn" data-toggle="tooltip" data-placement="bottom" title="Edit Feedback">
-               <i class="fa fa-edit" style="font-size: 1.3rem"></i></span>
-           </a> --}}
-           
-           {!! Form::open(['method' => 'DELETE','route'=> ['client.feedback.delete', $task->feedback->id], 'style' => 'display:inline']) !!}
-           {!! Form::button('<i class="fa fa-trash" style="font-size: 1.3rem; color: red"></i></span>',['class'=> 'delete-btn','type' => 'submit','data-toggle'=>'tooltip', 'data-placement'=>'bottom', 'title'=>'Remove Feedback','onclick'=>'return confirm("Are you want to delete?")'])  !!}
-           {!! Form::close()!!}
-          </center>
-         </div>
-        </div>
-        
-        @else
-
-        <blockquote class="blockquote mb-0">
-         <h3 class="text-center">
-          Give Feedback
-         </h3>
-        </blockquote>
-
-        @if ($errors->any())
-        <div class="form-group row">
-            <div class="col-md-8 offset-md-2">
-                <div class="alert alert-danger">
-                    <ul>
-                        @foreach ($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                        @endforeach
-                    </ul>
-                </div>
-            </div>
-        </div>
-        @endif
-
-        <div role="separator" class="dropdown-divider"></div>
-
-        <div class="col-10 offset-1">
-         <form action="{{ route('client.feedback', $task->id) }}" method="post">
-          @csrf
-          <div class="form-group">
-           <div class="stars">
-            <input type="radio" name="star" value="1" class="star-1" id="star-1" />
-            <label class="star-1" for="star-1">1</label>
-            <input type="radio" name="star" value="2" class="star-2" id="star-2" />
-            <label class="star-2" for="star-2">2</label>
-            <input type="radio" name="star" value="3" class="star-3" id="star-3" />
-            <label class="star-3" for="star-3">3</label>
-            <input type="radio" name="star" value="4" class="star-4" id="star-4" />
-            <label class="star-4" for="star-4">4</label>
-            <input type="radio" name="star" value="5" class="star-5" id="star-5" />
-            <label class="star-5" for="star-5">5</label>
-            <span></span>
-           </div>
-          </div>
-
-          <div class="form-group">
-           <textarea class="form-control" name="comment" id="comment" cols="30" rows="3" placeholder="Enter Comment"></textarea>
-          </div>
-
           <div role="separator" class="dropdown-divider"></div>
-
-          <div class="form-group row mb-0">
-           <div class="col-md-4 offset-md-4 text-center">
-             <button type="submit" class="btn btn-primary">
-                 {{ __('Submit Feedback') }}
-             </button>
-           </div>
+          <div class="row">
+          <div class="col-10">
+            <p class="card-text"><strong>Client Comment :</strong>{{ $task->feedback->comment }}</p>
           </div>
-
-         </form>
-        </div>
-        {{-- END OF FEEDBACK  --}}       
+          </div>
         @endif
-       </div>
+
       </div>
-   </div>
- </div>
+    </div>
+
+    <div class="row">
+      <div class="col-sm-6">
+        <div class="card my-2">
+          <div class="card-body">
+            <div>
+              <h4>Design Phase</h4>
+            </div>
+            <div role="separator" class="dropdown-divider"></div>
+
+            @if ($task->design_phase)
+              <p class="card-text"> <strong>Start Date: </strong> {{ $task->design_phase->start_date }}</p>
+              <p class="card-text"> <strong>End Date: </strong> {{ $task->design_phase->end_date }}</p>
+    
+              <div role="separator" class="dropdown-divider"></div>
+            
+              @if ($task->design_phase->design_pm)
+                  <p class="card-text"><strong>Design PM Info: </strong></p> 
+                  <p class="card-text">
+                    <strong>PM Name:</strong>
+                    {{ $task->design_phase->design_pm->name }}
+                  </p>
+                  <p class="card-text">
+                    <strong>PM Number:</strong>
+                    {{ $task->design_phase->design_pm->phone_number }}
+                  </p>
+                  <p class="card-text"><strong>PM Email:</strong> {{ $task->design_phase->design_pm->email }}</p>
+              @endif
+            @else
+                <p>No Design Phase Data Found.</p>
+            @endif
+
+          </div>
+        </div>
+      </div>
+
+      <div class="col-sm-6">
+        <div class="card my-2">
+          <div class="card-body">
+            <div>
+              <h4>Development Phase</h4>
+            </div>
+            <div role="separator" class="dropdown-divider"></div>
+
+            @if ($task->development_phase)
+
+              <p class="card-text"> <strong>Repo URL: </strong><a href="{{ $task->development_phase->repo_url }}" target="_blank">{{ $task->development_phase->repo_url }}</a></p>
+    
+              <div role="separator" class="dropdown-divider"></div>
+            
+              @if ($task->development_phase->dev_pm)
+                  <p class="card-text"><strong>Dev PM Info: </strong></p> 
+                  <p class="card-text">
+                    <strong>PM Name:</strong>
+                    {{ $task->development_phase->dev_pm->name }}
+                  </p>
+                  <p class="card-text">
+                    <strong>PM Number:</strong>
+                    {{ $task->development_phase->dev_pm->phone_number }}
+                  </p>
+                  <p class="card-text"><strong>PM Email:</strong> {{ $task->development_phase->dev_pm->email }}</p>
+              @endif
+            @else
+                <p>No Development Phase Data Found.</p>
+            @endif
+
+          </div>
+        </div>
+      </div>
+
+      <div class="col-sm-6">
+        <div class="card my-2">
+          <div class="card-body">
+            <h4 class="card-text">Wireframes</h4>
+            <div role="separator" class="dropdown-divider"></div>
+
+              @if(count($task->task_files))
+                <ul class="list-group">
+                  @foreach ($task->task_files as $file)
+                    <li class="list-group-item list-group-item-default mb-3">
+                      <div class="row">
+                        <div class="col-10">
+                            <a href="{{ asset($file->file_url) }}" target="_blank">{{ $file->file_url }}</a>
+                        </div>
+                        <div class="col-2">
+                          <center>  
+                            {!! Form::open(['method' => 'DELETE','route'=> ['admin.file.delete', $file->id], 'style' => 'display:inline']) !!}
+                            {!! Form::button('<i class="fa fa-trash" style="font-size: 1.3rem; color: red"></i></span>',['class'=> 'delete-btn','type' => 'submit','data-toggle'=>'tooltip', 'data-placement'=>'bottom', 'title'=>'Remove File','onclick'=>'return confirm("Are you want to delete?")'])  !!}
+                            {!! Form::close()!!}
+                          </center>
+                        </div>
+                      </div>
+                    </li>
+                  @endforeach
+                </ul>
+              @else
+                <p>No Wireframes.</p>
+              @endif
+            </div>
+          </div>
+      </div>
+
+      <div class="col-sm-6">
+        <div class="card my-2">
+          <div class="card-body">
+            <div>
+              <h4>SEO Phase</h4>
+            </div>
+            <div role="separator" class="dropdown-divider"></div>
+
+            @if ($task->seo_phase)
+
+              <p class="card-text"> <strong>Keywords: </strong> {{ $task->seo_phase->seo_keywords }}</p>
+    
+              <div role="separator" class="dropdown-divider"></div>
+            
+              @if ($task->seo_phase->seo_pm)
+                  <p class="card-text"><strong>SEO PM Info: </strong></p> 
+                  <p class="card-text">
+                    <strong>PM Name:</strong>
+                    {{ $task->seo_phase->seo_pm->name }}
+                  </p>
+                  <p class="card-text">
+                    <strong>PM Number:</strong>
+                    {{ $task->seo_phase->seo_pm->phone_number }}
+                  </p>
+                  <p class="card-text"><strong>PM Email:</strong> {{ $task->seo_phase->seo_pm->email }}</p>
+              @endif
+            @else
+                <p>No SEO Phase Data Found.</p>
+            @endif
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 @endsection

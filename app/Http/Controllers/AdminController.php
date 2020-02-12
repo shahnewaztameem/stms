@@ -403,6 +403,8 @@ class AdminController extends Controller
         $validator = Validator::make($request->all(), [
             'project_title' => 'required',
             'repo_url' => 'bail | required | url',
+            'dev_start_date' => 'required | date',
+            'dev_end_date' => 'required | date',
             'dev_pm_name' => 'required'
         ]);
 
@@ -426,6 +428,8 @@ class AdminController extends Controller
         if ($devPhase) {
             $devPhase->repo_url = $request->repo_url;
             $devPhase->dev_pm_id = $request->dev_pm_name;
+            $devPhase->dev_start_date = $request->dev_start_date;
+            $devPhase->dev_end_date = $request->dev_end_date;
             $devPhase->show_to_client = $request->show_to_client;
             $devPhase->save();
 
@@ -436,6 +440,8 @@ class AdminController extends Controller
             $devPhase = new DevelopmentPhase();
             $devPhase->task_id = $request->project_title;
             $devPhase->repo_url = $request->repo_url;
+            $devPhase->dev_start_date = $request->dev_start_date;
+            $devPhase->dev_end_date = $request->dev_end_date;
             $devPhase->dev_pm_id = $request->dev_pm_name;
             $devPhase->save();
 
@@ -454,6 +460,8 @@ class AdminController extends Controller
         $validator = Validator::make($request->all(), [
             'project_title' => 'required',
             'seo_keywords' => 'bail | required | max: 250',
+            'seo_start_date' => 'required | date',
+            'seo_end_date' => 'required | date',
             'seo_pm_name' => 'required'
         ]);
 
@@ -476,6 +484,8 @@ class AdminController extends Controller
         // UPDATE TASK- SEO PHASE
         if ($seoPhase) {
             $seoPhase->seo_keywords = $request->seo_keywords;
+            $seoPhase->seo_start_date = $request->seo_start_date;
+            $seoPhase->seo_end_date = $request->seo_end_date;
             $seoPhase->seo_pm_id = $request->seo_pm_name;
             $seoPhase->show_to_client = $request->show_to_client;
             $seoPhase->save();
@@ -487,6 +497,8 @@ class AdminController extends Controller
             $seoPhase = new SEOPhase();
             $seoPhase->task_id = $request->project_title;
             $seoPhase->seo_keywords = $request->seo_keywords;
+            $seoPhase->seo_start_date = $request->seo_start_date;
+            $seoPhase->seo_end_date = $request->seo_end_date;
             $seoPhase->seo_pm_id = $request->seo_pm_name;
             $seoPhase->save();
 

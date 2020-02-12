@@ -72,30 +72,30 @@
         </div>
        </div>
            
-       <div class="form-group row">
-        <label for="client_name" class="col-sm-2 col-form-label">Start/ End Date: </label>
-        <div class="row col-sm-10">
-         <div class="col-5">
-          <div class="input-group" style="border-bottom: none">
-           <input type="text" class="form-control datepicker" name="start_date" id="start_date" placeholder="Start Date" autocomplete="off">
-           <div class="input-group-append">
-             <span class="input-group-text" style="border: 1px solid #ced4da">
-              <i class="fa fa-calendar" style="font-size: 1.3rem"></i>
-             </span>
-           </div>
-          </div>
-          </div>
-          <div class="col-5">
-           <div class="input-group" style="border-bottom: none">
-            <input type="text" class="form-control datepicker" name="end_date" id="end_date" placeholder="End Date" autocomplete="off">
-            <div class="input-group-append">
-              <span class="input-group-text" style="border: 1px solid #ced4da">
-               <i class="fa fa-calendar" style="font-size: 1.3rem"></i>
-              </span>
+        <div class="form-group row">
+            <label for="client_name" class="col-sm-2 col-form-label">Start/ End Date: </label>
+            <div class="row col-sm-10">
+              <div class="col-5">
+                <div class="input-group" style="border-bottom: none">
+                <input type="text" class="form-control datepicker" name="start_date" id="start_date" placeholder="Start Date" autocomplete="off">
+                <div class="input-group-append">
+                  <span class="input-group-text" style="border: 1px solid #ced4da">
+                    <i class="fa fa-calendar" style="font-size: 1.3rem"></i>
+                  </span>
+                </div>
+                </div>
+              </div>
+              <div class="col-5">
+              <div class="input-group" style="border-bottom: none">
+                <input type="text" class="form-control datepicker" name="end_date" id="end_date" placeholder="End Date" autocomplete="off">
+                <div class="input-group-append">
+                  <span class="input-group-text" style="border: 1px solid #ced4da">
+                  <i class="fa fa-calendar" style="font-size: 1.3rem"></i>
+                  </span>
+                </div>
+              </div>
+              </div>
             </div>
-           </div>
-          </div>
-        </div>
         </div>
            
        <div class="form-group row">
@@ -205,11 +205,14 @@
                   $('#customSwitchDevelopment').removeAttr('checked');
                 }
                 $('#repo_url').val(task.development_phase.repo_url);
+                $('#dev_start_date').val(task.development_phase.dev_start_date);
+                $('#dev_end_date').val(task.development_phase.dev_end_date);
                 $("#dev_pm_name").val(task.development_phase.dev_pm_id);
                 $("button[data-id='dev_pm_name'] div.filter-option-inner-inner").html(task.development_phase.dev_pm.name);
               }else{
                 $('#repo_url').val('');
-    
+                $('#dev_start_date').val('');
+                $('#dev_end_date').val('');
                 $("#dev_pm_name").val('');
                 $('#customSwitchDevelopment').removeAttr('checked');
                 $("button[data-id='dev_pm_name'] div.filter-option-inner-inner").html("Please Choose");
@@ -221,6 +224,8 @@
         $('#customSwitchDevelopment').removeAttr('checked');
         $('#dev_project_details').val('');
         $('#repo_url').val('');
+        $('#dev_start_date').val('');
+        $('#dev_end_date').val('');
         $("#dev_pm_name").val('');
         $("button[data-id='dev_pm_name'] div.filter-option-inner-inner").html("Please Choose");
 
@@ -247,11 +252,14 @@
                   $('#customSwitchSEO').removeAttr('checked');
                 }
                 $('#seo_keywords').val(task.seo_phase.seo_keywords);
+                $('#seo_start_date').val(task.seo_phase.seo_start_date);
+                $('#seo_end_date').val(task.seo_phase.seo_end_date);
                 $("#seo_pm_name").val(task.seo_phase.seo_pm_id);
                 $("button[data-id='seo_pm_name'] div.filter-option-inner-inner").html(task.seo_phase.seo_pm.name);
               }else{
                 $('#seo_keywords').val('');
-    
+                $('#seo_start_date').val('');
+                $('#seo_end_date').val('');
                 $("#seo_pm_name").val('');
                 $('#customSwitchSEO').removeAttr('checked');
                 $("button[data-id='seo_pm_name'] div.filter-option-inner-inner").html("Please Choose");
@@ -263,6 +271,8 @@
         $('#customSwitchSEO').removeAttr('checked');
         $('#seo_project_details').val('');
         $('#seo_keywords').val('');
+        $('#seo_start_date').val('');
+        $('#seo_end_date').val('');
         $("#seo_pm_name").val('');
         $("button[data-id='seo_pm_name'] div.filter-option-inner-inner").html("Please Choose");
 

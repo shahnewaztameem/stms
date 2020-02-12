@@ -58,12 +58,8 @@
                     <td>
                         {{ $task->development_phase->dev_pm->name }}
                     </td>
-                    <td>
-                        @if ($task->design_phase)    
-                        {{$task->design_phase->start_date}}
-                        @else
-                            Not Set
-                        @endif
+                    <td>  
+                        {{$task->development_phase->dev_start_date}}
                     </td>
                     <td>
                         <center>
@@ -92,12 +88,8 @@
                     <td>
                         {{ $task->seo_phase->seo_pm->name }}
                     </td>
-                    <td>
-                        @if ($task->design_phase)    
-                        {{$task->design_phase->start_date}}
-                        @else
-                            Not Set
-                        @endif
+                    <td>  
+                        {{$task->seo_phase->seo_start_date}}
                     </td>
                     <td>
                         <center>

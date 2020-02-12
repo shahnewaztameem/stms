@@ -81,6 +81,32 @@
         </div>
 
         <div class="form-group row">
+            <label for="client_name" class="col-sm-2 col-form-label">Start/ End Date: </label>
+            <div class="row col-sm-10">
+              <div class="col-5">
+                <div class="input-group" style="border-bottom: none">
+                <input type="text" class="form-control datepicker" name="dev_start_date" id="dev_start_date" placeholder="Development Start Date" autocomplete="off">
+                <div class="input-group-append">
+                  <span class="input-group-text" style="border: 1px solid #ced4da">
+                    <i class="fa fa-calendar" style="font-size: 1.3rem"></i>
+                  </span>
+                </div>
+                </div>
+              </div>
+              <div class="col-5">
+              <div class="input-group" style="border-bottom: none">
+                <input type="text" class="form-control datepicker" name="dev_end_date" id="dev_end_date" placeholder="Development End Date" autocomplete="off">
+                <div class="input-group-append">
+                  <span class="input-group-text" style="border: 1px solid #ced4da">
+                  <i class="fa fa-calendar" style="font-size: 1.3rem"></i>
+                  </span>
+                </div>
+              </div>
+              </div>
+            </div>
+        </div>
+
+        <div class="form-group row">
          <label for="dev_pm_name" class="col-sm-2 col-form-label">Dev PM: </label>
          <div class="col-sm-10" id="dev_pm_user">
           <select name="dev_pm_name" id="dev_pm_name" class="selectpicker form-control select-search" data-live-search="true">
@@ -101,46 +127,3 @@
   </div>
   </div>
  </div>
-{{--  
- @section('customJS')
-     <script>
-       $('#dev_project_title').on('change', (event) => {
-         console.log(event.target.value);
-         if (event.target.value) {
-           $.ajax({
-             type: 'GET',
-             url: '/project-details/development/'+event.target.value,
-             success: (res) => {
-               console.log(res);
-               let task = res.data;
-               $('#dev_project_details').val(task.details);
- 
-               if (task.dev_phase) {
-                 if(task.dev_phase.show_to_client){
-                   $('#customSwitchDevelopment').attr('checked', 'checked');
-                 }else{
-                   $('#customSwitchDevelopment').removeAttr('checked');
-                 }
-                 $('#repo_url').val(task.dev_phase.repo_url);
-                 $("#dev_pm_name").val(task.dev_phase.dev_pm_id);
-                 $("button[data-id='dev_pm_name'] div.filter-option-inner-inner").html(task.dev_phase.dev_pm.name);
-               }else{
-                 $('#repo_url').val('');
-      
-                 $("#dev_pm_name").val('');
-                 $('#customSwitchDevelopment').removeAttr('checked');
-                 $("button[data-id='dev_pm_name'] div.filter-option-inner-inner").html("Please Choose");
-               }
-             },
-             error: (err) => console.log(err)
-           });
-         }
-         $('#customSwitchDevelopment').removeAttr('checked');
-         $('#dev_project_details').val('');
-         $('#repo_url').val('');
-         $("#dev_pm_name").val('');
-         $("button[data-id='dev_pm_name'] div.filter-option-inner-inner").html("Please Choose");
- 
-       })
-     </script>
- @endsection --}}

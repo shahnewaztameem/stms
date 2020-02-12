@@ -81,6 +81,32 @@
         </div>
 
         <div class="form-group row">
+          <label for="client_name" class="col-sm-2 col-form-label">Start/ End Date: </label>
+          <div class="row col-sm-10">
+            <div class="col-5">
+              <div class="input-group" style="border-bottom: none">
+              <input type="text" class="form-control datepicker" name="seo_start_date" id="seo_start_date" placeholder="SEO Start Date" autocomplete="off">
+              <div class="input-group-append">
+                <span class="input-group-text" style="border: 1px solid #ced4da">
+                  <i class="fa fa-calendar" style="font-size: 1.3rem"></i>
+                </span>
+              </div>
+              </div>
+            </div>
+            <div class="col-5">
+            <div class="input-group" style="border-bottom: none">
+              <input type="text" class="form-control datepicker" name="seo_end_date" id="seo_end_date" placeholder="SEO End Date" autocomplete="off">
+              <div class="input-group-append">
+                <span class="input-group-text" style="border: 1px solid #ced4da">
+                <i class="fa fa-calendar" style="font-size: 1.3rem"></i>
+                </span>
+              </div>
+            </div>
+            </div>
+          </div>
+      </div>
+
+        <div class="form-group row">
          <label for="seo_pm_name" class="col-sm-2 col-form-label">SEO PM: </label>
          <div class="col-sm-10" id="seo_pm_user">
           <select name="seo_pm_name" id="seo_pm_name" class="selectpicker form-control select-search" data-live-search="true">

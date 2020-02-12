@@ -19,6 +19,8 @@ class CreateSEOPhasesTable extends Migration
             $table->unsignedBigInteger('task_id');
             $table->foreign('task_id')->references('id')->on('tasks')->onDelete('cascade');
             $table->string('seo_keywords');
+            $table->date('seo_start_date');
+            $table->date('seo_end_date');
             $table->unsignedBigInteger('seo_pm_id');
             $table->foreign('seo_pm_id')->references('id')->on('users');
             $table->boolean('show_to_client')->default(0);
