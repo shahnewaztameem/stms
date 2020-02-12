@@ -30,13 +30,19 @@ class AdminController extends Controller
      */
     public function index()
     {
-        $tasks = Task::with('client', 'project_manager',
-                'task_files',
-                'design_phase', 'design_phase.design_pm',
-                'development_phase', 'development_phase.dev_pm',
-                'seo_phase', 'seo_phase.seo_pm',
-                'feedback')
-                ->latest()->paginate(9);
+        $tasks = Task::with(
+            'client',
+            'project_manager',
+            'task_files',
+            'design_phase',
+            'design_phase.design_pm',
+            'development_phase',
+            'development_phase.dev_pm',
+            'seo_phase',
+            'seo_phase.seo_pm',
+            'feedback'
+        )
+            ->latest()->paginate(9);
         return view('admin.home', compact('tasks'));
     }
 
@@ -498,13 +504,19 @@ class AdminController extends Controller
     public function view_task($slug)
     {
         $task = Task::where('slug', $slug)
-                ->with('client', 'project_manager',
+            ->with(
+                'client',
+                'project_manager',
                 'task_files',
-                'design_phase', 'design_phase.design_pm',
-                'development_phase', 'development_phase.dev_pm',
-                'seo_phase', 'seo_phase.seo_pm',
-                'feedback')
-                ->first();
+                'design_phase',
+                'design_phase.design_pm',
+                'development_phase',
+                'development_phase.dev_pm',
+                'seo_phase',
+                'seo_phase.seo_pm',
+                'feedback'
+            )
+            ->first();
         // return $task;
         return view('admin.task.view_task', compact('task'));
     }
@@ -664,8 +676,8 @@ class AdminController extends Controller
 
     public function notify_client($id)
     {
-        $task = Task::whereId($id)->with('users')->first();
-        $client = User::find($task->users[0]->id);
+        $task = Task::whereId($id)->with('client', 'project_manager')->first();
+        $client = $task->client;
         // return $client;
         $notifyClient = NotifyClient::where('task_id', $task->id)->first();
         if (!$notifyClient) {

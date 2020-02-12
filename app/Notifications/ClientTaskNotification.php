@@ -44,11 +44,11 @@ class ClientTaskNotification extends Notification implements ShouldQueue
     {
         $url = url('/task-notify/' . $this->hashURL->hash_url);
         return (new MailMessage)
-            ->subject('Notification For New Task')
+            ->subject('Notification For New Project')
             ->greeting('Hello!')
-            ->line('Your task has been created and Assigned to ' . $this->taskDetails->users[1]->name)
-            ->line('Task Title: ' . $this->taskDetails->title)
-            ->line('Task Details: ' . $this->taskDetails->details)
+            ->line('Your project has been created and Project manager is: ' . $this->taskDetails->project_manager->name)
+            ->line('Project Title: ' . $this->taskDetails->title)
+            ->line('Project Details: ' . $this->taskDetails->details)
             ->action('See Details', $url)
             ->line('Thank you for using our application!');
     }

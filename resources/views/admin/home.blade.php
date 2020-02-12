@@ -56,6 +56,16 @@ use Carbon\Carbon;
  </div>
 </div>
 
+@if( Session::get('success') )
+<div class="form-group row">
+    <div class="col-md-12">
+      <div class="alert alert-success" id="div3">
+          <strong>Success!</strong> {{Session::get('success')}}
+      </div>
+    </div>
+</div>
+@endif
+
 <div class="row">
   @if (count($tasks))
     @foreach ($tasks as $task)
@@ -97,7 +107,7 @@ use Carbon\Carbon;
               
               <div role="separator" class="dropdown-divider"></div>
 
-              <a href="#" class="btn btn-info">Notify Client</a>
+              <a href="{{ route('admin.notify.client', $task->id) }}" class="btn btn-info">Notify Client</a>
             </div>
           </div>
         </div>
