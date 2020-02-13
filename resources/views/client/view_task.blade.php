@@ -129,17 +129,17 @@
                   @if(count($task->task_files))
                     <ul class="list-group">
                       @foreach ($task->task_files as $file)
-                        <li class="list-group-item list-group-item-default mb-3">
+                        <li class="list-group-item list-group-item-default">
                           <div class="row">
                             <div class="col-10">
                                 <a href="{{ asset($file->file_url) }}" target="_blank">{{ $file->file_url }}</a>
                             </div>
                             <div class="col-2">
-                              <center>  
+                              {{-- <center>  
                                 {!! Form::open(['method' => 'DELETE','route'=> ['admin.file.delete', $file->id], 'style' => 'display:inline']) !!}
                                 {!! Form::button('<i class="fa fa-trash" style="font-size: 1.3rem; color: red"></i></span>',['class'=> 'delete-btn','type' => 'submit','data-toggle'=>'tooltip', 'data-placement'=>'bottom', 'title'=>'Remove File','onclick'=>'return confirm("Are you want to delete?")'])  !!}
                                 {!! Form::close()!!}
-                              </center>
+                              </center> --}}
                             </div>
                           </div>
                         </li>

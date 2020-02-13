@@ -5,53 +5,74 @@
 use Carbon\Carbon;
 ?>
 <div class="row">
-    @if (count($tasks))
-      @foreach ($tasks as $task)
-          <div class="col-sm-6 col-md-4">
-            <div class="card my-card">
-              <div class="card-body">
+  @if (count($tasks))
+    @foreach ($tasks as $task)
+      <div class="col-sm-6 col-md-4 mb-3">
+        <div class="card my-card">
+          <div class="card-body">
+            <div class="row">
+              <div class=" col-sm-10 col-md-11">
                 <h5 class="card-title">{{ $task->title }}</h5>
-                <p class="card-text">{{ $task->details }}</p>
-          
-                <div role="separator" class="dropdown-divider"></div>
-                
-                <div class="row">
-                  <div class="col-10">
-                    @if ($task->design_phase)
-                        @php
-                            $created = new Carbon($task->design_phase->end_date);
-                            $now = Carbon::now();
-                            $difference = ($created->diff($now)->days < 1)
-                            ? 'today'
-                            : $created->diffForHumans($now);
-                        @endphp
-                    {{ $difference }}
+                @if ($task->development_phase)
+                  <p> Deadline: 
+                    @if ($task->development_phase->show_to_client)
+                      @php
+                        $created = new Carbon($task->development_phase->dev_end_date);
+                        $now = Carbon::now();
+                        $difference = ($created->diff($now)->days < 1)
+                        ? 'today'
+                        : $created->diffForHumans($now);
+                      @endphp
+                      <span style="color: red">{{ $difference }}</span>
                     @else
-                     No Deadline Set
+                      Not Set 
                     @endif
-                  </div>
-                  <div class="col-2">
-                    <a href="{{route('client.task.view', $task->slug)}}" data-toggle="tooltip" data-placement="bottom" title="View Project">
-                      <i class="fa fa-eye" style="font-size: 1.3rem"></i>
-                    </a>
-                  </div>
-                </div>
-                
-                <div role="separator" class="dropdown-divider"></div>
-  
-                {{-- <a href="{{ route('admin.notify.client', $task->id) }}" class="btn btn-info">Notify Client</a> --}}
+                  </p> 
+                @endif
+              </div>
+              <div class="col-sm-2 col-md-1">
+                <a href="{{route('client.task.view', $task->slug)}}" data-toggle="tooltip" data-placement="bottom" title="View Project">
+                  <i class="fa fa-eye" style="font-size: 1.3rem"></i>
+                </a>
               </div>
             </div>
+            <div role="separator" class="dropdown-divider"></div>
+
+            @if ($task->development_phase)
+                @if ($task->development_phase->show_to_client)
+                  @if ($task->development_phase->repo_url)
+                    <h5 class="card-text">Repository URL: 
+                      <a href="{{asset($task->development_phase->repo_url)}}" target="_blank">{{asset($task->development_phase->repo_url)}}</i></a>
+                    </h5>
+                    <div role="separator" class="dropdown-divider"></div>
+                    <form action="#" method="post">
+                      <div class="form-group">
+                        <textarea name="design_feedback" cols="10" rows="4" class="form-control" placeholder="Give Feedback Here."></textarea>
+                      </div>
+
+                      <button type="submit" class="btn btn-info">Feedback</button>
+                    </form>
+                  @else
+                    <p>No Repository URL available.</p>
+                  @endif
+                @else
+                  <p>No Allowed from Admin.</p>
+                @endif
+            @else
+                <p>No Development Phase for this project.</p>
+            @endif
           </div>
-      @endforeach
-    @else
-      <div class="col-12 text-center mt-1">
-        <div role="separator" class="dropdown-divider"></div>
-        <h2 class="text-center">
-          No project available now.
-        </h2>
+        </div>
       </div>
-    @endif
+    @endforeach
+  @else
+    <div class="col-12 text-center mt-1">
+      <div role="separator" class="dropdown-divider"></div>
+      <h2 class="text-center">
+        No project available now.
+      </h2>
+    </div>
+  @endif
 </div>
   
 @if (count($tasks))

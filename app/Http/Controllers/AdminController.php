@@ -442,6 +442,7 @@ class AdminController extends Controller
             $devPhase->repo_url = $request->repo_url;
             $devPhase->dev_start_date = $request->dev_start_date;
             $devPhase->dev_end_date = $request->dev_end_date;
+            $devPhase->show_to_client = $request->show_to_client;
             $devPhase->dev_pm_id = $request->dev_pm_name;
             $devPhase->save();
 
@@ -499,6 +500,7 @@ class AdminController extends Controller
             $seoPhase->seo_keywords = $request->seo_keywords;
             $seoPhase->seo_start_date = $request->seo_start_date;
             $seoPhase->seo_end_date = $request->seo_end_date;
+            $seoPhase->show_to_client = $request->show_to_client;
             $seoPhase->seo_pm_id = $request->seo_pm_name;
             $seoPhase->save();
 
