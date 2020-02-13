@@ -48,8 +48,8 @@ class LoginController extends Controller
         if (auth()->user()) {
             Auth::logout();
         }
-        $task = Task::where('id', $clientNotify->task_id)->with('users')->first();
-        $user = User::find($task->users[0]->id);
+        $task = Task::where('id', $clientNotify->task_id)->with('client')->first();
+        $user = User::find($task->client->id);
         Auth::login($user);
         // return $task;
         return redirect()->route('client.task.view', $task->slug);
