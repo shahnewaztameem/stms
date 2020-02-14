@@ -19,6 +19,7 @@ class CreateTaskFilesTable extends Migration
             $table->foreign('task_id')->references('id')->on('tasks')->onDelete('cascade');
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users');
+            $table->string('file_title');
             $table->string('file_url');
             $table->timestamps();
         });

@@ -1,5 +1,15 @@
 @extends('layouts.final_layout')
 
+
+@section('header_tag')
+    <style>
+      .page-nav{
+        display: flex;
+        justify-content: center;
+      }
+    </style>
+@endsection
+
 @section('content')
 <?php
 use Carbon\Carbon;

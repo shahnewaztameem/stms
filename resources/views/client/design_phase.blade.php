@@ -1,9 +1,43 @@
 @extends('layouts.final_layout')
 
+
+@section('header_tag')
+    <style>
+      .page-nav{
+        display: flex;
+        justify-content: center;
+      }
+    </style>
+@endsection
+
 @section('content')
 <?php
 use Carbon\Carbon;
 ?>
+@if( Session::get('success') )
+  <div class="row">
+    <div class="col-12">
+      <div class="alert alert-success container" id="div3">
+        <strong>Success!</strong> {{Session::get('success')}}
+      </div>
+    </div>
+  </div>
+@endif
+
+@if ($errors->any())
+  <div class="row">
+    <div class="col-12">
+      <div class="alert alert-danger">
+        <ul>
+          @foreach ($errors->all() as $error)
+            <li>{{ $error }}</li>
+          @endforeach
+        </ul>
+      </div>
+    </div>
+  </div>
+@endif
+
 <div class="row">
     @if (count($tasks))
       @foreach ($tasks as $task)
@@ -39,30 +73,7 @@ use Carbon\Carbon;
                 {{-- <p class="card-text">{{ $task->details }}</p> --}}
           
                 <div role="separator" class="dropdown-divider"></div>
-{{--                 
-                <div class="row">
-                  <div class="col-10">
-                    @if ($task->design_phase)
-                        @php
-                            $created = new Carbon($task->design_phase->end_date);
-                            $now = Carbon::now();
-                            $difference = ($created->diff($now)->days < 1)
-                            ? 'today'
-                            : $created->diffForHumans($now);
-                        @endphp
-                    {{ $difference }}
-                    @else
-                     No Deadline Set
-                    @endif
-                  </div>
-                  <div class="col-2">
-                    <a href="{{route('client.task.view', $task->slug)}}" data-toggle="tooltip" data-placement="bottom" title="View Project">
-                      <i class="fa fa-eye" style="font-size: 1.3rem"></i>
-                    </a>
-                  </div>
-                </div>
-                
-                <div role="separator" class="dropdown-divider"></div> --}}
+
                 @if ($task->design_phase)
                     @if ($task->design_phase->show_to_client)
                       @if ($task->task_files)
@@ -73,10 +84,26 @@ use Carbon\Carbon;
                                 <img class="card-img-top" src="{{asset($file->file_url)}}" alt="Card image cap">
                                 <div class="card-body">
                                   <h5 class="card-title">Full View: 
-                                    <a href="{{asset($file->file_url)}}" target="_blank"><i class="fa fa-eye" style="font-size: 1.3rem"></i></a>
+                                    <a href="{{asset($file->file_url)}}" target="_blank">{{ $file->file_title }}</a>
                                   </h5>
                                   <div role="separator" class="dropdown-divider"></div>
-                                  <form action="#" method="post">
+                                  @if ($file->wireframe_feedback)
+                                    <div class="row">
+                                      @foreach ($file->wireframe_feedback as $feedback)
+                                        <div class="col-10">
+                                          <p class="card-text">{{ $feedback->comment }}</p>
+                                        </div>
+                                        <div class="col-2">
+                                          {!! Form::open(['method' => 'DELETE','route'=> ['client.design_feedback.delete', $feedback->id], 'style' => 'display:inline']) !!}
+                                          {!! Form::button('<i class="fa fa-trash" style="font-size: 1.3rem; color: red"></i></span>',['class'=> 'delete-btn','type' => 'submit','data-toggle'=>'tooltip', 'data-placement'=>'bottom', 'title'=>'Remove task','onclick'=>'return confirm("Are you want to delete?")'])  !!}
+                                          {!! Form::close()!!}
+                                        </div>
+                                      @endforeach
+                                    </div>
+                                  @endif
+                                  <div role="separator" class="dropdown-divider"></div>
+                                  <form action="{{ route('client.design_feedback', $file->id) }}" method="post">
+                                    @csrf
                                     <div class="form-group">
                                       <textarea name="design_feedback" cols="10" rows="4" class="form-control" placeholder="Give Feedback Here."></textarea>
                                     </div>

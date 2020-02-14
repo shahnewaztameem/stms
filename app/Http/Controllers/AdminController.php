@@ -306,11 +306,12 @@ class AdminController extends Controller
      */
     public function store_design_phase(Request $request)
     {
+        // dd($request);
         $validator = Validator::make($request->all(), [
             'project_title' => 'required',
             'start_date' => 'required | date',
             'end_date' => 'required | date',
-            'design_pm_name' => 'required'
+            'design_pm_name' => 'required',
         ]);
 
         $tab = 'design';
@@ -343,7 +344,7 @@ class AdminController extends Controller
                 $i = 0;
                 $destinationPath = public_path() . '/img/task/';
                 foreach ($request->task_files as $task_file) {
-                    $i++;
+
                     $input['imagename'] = 'Task_' . $designPhase->task->id . "_" . Str::random(5) . $i . '.' . $task_file->getClientOriginalExtension();
 
                     $task_file->move($destinationPath, $input['imagename']);
@@ -352,8 +353,10 @@ class AdminController extends Controller
                     $file = new TaskFile();
                     $file->task_id = $designPhase->task->id;
                     $file->user_id = auth()->id();
+                    $file->file_title = $request->file_title[$i];
                     $file->file_url = $fileurl;
                     $file->save();
+                    $i++;
                 }
             }
             $task = Task::find($designPhase->task_id);
@@ -372,7 +375,7 @@ class AdminController extends Controller
                 $i = 0;
                 $destinationPath = public_path() . '/img/task/';
                 foreach ($request->task_files as $task_file) {
-                    $i++;
+
                     $input['imagename'] = 'Task_' . $designPhase->task_id . "_" . Str::random(5) . $i . '.' . $task_file->getClientOriginalExtension();
 
                     $task_file->move($destinationPath, $input['imagename']);
@@ -381,8 +384,10 @@ class AdminController extends Controller
                     $file = new TaskFile();
                     $file->task_id = $designPhase->task_id;
                     $file->user_id = auth()->id();
+                    $file->file_title = $request->file_title[$i];
                     $file->file_url = $fileurl;
                     $file->save();
+                    $i++;
                 }
                 $task = Task::find($designPhase->task_id);
                 return redirect()->back()->with('successDesign', "Design Phase for ($task->title) is added successfully")->with('tab', $tab);
