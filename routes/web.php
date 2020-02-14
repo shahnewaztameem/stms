@@ -80,13 +80,16 @@ Route::group(['middleware' => ['auth']], function () {
             Route::get('task/all', 'AdminController@all_task')->name('admin.task.all');
             Route::get('task/view/{slug}', 'AdminController@view_task')->name('admin.task.view');
             Route::get('task/create', 'AdminController@create_task')->name('admin.task.create');
-            Route::post('task/create', 'AdminController@store_task')->name('admin.task.create');
+            Route::post('task/create', 'AdminController@store_task');
 
-            Route::post('task/create-design-phase', 'AdminController@store_design_phase')->name('admin.task.create-design-phase');
+            Route::get('task/phase/create-design-phase', 'AdminController@create_design_phase')->name('admin.task.create-design-phase');
+            Route::post('task/phase/create-design-phase', 'AdminController@store_design_phase');
 
-            Route::post('task/create-development-phase', 'AdminController@store_development_phase')->name('admin.task.create-development-phase');
+            Route::get('task/phase/create-development-phase', 'AdminController@create_development_phase')->name('admin.task.create-development-phase');
+            Route::post('task/phase/create-development-phase', 'AdminController@store_development_phase');
 
-            Route::post('task/create-seo-phase', 'AdminController@store_seo_phase')->name('admin.task.create-seo-phase');
+            Route::get('task/phase/create-seo-phase', 'AdminController@create_seo_phase')->name('admin.task.create-seo-phase');
+            Route::post('task/phase/create-seo-phase', 'AdminController@store_seo_phase');
 
             Route::get('task/edit/{id}', 'AdminController@edit_task')->name('admin.task.edit');
             Route::post('task/edit/{id}', 'AdminController@update_task');

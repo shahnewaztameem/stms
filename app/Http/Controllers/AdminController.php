@@ -264,7 +264,7 @@ class AdminController extends Controller
     {
         $clients = User::whereUserType(1)->latest()->get();
         $users = User::whereUserType(2)->latest()->get();
-        return view('admin.task.create', compact('clients', 'users'));
+        return view('admin.task.add_project', compact('clients', 'users'));
     }
 
     /**
@@ -296,6 +296,19 @@ class AdminController extends Controller
         $task->save();
 
         return redirect()->back()->with('success', "Task ($task->title) is added successfully");
+    }
+
+
+    /**
+     * Create Design Phase form
+     *
+     * @return void
+     */
+    public function create_design_phase()
+    {
+        $users = User::whereUserType(2)->latest()->get();
+        $tasks = Task::latest()->get();
+        return view('admin.task.add_design', compact('tasks', 'users'));
     }
 
     /**
@@ -397,6 +410,19 @@ class AdminController extends Controller
         }
     }
 
+    
+    /**
+     * Create Development Phase form
+     *
+     * @return void
+     */
+    public function create_development_phase()
+    {
+        $users = User::whereUserType(2)->latest()->get();
+        $tasks = Task::latest()->get();
+        return view('admin.task.add_development', compact('tasks', 'users'));
+    }
+
     /**
      * Store/Update Development phase data
      *
@@ -455,6 +481,20 @@ class AdminController extends Controller
             return redirect()->back()->with('successDevelopment', "Development Phase for ($task->title) is added successfully")->with('tab', $tab);
         }
     }
+
+    
+    /**
+     * Create SEO Phase form
+     *
+     * @return void
+     */
+    public function create_seo_phase()
+    {
+        $users = User::whereUserType(2)->latest()->get();
+        $tasks = Task::latest()->get();
+        return view('admin.task.add_seo', compact('tasks', 'users'));
+    }
+
     /**
      * Store/Update SEO phase data
      *

@@ -1,7 +1,7 @@
 <div class="row mt-2">
   <div class="col-12">
    <div class="card">
-   <form method="POST" action="{{ route('admin.task.create-seo-phase') }}">
+   <form method="POST" id="seo-form" action="{{ route('admin.task.create-seo-phase') }}">
      <div class="card-header">
        <div class="d-flex justify-content-between">
          <span class="h3">Add Project SEO</span>
@@ -119,7 +119,7 @@
         </div>
         
         <div class="row justify-content-end">
-          <button type="submit" class="btn btn-primary mr-2">Cancel</button>
+          <button id="seo-cancel" class="btn btn-danger mr-2">Cancel</button>
           <button type="submit" class="btn btn-primary mr-3">Add</button>
         </div>
        </form>

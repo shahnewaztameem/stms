@@ -1,69 +1,229 @@
 @extends('layouts.final_layout')
 
 @section('content')
-    <div class="row project">
-     <div class="col-md-10 project__nav">
-      <nav>
-       <div class="nav nav-tabs" id="nav-tab" role="tablist">
-         <a class="nav-item nav-link @if(!Session::get('tab')) active @endif" id="nav-home-tab" data-toggle="tab" href="#nav-project" role="tab" aria-controls="nav-project" aria-selected="true">Project</a>
-         <a class="nav-item nav-link @if(Session::get('tab') =='design') active @endif" id="nav-design-tab" data-toggle="pill" href="#nav-design" role="tab" aria-controls="nav-design" aria-selected="false">Design</a>
-         <a class="nav-item nav-link @if(Session::get('tab') =='development') active @endif" id="nav-development-tab" data-toggle="tab" href="#nav-development" role="tab" aria-controls="nav-development" aria-selected="false">Development</a>
-         <a class="nav-item nav-link @if(Session::get('tab') =='seo') active @endif" id="nav-seo-tab" data-toggle="tab" href="#nav-seo" role="tab" aria-controls="nav-seo" aria-selected="false">SEO</a>
-       </div>
-      </nav>
+  <ul class="nav nav-tabs">
+    <li class="nav-item">
+      <a class="nav-link @if (request()->is('admin/task/phase/create-design-phase')) active @endif" href="{{ route('admin.task.create-design-phase') }}">Design</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link @if (request()->is('admin/task/phase/create-development-phase')) active @endif" href="{{ route('admin.task.create-development-phase') }}">Development</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link @if (request()->is('admin/task/phase/create-seo-phase')) active @endif" href="{{ route('admin.task.create-seo-phase') }}">SEO</a>
+    </li>
+  </ul>
 
-      {{-- <ul class="nav nav-tabs">
-        <li class="nav-item">
-          <a class="nav-link active" href="#nav-project">Active</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#nav-design">Link</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">Link</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link disabled" href="#">Disabled</a>
-        </li>
-      </ul> --}}
-     </div>
-     <div class="col-md-2 project__btn">
-      <a href="{{route('admin.task.all')}}" class="btn btn-success" data-toggle="tooltip" data-placement="bottom" title="Project's List">
-       <span>PROJECT'S LIST</span>
-      </a>
-     </div>
-    </div>
-
-    <div class="row">
-     <div class="col-12">
-      <div class="tab-content" id="nav-tabContent">
-       <div class="tab-pane fade @if(!Session::get('tab')) show active @endif" id="nav-project" role="tabpanel" aria-labelledby="nav-home-tab">
-        @include('partials.add_project')
-       </div>
-       <div class="tab-pane fade @if(Session::get('tab') =='design') show active @endif" id="nav-design" role="tabpanel" aria-labelledby="nav-design-tab">
-        @include('partials.add_design')
-       </div>
-       <div class="tab-pane fade @if(Session::get('tab') =='development') show active @endif" id="nav-development" role="tabpanel" aria-labelledby="nav-development-tab">
-        @include('partials.add_development')
-       </div>
-       <div class="tab-pane fade @if(Session::get('tab') =='seo') show active @endif" id="nav-seo" role="tabpanel" aria-labelledby="nav-seo-tab">
-        @include('partials.add_seo')
-       </div>
-     </div>
-     </div>
-    </div>
+  @yield('phase')
 @endsection
-{{--  
+
+
 @section('customJS')
     <script>
-     $('.datepicker').datepicker({
-      format: 'yyyy/mm/dd'
+      $('.datepicker').datepicker({
+      format: 'yyyy-mm-dd'
      });
 
-     // For name of the file appear on select
-    $(".custom-file-input").on("change", function() {
-      var fileName = this.files.length;
-      $(this).siblings(".custom-file-label").addClass("selected").html(fileName +' files selected');
-    });
+       // For name of the file appear on select
+      $(".custom-file-input").on("change", function() {
+        var fileName = $(this).val();
+        $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
+      });
+
+      // DYNAMIC FILE FIELD
+      $('document').ready(()=>{
+        let fieldNo = 1;
+
+        // dynamic_file_input(fieldNo);
+
+        function dynamic_file_input(number) {
+          let html = `<div class="row" id="${number}">`;
+          html += '<div class="col-10">'
+          html += '<input type="text" class="form-control mb-3" name="file_title[]" placeholder="Wireframe Title">';
+          html += '<div class="custom-file mb-3">';
+          html += '<label class="custom-file-label" for="file_upload">Choose file...</label>';
+          html += '<input type="file" name="task_files[]" class="custom-file-input" id="file_upload">';
+          html += '</div>';
+          html += '</div>';
+          html += '<div class="col-2">';
+          html += '<button class="btn btn-danger" id="remove-btn">';
+          html += '<i class="fa fa-minus"></i>';
+          html += '</button>'
+          html += '</div>';
+          html += '</div>';
+
+          $("#wireframe_file").append(html);
+        }
+
+        $('#plus-btn').click((e)=>{
+          e.preventDefault();
+          fieldNo++;
+          dynamic_file_input(fieldNo);
+        });
+
+        $(document).on('click', '#remove-btn', (e)=>{
+          // console.log("re")
+          e.preventDefault();
+          $(`#wireframe_file #${fieldNo}`).remove();
+          fieldNo--;
+        });
+
+        $('#cancel').click((e)=>{
+          e.preventDefault();
+          $('#design_form')[0].reset();
+          $("button[data-id='project_title'] div.filter-option-inner-inner").html("Please Choose");
+          $("button[data-id='design_pm_name'] div.filter-option-inner-inner").html("Please Choose");
+        });
+      });
+
+      $('#project_title').on('change', (event) => {
+        // console.log(event.target.value);
+        if (event.target.value) {
+          $.ajax({
+            type: 'GET',
+            url: '/project-details/design/'+event.target.value,
+            success: (res) => {
+              console.log(res);
+              let task = res.data;
+              $('#design_details').val(task.details);
+
+              if (task.design_phase) {
+                if(task.design_phase.show_to_client){
+                  $('#customSwitchDesign').attr('checked', 'checked');
+                }else{
+                  $('#customSwitchDesign').removeAttr('checked');
+                }
+                $('#start_date').val(task.design_phase.start_date);
+                $('#end_date').val(task.design_phase.end_date);
+                $("#design_pm_name").val(task.design_phase.design_pm_id);
+                $("button[data-id='design_pm_name'] div.filter-option-inner-inner").html(task.design_phase.design_pm.name);
+              }else{
+                $('#start_date').val('');
+                $('#end_date').val('');
+                $("#design_pm_name").val('');
+                $('#customSwitchDesign').removeAttr('checked');
+                $("button[data-id='design_pm_name'] div.filter-option-inner-inner").html("Please Choose");
+              }
+            },
+            error: (err) => console.log(err)
+          });
+        }
+        $('#design_details').val('');
+        $('#start_date').val('');
+        $('#end_date').val('');
+        $("#design_pm_name").val('');
+        $('#customSwitchDesign').removeAttr('checked');
+        $("button[data-id='design_pm_name'] div.filter-option-inner-inner").html("Please Choose");
+
+      })
     </script>
-@endsection  --}}
+  {{-- DEVELOPMENT PAGE SCRIPT  --}}
+    <script>
+
+        $('#dev-cancel').click((e)=>{
+          e.preventDefault();
+          $('#dev_form')[0].reset();
+          $("button[data-id='dev_project_title'] div.filter-option-inner-inner").html("Please Choose");
+          $("button[data-id='dev_pm_name'] div.filter-option-inner-inner").html("Please Choose");
+        });
+
+      $('#dev_project_title').on('change', (event) => {
+        // console.log(event.target.value);
+        if (event.target.value) {
+          $.ajax({
+            type: 'GET',
+            url: '/project-details/development/'+event.target.value,
+            success: (res) => {
+              console.log(res);
+              let task = res.data;
+              $('#dev_project_details').val(task.details);
+
+              if (task.development_phase) {
+                if(task.development_phase.show_to_client){
+                  $('#customSwitchDevelopment').attr('checked', 'checked');
+                }else{
+                  $('#customSwitchDevelopment').removeAttr('checked');
+                }
+                $('#repo_url').val(task.development_phase.repo_url);
+                $('#dev_start_date').val(task.development_phase.dev_start_date);
+                $('#dev_end_date').val(task.development_phase.dev_end_date);
+                $("#dev_pm_name").val(task.development_phase.dev_pm_id);
+                $("button[data-id='dev_pm_name'] div.filter-option-inner-inner").html(task.development_phase.dev_pm.name);
+              }else{
+                $('#repo_url').val('');
+                $('#dev_start_date').val('');
+                $('#dev_end_date').val('');
+                $("#dev_pm_name").val('');
+                $('#customSwitchDevelopment').removeAttr('checked');
+                $("button[data-id='dev_pm_name'] div.filter-option-inner-inner").html("Please Choose");
+              }
+            },
+            error: (err) => console.log(err)
+          });
+        }
+        $('#customSwitchDevelopment').removeAttr('checked');
+        $('#dev_project_details').val('');
+        $('#repo_url').val('');
+        $('#dev_start_date').val('');
+        $('#dev_end_date').val('');
+        $("#dev_pm_name").val('');
+        $("button[data-id='dev_pm_name'] div.filter-option-inner-inner").html("Please Choose");
+
+      })
+    </script>
+
+  {{-- SEO PAGE SCRIPT  --}}
+    <script>
+
+      
+        $('#seo-cancel').click((e)=>{
+          e.preventDefault();
+          $('#seo_form')[0].reset();
+          $("button[data-id='seo_project_title'] div.filter-option-inner-inner").html("Please Choose");
+          $("button[data-id='seo_pm_name'] div.filter-option-inner-inner").html("Please Choose");
+        });
+
+      $('#seo_project_title').on('change', (event) => {
+        // console.log(event.target.value);
+        if (event.target.value) {
+          $.ajax({
+            type: 'GET',
+            url: '/project-details/seo/'+event.target.value,
+            success: (res) => {
+              console.log(res);
+              let task = res.data;
+              $('#seo_project_details').val(task.details);
+
+              if (task.seo_phase) {
+                if(task.seo_phase.show_to_client){
+                  $('#customSwitchSEO').attr('checked', 'checked');
+                }else{
+                  $('#customSwitchSEO').removeAttr('checked');
+                }
+                $('#seo_keywords').val(task.seo_phase.seo_keywords);
+                $('#seo_start_date').val(task.seo_phase.seo_start_date);
+                $('#seo_end_date').val(task.seo_phase.seo_end_date);
+                $("#seo_pm_name").val(task.seo_phase.seo_pm_id);
+                $("button[data-id='seo_pm_name'] div.filter-option-inner-inner").html(task.seo_phase.seo_pm.name);
+              }else{
+                $('#seo_keywords').val('');
+                $('#seo_start_date').val('');
+                $('#seo_end_date').val('');
+                $("#seo_pm_name").val('');
+                $('#customSwitchSEO').removeAttr('checked');
+                $("button[data-id='seo_pm_name'] div.filter-option-inner-inner").html("Please Choose");
+              }
+            },
+            error: (err) => console.log(err)
+          });
+        }
+        $('#customSwitchSEO').removeAttr('checked');
+        $('#seo_project_details').val('');
+        $('#seo_keywords').val('');
+        $('#seo_start_date').val('');
+        $('#seo_end_date').val('');
+        $("#seo_pm_name").val('');
+        $("button[data-id='seo_pm_name'] div.filter-option-inner-inner").html("Please Choose");
+
+      })
+    </script>
+@endsection
