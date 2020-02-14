@@ -19,6 +19,7 @@ class CreateDesignPhasesTable extends Migration
             $table->foreign('task_id')->references('id')->on('tasks')->onDelete('cascade');
             $table->date('start_date');
             $table->date('end_date');
+            $table->boolean('design_status');
             $table->unsignedBigInteger('design_pm_id');
             $table->foreign('design_pm_id')->references('id')->on('users');
             $table->boolean('show_to_client')->default(0);

@@ -252,7 +252,7 @@ class AdminController extends Controller
         $users = User::whereUserType(2)->latest()->get();
         $tasks = Task::latest()->get();
         $tab = "home";
-        return view('admin.task.add_task', compact('clients', 'users', 'tasks'))->with('tab', $tab);
+        return view('admin.task.add_task', compact('clients', 'users', 'tasks'));
     }
 
     /**
@@ -325,6 +325,7 @@ class AdminController extends Controller
             'start_date' => 'required | date',
             'end_date' => 'required | date',
             'design_pm_name' => 'required',
+            'design_status' => 'required',
         ]);
 
         $tab = 'design';
@@ -350,6 +351,7 @@ class AdminController extends Controller
             $designPhase->end_date = $request->end_date;
             $designPhase->design_pm_id = $request->design_pm_name;
             $designPhase->show_to_client = $request->show_to_client;
+            $designPhase->design_status = $request->design_status;
             $designPhase->save();
 
             if ($request->hasFile('task_files')) {
@@ -373,7 +375,7 @@ class AdminController extends Controller
                 }
             }
             $task = Task::find($designPhase->task_id);
-            return redirect()->back()->with('successDesign', "Design Phase for ($task->title) is updated successfully")->with('tab', $tab);
+            return redirect()->back()->with('successDesign', "Design Phase for ($task->title) is updated successfully");
         } else {
             // STORE A TASK 
             if ($request->hasFile('task_files')) {
@@ -381,6 +383,7 @@ class AdminController extends Controller
                 $designPhase->task_id = $request->project_title;
                 $designPhase->start_date = $request->start_date;
                 $designPhase->end_date = $request->end_date;
+                $designPhase->design_status = $request->design_status;
                 $designPhase->design_pm_id = $request->design_pm_name;
                 $designPhase->show_to_client = $request->show_to_client;
                 $designPhase->save();
@@ -403,9 +406,9 @@ class AdminController extends Controller
                     $i++;
                 }
                 $task = Task::find($designPhase->task_id);
-                return redirect()->back()->with('successDesign', "Design Phase for ($task->title) is added successfully")->with('tab', $tab);
+                return redirect()->back()->with('successDesign', "Design Phase for ($task->title) is added successfully");
             } else {
-                return redirect()->back()->with('errDesign', "No wireframes found")->with('tab', $tab);
+                return redirect()->back()->with('errDesign', "No wireframes found");
             }
         }
     }
@@ -436,16 +439,14 @@ class AdminController extends Controller
             'repo_url' => 'bail | required | url',
             'dev_start_date' => 'required | date',
             'dev_end_date' => 'required | date',
-            'dev_pm_name' => 'required'
+            'dev_pm_name' => 'required',
+            'dev_status' => 'required'
         ]);
-
-        $tab = 'development';
 
         if ($validator->fails()) {
             return redirect()->back()
                 ->withErrors($validator)
-                ->withInput()
-                ->withTab($tab);
+                ->withInput();
         }
 
         if (!$request->has('show_to_client')) {
@@ -461,11 +462,12 @@ class AdminController extends Controller
             $devPhase->dev_pm_id = $request->dev_pm_name;
             $devPhase->dev_start_date = $request->dev_start_date;
             $devPhase->dev_end_date = $request->dev_end_date;
+            $devPhase->dev_status = $request->dev_status;
             $devPhase->show_to_client = $request->show_to_client;
             $devPhase->save();
 
             $task = Task::find($devPhase->task_id);
-            return redirect()->back()->with('successDevelopment', "Development Phase for ($task->title) is updated successfully")->with('tab', $tab);
+            return redirect()->back()->with('successDevelopment', "Development Phase for ($task->title) is updated successfully");
         } else {
             // STORE A TASK - DEVELOPMENT PHASE
             $devPhase = new DevelopmentPhase();
@@ -473,12 +475,13 @@ class AdminController extends Controller
             $devPhase->repo_url = $request->repo_url;
             $devPhase->dev_start_date = $request->dev_start_date;
             $devPhase->dev_end_date = $request->dev_end_date;
+            $devPhase->dev_status = $request->dev_status;
             $devPhase->show_to_client = $request->show_to_client;
             $devPhase->dev_pm_id = $request->dev_pm_name;
             $devPhase->save();
 
             $task = Task::find($devPhase->task_id);
-            return redirect()->back()->with('successDevelopment', "Development Phase for ($task->title) is added successfully")->with('tab', $tab);
+            return redirect()->back()->with('successDevelopment', "Development Phase for ($task->title) is added successfully");
         }
     }
 
@@ -508,16 +511,14 @@ class AdminController extends Controller
             'seo_keywords' => 'bail | required | max: 250',
             'seo_start_date' => 'required | date',
             'seo_end_date' => 'required | date',
-            'seo_pm_name' => 'required'
+            'seo_pm_name' => 'required',
+            'seo_status' => 'required',
         ]);
-
-        $tab = 'seo';
 
         if ($validator->fails()) {
             return redirect()->back()
                 ->withErrors($validator)
-                ->withInput()
-                ->withTab($tab);
+                ->withInput();
         }
 
         if (!$request->has('show_to_client')) {
@@ -532,12 +533,13 @@ class AdminController extends Controller
             $seoPhase->seo_keywords = $request->seo_keywords;
             $seoPhase->seo_start_date = $request->seo_start_date;
             $seoPhase->seo_end_date = $request->seo_end_date;
+            $seoPhase->seo_status = $request->seo_status;
             $seoPhase->seo_pm_id = $request->seo_pm_name;
             $seoPhase->show_to_client = $request->show_to_client;
             $seoPhase->save();
 
             $task = Task::find($seoPhase->task_id);
-            return redirect()->back()->with('successSEO', "SEO Phase for ($task->title) is updated successfully")->with('tab', $tab);
+            return redirect()->back()->with('success', "SEO Phase for ($task->title) is updated successfully");
         } else {
             // STORE A TASK - SEO PHASE
             $seoPhase = new SEOPhase();
@@ -545,12 +547,13 @@ class AdminController extends Controller
             $seoPhase->seo_keywords = $request->seo_keywords;
             $seoPhase->seo_start_date = $request->seo_start_date;
             $seoPhase->seo_end_date = $request->seo_end_date;
+            $seoPhase->seo_status = $request->seo_status;
             $seoPhase->show_to_client = $request->show_to_client;
             $seoPhase->seo_pm_id = $request->seo_pm_name;
             $seoPhase->save();
 
             $task = Task::find($seoPhase->task_id);
-            return redirect()->back()->with('successSEO', "SEO Phase for ($task->title) is added successfully")->with('tab', $tab);
+            return redirect()->back()->with('success', "SEO Phase for ($task->title) is added successfully");
         }
     }
 

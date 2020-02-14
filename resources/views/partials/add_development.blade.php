@@ -54,15 +54,24 @@
         @csrf
     
         <div class="form-group row">
-         <label for="dev_project_title" class="col-sm-2 col-form-label">Project Title: </label>
-         <div class="col-sm-10">
-          <select name="project_title" id="dev_project_title" class="selectpicker form-control select-search" data-live-search="true">
-           <option value="">Please Choose</option>
-           @foreach ($tasks as $task)
-             <option value="{{ $task->id }}">{{ $task->title }}</option>
-           @endforeach
-          </select>
-         </div>
+          <label for="dev_project_title" class="col-sm-2 col-form-label">Project Title: </label>
+          <div class="col-sm-10">
+              <div class="input-group" style="border-bottom: none">
+                
+                <select name="project_title" id="dev_project_title" class="selectpicker form-control select-search" data-live-search="true">
+                  <option value="">Please Choose</option>
+                  @foreach ($tasks as $task)
+                    <option value="{{ $task->id }}">{{ $task->title }}</option>
+                  @endforeach
+                </select>
+
+                <div class="input-group-append">
+                  <a href="{{route('admin.task.create')}}" class="btn btn-success" data-toggle="tooltip" data-placement="bottom" title="Add Manager">
+                    <span><i class="fa fa-plus"></i></span>
+                  </a>
+                </div>
+              </div>
+          </div>
         </div>
         
         <div class="form-group row">
@@ -106,15 +115,41 @@
             </div>
         </div>
 
+           
+        <div class="form-group row">
+          <label for="dev_status" class="col-sm-2 col-form-label">Status: </label>
+          <div class="col-sm-10">
+            <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" checked name="dev_status" id="inlineRadio1" value="1">
+            <label class="form-check-label" for="inlineRadio1">In Progress</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" name="dev_status" id="inlineRadio2" value="0">
+              <label class="form-check-label" for="inlineRadio2">Completed</label>
+            </div>
+          </div>
+        </div>
+
         <div class="form-group row">
          <label for="dev_pm_name" class="col-sm-2 col-form-label">Dev PM: </label>
          <div class="col-sm-10" id="dev_pm_user">
-          <select name="dev_pm_name" id="dev_pm_name" class="selectpicker form-control select-search" data-live-search="true">
-           <option value="">Please Choose</option>
-           @foreach ($users as $user)
-             <option value='{{ $user->id }}'>{{ $user->name }}</option>
-           @endforeach
-          </select>
+
+          <div class="input-group" style="border-bottom: none">
+                
+            <select name="dev_pm_name" id="dev_pm_name" class="selectpicker form-control select-search" data-live-search="true">
+              <option value="">Please Choose</option>
+              @foreach ($users as $user)
+                <option value='{{ $user->id }}'>{{ $user->name }}</option>
+              @endforeach
+            </select>
+
+            <div class="input-group-append">
+              <a href="{{route('admin.user.create')}}" class="btn btn-success" data-toggle="tooltip" data-placement="bottom" title="Add Manager">
+                <span><i class="fa fa-plus"></i></span>
+              </a>
+            </div>
+          </div>
+
          </div>
         </div>
         

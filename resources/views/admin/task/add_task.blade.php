@@ -1,17 +1,27 @@
 @extends('layouts.final_layout')
 
 @section('content')
-  <ul class="nav nav-tabs">
-    <li class="nav-item">
-      <a class="nav-link @if (request()->is('admin/task/phase/create-design-phase')) active @endif" href="{{ route('admin.task.create-design-phase') }}">Design</a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link @if (request()->is('admin/task/phase/create-development-phase')) active @endif" href="{{ route('admin.task.create-development-phase') }}">Development</a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link @if (request()->is('admin/task/phase/create-seo-phase')) active @endif" href="{{ route('admin.task.create-seo-phase') }}">SEO</a>
-    </li>
-  </ul>
+
+  <div class="row project">
+    <div class="col-md-10 project__nav">
+      <ul class="nav nav-tabs">
+        <li class="nav-item">
+          <a class="nav-link @if (request()->is('admin/task/phase/create-design-phase')) active @endif" href="{{ route('admin.task.create-design-phase') }}">Design</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link @if (request()->is('admin/task/phase/create-development-phase')) active @endif" href="{{ route('admin.task.create-development-phase') }}">Development</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link @if (request()->is('admin/task/phase/create-seo-phase')) active @endif" href="{{ route('admin.task.create-seo-phase') }}">SEO</a>
+        </li>
+      </ul>
+    </div>
+    <div class="col-md-2 project__btn">
+    <a href="{{route('admin.task.all')}}" class="btn btn-success" data-toggle="tooltip" data-placement="bottom" title="Project's List">
+      <span>PROJECT'S LIST</span>
+    </a>
+    </div>
+  </div>
 
   @yield('phase')
 @endsection
@@ -94,14 +104,50 @@
                 }
                 $('#start_date').val(task.design_phase.start_date);
                 $('#end_date').val(task.design_phase.end_date);
+
+                if (task.design_phase.design_status) {
+                  $('#inlineRadio1').attr('checked', 'checked');
+                } else {
+                  $('#inlineRadio2').attr('checked', 'checked');
+                }
+
                 $("#design_pm_name").val(task.design_phase.design_pm_id);
                 $("button[data-id='design_pm_name'] div.filter-option-inner-inner").html(task.design_phase.design_pm.name);
+                $('#design-submit').text('Update');
+
+                if (task.task_files) {
+                  let files = `<div class="col-12"><ul class="list-group">`;
+                  task.task_files.forEach(element => {
+                  files += '<li class="list-group-item list-group-item-default mb-3">';
+                  files += '<div class="row">';
+                  files += '<div class="col-10">';
+                  files += "<a href='{{ asset('/') }}"+element.file_url+"' target='_blank'>"+element.file_title+"</a>";
+                  files += '</div>';
+                  files += '<div class="col-2">';
+                  files +=  '<center>'; 
+                  files += "<form method='POST' action="+"{{ asset('/admin/task/file/delete/')}}/"+element.id+">";
+                  files += `<button type='submit' class='delete-btn' onclick="return confirm('Are you want to delete?')"><i class='fa fa-trash' style='font-size: 1.3rem; color: red'></i></button>`;
+                  files += '{{method_field("DELETE")}}{{ csrf_field() }}</form>';
+                  files += '</center>';
+                  files += '</div>'
+                  files += '</div>'
+                  files += '</li>';
+                  });
+                  files += `</ul></div>`;
+                  
+                  $('#files').append(files);
+                }
+
               }else{
                 $('#start_date').val('');
                 $('#end_date').val('');
                 $("#design_pm_name").val('');
-                $('#customSwitchDesign').removeAttr('checked');
+                $('#inlineRadio1').attr('checked', 'checked');
+                $('#customSwitchDesign').attr('checked', 'checked');
                 $("button[data-id='design_pm_name'] div.filter-option-inner-inner").html("Please Choose");
+                $('#design-submit').text('Add');
+                $('#files').html('');
+
               }
             },
             error: (err) => console.log(err)
@@ -111,8 +157,11 @@
         $('#start_date').val('');
         $('#end_date').val('');
         $("#design_pm_name").val('');
-        $('#customSwitchDesign').removeAttr('checked');
+        $('#customSwitchDesign').attr('checked', 'checked');
+        $('#inlineRadio1').attr('checked', 'checked');
         $("button[data-id='design_pm_name'] div.filter-option-inner-inner").html("Please Choose");
+        $('#design-submit').text('Add');
+        $('#files').html('');
 
       })
     </script>
@@ -146,6 +195,13 @@
                 $('#repo_url').val(task.development_phase.repo_url);
                 $('#dev_start_date').val(task.development_phase.dev_start_date);
                 $('#dev_end_date').val(task.development_phase.dev_end_date);
+                
+                if (task.development_phase.dev_status) {
+                  $('#inlineRadio1').attr('checked', 'checked');
+                } else {
+                  $('#inlineRadio2').attr('checked', 'checked');
+                }
+
                 $("#dev_pm_name").val(task.development_phase.dev_pm_id);
                 $("button[data-id='dev_pm_name'] div.filter-option-inner-inner").html(task.development_phase.dev_pm.name);
               }else{
@@ -153,6 +209,7 @@
                 $('#dev_start_date').val('');
                 $('#dev_end_date').val('');
                 $("#dev_pm_name").val('');
+                $('#inlineRadio1').attr('checked', 'checked');
                 $('#customSwitchDevelopment').removeAttr('checked');
                 $("button[data-id='dev_pm_name'] div.filter-option-inner-inner").html("Please Choose");
               }
@@ -161,6 +218,7 @@
           });
         }
         $('#customSwitchDevelopment').removeAttr('checked');
+        $('#inlineRadio1').attr('checked', 'checked');
         $('#dev_project_details').val('');
         $('#repo_url').val('');
         $('#dev_start_date').val('');
@@ -202,6 +260,14 @@
                 $('#seo_keywords').val(task.seo_phase.seo_keywords);
                 $('#seo_start_date').val(task.seo_phase.seo_start_date);
                 $('#seo_end_date').val(task.seo_phase.seo_end_date);
+
+
+                if (task.seo_phase.seo_status) {
+                  $('#inlineRadio1').attr('checked', 'checked');
+                } else {
+                  $('#inlineRadio2').attr('checked', 'checked');
+                }
+
                 $("#seo_pm_name").val(task.seo_phase.seo_pm_id);
                 $("button[data-id='seo_pm_name'] div.filter-option-inner-inner").html(task.seo_phase.seo_pm.name);
               }else{
@@ -209,6 +275,7 @@
                 $('#seo_start_date').val('');
                 $('#seo_end_date').val('');
                 $("#seo_pm_name").val('');
+                $('#inlineRadio1').attr('checked', 'checked');
                 $('#customSwitchSEO').removeAttr('checked');
                 $("button[data-id='seo_pm_name'] div.filter-option-inner-inner").html("Please Choose");
               }
@@ -217,6 +284,7 @@
           });
         }
         $('#customSwitchSEO').removeAttr('checked');
+        $('#inlineRadio1').attr('checked', 'checked');
         $('#seo_project_details').val('');
         $('#seo_keywords').val('');
         $('#seo_start_date').val('');

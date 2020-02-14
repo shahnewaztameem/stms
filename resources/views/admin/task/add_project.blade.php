@@ -58,42 +58,39 @@
        <div class="form-group row">
           <label for="client_name" class="col-sm-2 col-form-label">Client: </label>
           <div class="col-sm-10">
-           <div class="row">
-            <div class="col-11">
+            <div class="input-group" style="border-bottom: none">
               <select name="client_name" id="client_name" class="selectpicker form-control select-search" data-live-search="true">
                 <option value="">Please Choose</option>
                 @foreach ($clients as $client)
                   <option value="{{ $client->id }}">{{ $client->name }}</option>
                 @endforeach
               </select>
+              <div class="input-group-append">
+                <a href="{{route('admin.client.create')}}" class="btn btn-success" data-toggle="tooltip" data-placement="bottom" title="Add Client">
+                  <span><i class="fa fa-plus"></i></span>
+                </a>
+              </div>
             </div>
-            <div class="col-1 project__btn">
-             <a href="{{route('admin.client.create')}}" class="btn btn-success" data-toggle="tooltip" data-placement="bottom" title="Add Client">
-              <span><i class="fa fa-plus"></i></span>
-             </a>
-            </div>
-           </div>
           </div>
        </div>
            
        <div class="form-group row">
           <label for="project_manager_name" class="col-sm-2 col-form-label">Project Manager: </label>
           <div class="col-sm-10">
-           <div class="row">
-            <div class="col-11">
+
+            <div class="input-group" style="border-bottom: none">
               <select name="project_manager_name" id="project_manager_name" class="selectpicker form-control select-search" data-live-search="true">
                 <option value="">Please Choose</option>
                 @foreach ($users as $user)
                   <option value="{{ $user->id }}">{{ $user->name }}</option>
                 @endforeach
               </select>
+              <div class="input-group-append">
+                <a href="{{route('admin.user.create')}}" class="btn btn-success" data-toggle="tooltip" data-placement="bottom" title="Add Manager">
+                  <span><i class="fa fa-plus"></i></span>
+                 </a>
+              </div>
             </div>
-            <div class="col-1 project__btn">
-             <a href="{{route('admin.user.create')}}" class="btn btn-success" data-toggle="tooltip" data-placement="bottom" title="Add Manager">
-              <span><i class="fa fa-plus"></i></span>
-             </a>
-            </div>
-           </div>
           </div>
        </div>
    

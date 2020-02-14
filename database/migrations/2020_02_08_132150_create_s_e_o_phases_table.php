@@ -21,6 +21,7 @@ class CreateSEOPhasesTable extends Migration
             $table->string('seo_keywords');
             $table->date('seo_start_date');
             $table->date('seo_end_date');
+            $table->boolean('seo_status');
             $table->unsignedBigInteger('seo_pm_id');
             $table->foreign('seo_pm_id')->references('id')->on('users');
             $table->boolean('show_to_client')->default(0);
