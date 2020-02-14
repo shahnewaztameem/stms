@@ -155,7 +155,7 @@
         
         <div class="row justify-content-end">
           <button id="dev-cancel" class="btn btn-danger mr-2">Cancel</button>
-          <button type="submit" class="btn btn-primary mr-3">Add</button>
+          <button type="submit" id="dev-submit" class="btn btn-primary mr-3">Add</button>
         </div>
        </form>
     </div>

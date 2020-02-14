@@ -150,7 +150,7 @@
               
             <div class="row justify-content-end">
               <button id="seo-cancel" class="btn btn-danger mr-2">Cancel</button>
-              <button type="submit" class="btn btn-primary mr-3">Add</button>
+              <button type="submit" id="seo-submit" class="btn btn-primary mr-3">Add</button>
             </div>
           </div>
         </form>

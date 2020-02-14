@@ -24,7 +24,7 @@ use Carbon\Carbon;
     <strong>Designs</strong>
    </div>
    <div class="col-2">
-    <a href="{{route('admin.task.add')}}" data-toggle="tooltip" data-placement="bottom" title="Add task">
+    <a href="{{route('admin.task.create-design-phase')}}" data-toggle="tooltip" data-placement="bottom" title="Add Design">
      <span><i class="fa fa-plus" style="font-size: 1.3rem"></i></span>
     </a>
    </div>
@@ -36,7 +36,7 @@ use Carbon\Carbon;
     <strong>Developements</strong>
    </div>
    <div class="col-2">
-    <a href="{{route('admin.task.add')}}" data-toggle="tooltip" data-placement="bottom" title="Add task">
+    <a href="{{route('admin.task.create-development-phase')}}" data-toggle="tooltip" data-placement="bottom" title="Add Development">
      <span><i class="fa fa-plus" style="font-size: 1.3rem"></i></span>
     </a>
    </div>
@@ -48,7 +48,7 @@ use Carbon\Carbon;
     <strong>SEO</strong>
    </div>
    <div class="col-2">
-    <a href="{{route('admin.task.add')}}" data-toggle="tooltip" data-placement="bottom" title="Add task">
+    <a href="{{route('admin.task.create-seo-phase')}}" data-toggle="tooltip" data-placement="bottom" title="Add SEO">
      <span><i class="fa fa-plus" style="font-size: 1.3rem"></i></span>
     </a>
    </div>
@@ -82,7 +82,7 @@ use Carbon\Carbon;
               <div role="separator" class="dropdown-divider"></div>
               
               <div class="row">
-                <div class="col-10">
+                <div class="col-8">
                   @if ($task->design_phase)
                   {{-- {{ new Carbon($task->design_phase->end_date) }} --}}
                   @php
@@ -98,9 +98,12 @@ use Carbon\Carbon;
                    No Deadline Set
                   @endif
                 </div>
-                <div class="col-2">
+                <div class="col-4">
                   <a href="{{route('admin.task.view', $task->slug)}}" data-toggle="tooltip" data-placement="bottom" title="View Project">
                     <i class="fa fa-eye" style="font-size: 1.3rem"></i>
+                  </a>
+                  <a href="{{route('admin.task.edit', $task->id)}}" data-toggle="tooltip" data-placement="bottom" title="Edit Project">
+                    <i class="fa fa-pencil" style="font-size: 1.3rem"></i>
                   </a>
                 </div>
               </div>

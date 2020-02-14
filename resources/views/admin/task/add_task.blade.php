@@ -204,6 +204,7 @@
 
                 $("#dev_pm_name").val(task.development_phase.dev_pm_id);
                 $("button[data-id='dev_pm_name'] div.filter-option-inner-inner").html(task.development_phase.dev_pm.name);
+                $('#dev-submit').text('Update');
               }else{
                 $('#repo_url').val('');
                 $('#dev_start_date').val('');
@@ -212,6 +213,8 @@
                 $('#inlineRadio1').attr('checked', 'checked');
                 $('#customSwitchDevelopment').removeAttr('checked');
                 $("button[data-id='dev_pm_name'] div.filter-option-inner-inner").html("Please Choose");
+                $('#dev-submit').text('Add');
+
               }
             },
             error: (err) => console.log(err)
@@ -225,6 +228,7 @@
         $('#dev_end_date').val('');
         $("#dev_pm_name").val('');
         $("button[data-id='dev_pm_name'] div.filter-option-inner-inner").html("Please Choose");
+        $('#dev-submit').text('Add');
 
       })
     </script>
@@ -270,6 +274,7 @@
 
                 $("#seo_pm_name").val(task.seo_phase.seo_pm_id);
                 $("button[data-id='seo_pm_name'] div.filter-option-inner-inner").html(task.seo_phase.seo_pm.name);
+                $('#seo-submit').text('Update');
               }else{
                 $('#seo_keywords').val('');
                 $('#seo_start_date').val('');
@@ -278,6 +283,7 @@
                 $('#inlineRadio1').attr('checked', 'checked');
                 $('#customSwitchSEO').removeAttr('checked');
                 $("button[data-id='seo_pm_name'] div.filter-option-inner-inner").html("Please Choose");
+                $('#seo-submit').text('Add');
               }
             },
             error: (err) => console.log(err)
@@ -291,6 +297,7 @@
         $('#seo_end_date').val('');
         $("#seo_pm_name").val('');
         $("button[data-id='seo_pm_name'] div.filter-option-inner-inner").html("Please Choose");
+        $('#seo-submit').text('Add');
 
       })
     </script>
