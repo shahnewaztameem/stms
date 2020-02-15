@@ -48,7 +48,15 @@
         <div class="card my-2">
           <div class="card-body">
             <div>
-              <h4>Design Phase</h4>
+              <h4>Design Phase
+                @if ($task->design_phase)
+                    @if ($task->design_phase->design_status)
+                      <span class="badge badge-info">In Progress</span>
+                    @else
+                      <span class="badge badge-success">Completed</span>
+                    @endif
+                @endif
+              </h4>
             </div>
             <div role="separator" class="dropdown-divider"></div>
 
@@ -87,7 +95,15 @@
           <div class="card my-2">
             <div class="card-body">
               <div>
-                <h4>Development Phase</h4>
+                <h4>Development Phase
+                  @if ($task->development_phase)
+                    @if ($task->development_phase->dev_status)
+                      <span class="badge badge-info">In Progress</span>
+                    @else
+                      <span class="badge badge-success">Completed</span>
+                    @endif
+                  @endif
+                </h4>
               </div>
               <div role="separator" class="dropdown-divider"></div>
 
@@ -95,6 +111,24 @@
                 @if ($task->development_phase->show_to_client)
                   <p class="card-text"> <strong>Repo URL: </strong><a href="{{ $task->development_phase->repo_url }}" target="_blank">{{ $task->development_phase->repo_url }}</a></p>
         
+                  <div role="separator" class="dropdown-divider"></div>
+                    Feedback:
+                    @if ($task->development_phase->dev_feedback)
+                        <div class="row">
+                          <div class="col-10">
+                            <p class="card-text" style="color: green">{{ $task->development_phase->dev_feedback }}</p>
+                          </div>
+                          <div class="col-2">
+                            {!! Form::open(['method' => 'DELETE','route'=> ['client.dev_feedback.delete', $task->development_phase->id], 'style' => 'display:inline']) !!}
+                            {!! Form::button('<i class="fa fa-trash" style="font-size: 1.3rem; color: red"></i></span>',['class'=> 'delete-btn','type' => 'submit','data-toggle'=>'tooltip', 'data-placement'=>'bottom', 'title'=>'Remove task','onclick'=>'return confirm("Are you want to delete?")'])  !!}
+                            {!! Form::close()!!}
+                          </div>
+                        </div>
+                    @else
+                        <div style="color: red">
+                          No Feedback
+                        </div>
+                    @endif 
                   <div role="separator" class="dropdown-divider"></div>
                 
                   @if ($task->development_phase->dev_pm)
@@ -142,7 +176,7 @@
                               @foreach ($file->wireframe_feedback as $feedback)
 
                                 <div class="col-10">
-                                  <p class="card-text">{{ $feedback->comment }}</p>
+                                  <p class="card-text" style="color: green">{{ $feedback->comment }}</p>
                                 </div>
                                 <div class="col-2">
                                   {!! Form::open(['method' => 'DELETE','route'=> ['client.design_feedback.delete', $feedback->id], 'style' => 'display:inline']) !!}
@@ -175,7 +209,15 @@
           <div class="card my-2">
             <div class="card-body">
               <div>
-                <h4>SEO Phase</h4>
+                <h4>SEO Phase
+                  @if ($task->seo_phase)
+                    @if ($task->seo_phase->seo_status)
+                      <span class="badge badge-info">In Progress</span>
+                    @else
+                      <span class="badge badge-success">Completed</span>
+                    @endif
+                  @endif
+                </h4>
               </div>
               <div role="separator" class="dropdown-divider"></div>
 
@@ -184,6 +226,26 @@
                 @if ($task->seo_phase->show_to_client)
                   <p class="card-text"> <strong>Keywords: </strong> {{ $task->seo_phase->seo_keywords }}</p>
         
+                  <div role="separator" class="dropdown-divider"></div>
+                  
+                    Feedback:
+                    @if ($task->seo_phase->seo_feedback)
+                        <div class="row">
+                          <div class="col-10">
+                            <p class="card-text" style="color: green">{{ $task->seo_phase->seo_feedback }}</p>
+                          </div>
+                          <div class="col-2">
+                            {!! Form::open(['method' => 'DELETE','route'=> ['client.seo_feedback.delete', $task->seo_phase->id], 'style' => 'display:inline']) !!}
+                            {!! Form::button('<i class="fa fa-trash" style="font-size: 1.3rem; color: red"></i></span>',['class'=> 'delete-btn','type' => 'submit','data-toggle'=>'tooltip', 'data-placement'=>'bottom', 'title'=>'Remove task','onclick'=>'return confirm("Are you want to delete?")'])  !!}
+                            {!! Form::close()!!}
+                          </div>
+                        </div>
+                    @else
+                        <div style="color: red">
+                          No Feedback
+                        </div>
+                    @endif 
+                  
                   <div role="separator" class="dropdown-divider"></div>
                 
                   @if ($task->seo_phase->seo_pm)

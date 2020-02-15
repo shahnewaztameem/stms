@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\ClientFeedback;
+use App\DevelopmentPhase;
 use App\Notifications\FeedbackNotification;
+use App\SEOPhase;
 use App\Task;
 use App\TaskFile;
 use App\User;
@@ -193,7 +195,6 @@ class ClientController extends Controller
         return redirect()->back()->with('success', "Feedback For task($task->title), WireFrame($task_files->file_title) is added successfully");
 
     }
-
     
     /**
      * Delete a Design feedback
@@ -205,6 +206,76 @@ class ClientController extends Controller
     {
         $feedback = WireframeFeedback::find($id);
         $feedback->delete();
+        return redirect()->back()->with('success', "Your feedback is deleted successfully");
+    }
+
+    /**
+     * Insert Feedback for development Phase
+     *
+     * @param Request $request
+     * @param [type] $dev_id
+     * @return void
+     */
+    public function dev_feedback(Request $request, $dev_id)
+    {
+        $request->validate([
+            'dev_feedback' => 'bail | required | max: 250',
+        ]);
+        $devPhase = DevelopmentPhase::find($dev_id);
+        // return $devPhase;
+        $devPhase->dev_feedback = $request->dev_feedback;
+        $devPhase->save();
+
+        return redirect()->back()->with('success', "Your feedback is added successfully");
+    }
+    
+    /**
+     * Delete a dev feedback
+     *
+     * @param [type] $dev_id
+     * @return void
+     */
+    public function delete_dev_feedback($dev_id)
+    {
+        $devPhase = DevelopmentPhase::find($dev_id);
+        $devPhase->dev_feedback = null;
+        $devPhase->save();
+
+        return redirect()->back()->with('success', "Your feedback is deleted successfully");
+    }
+
+    /**
+     * Insert Feedback for SEO Phase
+     *
+     * @param Request $request
+     * @param [type] $seo_id
+     * @return void
+     */
+    public function seo_feedback(Request $request, $seo_id)
+    {
+        $request->validate([
+            'seo_feedback' => 'bail | required | max: 250',
+        ]);
+        $seoPhase = SEOPhase::find($seo_id);
+        // return $seoPhase;
+        $seoPhase->seo_feedback = $request->seo_feedback;
+        $seoPhase->save();
+
+        return redirect()->back()->with('success', "Your feedback is added successfully");
+    }
+    
+    /**
+     * Delete a seo feedback
+     *
+     * @param [type] $seo_id
+     * @return void
+     */
+    public function delete_seo_feedback($seo_id)
+    {
+        $seoPhase = SEOPhase::find($seo_id);
+        $seoPhase->seo_feedback = null;
+        $seoPhase->save();
+
         return redirect()->back()->with('success', "Your feedback is deleted successfully");
     }
 }

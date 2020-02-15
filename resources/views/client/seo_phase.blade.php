@@ -14,6 +14,32 @@
 <?php
 use Carbon\Carbon;
 ?>
+
+
+@if( Session::get('success') )
+  <div class="row">
+    <div class="col-12">
+      <div class="alert alert-success container" id="div3">
+        <strong>Success!</strong> {{Session::get('success')}}
+      </div>
+    </div>
+  </div>
+@endif
+
+@if ($errors->any())
+  <div class="row">
+    <div class="col-12">
+      <div class="alert alert-danger">
+        <ul>
+          @foreach ($errors->all() as $error)
+            <li>{{ $error }}</li>
+          @endforeach
+        </ul>
+      </div>
+    </div>
+  </div>
+@endif
+
 <div class="row">
   @if (count($tasks))
     @foreach ($tasks as $task)
@@ -22,12 +48,20 @@ use Carbon\Carbon;
           <div class="card-body">
             <div class="row">
               <div class=" col-sm-10 col-md-11">
-                <h5 class="card-title">{{ $task->title }}</h5>
+                <h5 class="card-title">{{ $task->title }}
+                  @if ($task->seo_phase)
+                    @if ($task->seo_phase->seo_status)
+                      <span class="badge badge-info">In Progress</span>
+                    @else
+                      <span class="badge badge-success">Completed</span>
+                    @endif
+                  @endif
+                </h5>
                 @if ($task->seo_phase)
                   <p> Deadline: 
                     @if ($task->seo_phase->show_to_client)
                       @php
-                        $created = new Carbon($task->seo_phase->dev_end_date);
+                        $created = new Carbon($task->seo_phase->seo_end_date);
                         $now = Carbon::now();
                         $difference = ($created->diff($now)->days < 1)
                         ? 'today'
@@ -55,13 +89,27 @@ use Carbon\Carbon;
                       <span style="color: green">{{$task->seo_phase->seo_keywords}}</span>
                     </h5>
                     <div role="separator" class="dropdown-divider"></div>
-                    <form action="#" method="post">
-                      <div class="form-group">
-                        <textarea name="design_feedback" cols="10" rows="4" class="form-control" placeholder="Give Feedback Here."></textarea>
+                    @if ($task->seo_phase->seo_feedback)
+                      <div class="row">
+                        <div class="col-10">
+                          <p class="card-text">{{ $task->seo_phase->seo_feedback }}</p>
+                        </div>
+                        <div class="col-2">
+                          {!! Form::open(['method' => 'DELETE','route'=> ['client.seo_feedback.delete', $task->seo_phase->id], 'style' => 'display:inline']) !!}
+                          {!! Form::button('<i class="fa fa-trash" style="font-size: 1.3rem; color: red"></i></span>',['class'=> 'delete-btn','type' => 'submit','data-toggle'=>'tooltip', 'data-placement'=>'bottom', 'title'=>'Remove task','onclick'=>'return confirm("Are you want to delete?")'])  !!}
+                          {!! Form::close()!!}
+                        </div>
                       </div>
+                    @else 
+                      <form action="{{ route('client.seo_feedback', $task->seo_phase->id) }}" method="post">
+                        @csrf
+                        <div class="form-group">
+                          <textarea name="seo_feedback" cols="10" rows="4" class="form-control" placeholder="Give Feedback Here."></textarea>
+                        </div>
 
-                      <button type="submit" class="btn btn-info">Feedback</button>
-                    </form>
+                        <button type="submit" class="btn btn-info">Feedback</button>
+                      </form>
+                    @endif
                   @else
                     <p>No SEO Keywords available.</p>
                   @endif

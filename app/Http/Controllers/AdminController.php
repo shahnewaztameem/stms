@@ -34,6 +34,7 @@ class AdminController extends Controller
             'client',
             'project_manager',
             'task_files',
+            'task_files.wireframe_feedback',
             'design_phase',
             'design_phase.design_pm',
             'development_phase',
@@ -41,8 +42,8 @@ class AdminController extends Controller
             'seo_phase',
             'seo_phase.seo_pm',
             'feedback'
-        )
-            ->latest()->paginate(9);
+        )->latest()->paginate(9);
+        // return $tasks;
         return view('admin.home', compact('tasks'));
     }
 

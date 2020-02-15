@@ -37,7 +37,7 @@
                             <i class="fa fa-eye" style="font-size: 1.3rem"></i>
                         </a>
 
-                        <a href="{{route('admin.task.edit',$task->id)}}" data-toggle="tooltip" data-placement="bottom" title="Edit Project">
+                        <a href="{{route('admin.task.create-design-phase')}}" data-toggle="tooltip" data-placement="bottom" title="Edit Project">
                             <i class="fa fa-edit" style="font-size: 1.3rem"></i>
                         </a>
                         {!! Form::open(['method' => 'DELETE','route'=> ['admin.task.delete-design', $task->design_phase->id], 'style' => 'display:inline']) !!}
@@ -67,7 +67,7 @@
                                 <i class="fa fa-eye" style="font-size: 1.3rem"></i>
                             </a>
 
-                            <a href="{{route('admin.task.edit',$task->id)}}" data-toggle="tooltip" data-placement="bottom" title="Edit Project">
+                            <a href="{{route('admin.task.create-development-phase')}}" data-toggle="tooltip" data-placement="bottom" title="Edit Project">
                                 <i class="fa fa-edit" style="font-size: 1.3rem"></i>
                             </a>
                             {!! Form::open(['method' => 'DELETE','route'=> ['admin.task.delete-dev', $task->development_phase->id], 'style' => 'display:inline']) !!}
@@ -97,7 +97,7 @@
                                 <i class="fa fa-eye" style="font-size: 1.3rem"></i>
                             </a>
 
-                            <a href="{{route('admin.task.edit',$task->id)}}" data-toggle="tooltip" data-placement="bottom" title="Edit Project">
+                            <a href="{{route('admin.task.create-seo-phase')}}" data-toggle="tooltip" data-placement="bottom" title="Edit Project">
                                 <i class="fa fa-edit" style="font-size: 1.3rem"></i>
                             </a>
                             {!! Form::open(['method' => 'DELETE','route'=> ['admin.task.delete-seo', $task->seo_phase->id], 'style' => 'display:inline']) !!}

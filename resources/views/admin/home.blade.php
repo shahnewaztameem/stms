@@ -109,6 +109,27 @@ use Carbon\Carbon;
               </div>
               
               <div role="separator" class="dropdown-divider"></div>
+                <p class="card-text"><strong>Client Accessibility:</strong> 
+                  @if ($task->design_phase)
+                    @if ($task->design_phase->show_to_client)
+                      <span class="badge badge-dark">Design</span> 
+                    @endif
+                  @endif
+                  @if ($task->development_phase)
+                    @if ($task->development_phase->show_to_client)
+                      <span class="badge badge-dark">Dev</span>  
+                    @endif
+                  @endif
+                  @if ($task->seo_phase)
+                    @if ($task->seo_phase->show_to_client)
+                      <span class="badge badge-dark">SEO</span>
+                    @endif
+                  @endif
+                  @if (!$task->design_phase && !$task->development_phase && !$task->seo_phase)
+                    <span class="badge badge-warning">Only Project</span>
+                  @endif
+                </p>
+              <div role="separator" class="dropdown-divider"></div>
 
               <a href="{{ route('admin.notify.client', $task->id) }}" class="btn btn-info">Notify Client</a>
             </div>

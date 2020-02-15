@@ -59,9 +59,9 @@
                         <span>Clients</span>
                     </a>
                 </li>
-                <li class="side-nav__item @if (request()->is('admin/task/create')) side-nav__item--active @endif">
+                <li class="side-nav__item @if (request()->is('admin/task/create') || request()->is('admin/task/all') || request()->is('admin/task/view/*') || request()->is('admin/task/edit/*')) side-nav__item--active @endif">
                     <a href="{{ route('admin.task.create') }}" class="side-nav__link">
-                        <span>Add Project</span>
+                        <span>Project</span>
                     </a>
                 </li>
                 <li class="side-nav__item @if (request()->is('admin/task/phase/*')) side-nav__item--active @endif">

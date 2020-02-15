@@ -121,6 +121,12 @@ Route::group(['middleware' => ['auth']], function () {
 
             Route::post('/task/design-feedback/{file_id}', 'ClientController@design_feedback')->name('client.design_feedback');
             Route::delete('/task/design-feedback/{feedback_id}', 'ClientController@delete_design_feedback')->name('client.design_feedback.delete');
+
+            Route::post('/task/dev-feedback/{dev_id}', 'ClientController@dev_feedback')->name('client.dev_feedback');
+            Route::delete('/task/dev-feedback/{dev_id}', 'ClientController@delete_dev_feedback')->name('client.dev_feedback.delete');
+
+            Route::post('/task/seo-feedback/{seo_id}', 'ClientController@seo_feedback')->name('client.seo_feedback');
+            Route::delete('/task/seo-feedback/{seo_id}', 'ClientController@delete_seo_feedback')->name('client.seo_feedback.delete');
             
             Route::delete('task/feedback/{id}', 'ClientController@delete_feedback')->name('client.feedback.delete');
         });
