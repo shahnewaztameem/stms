@@ -31,7 +31,7 @@
      </div>
    @endif
 
-   <form method="POST" action="{{ route('admin.client.create') }}">
+   <form method="POST" id="create-client" action="{{ route('admin.client.create') }}">
     @csrf
 
     <div class="form-group row">
@@ -89,11 +89,20 @@
     </div>
 
     <div class="row justify-content-end">
-      <button type="submit" class="btn btn-primary mr-2">Cancel</button>
+      <button id="cancel" class="btn btn-danger mr-2">Cancel</button>
       <button type="submit" class="btn btn-primary mr-3">Add</button>
     </div>
    </form>
   </div>
  </div>
 </div>
+@endsection
+
+@section('customJS')
+    <script>
+      $('#cancel').click((e)=>{
+        e.preventDefault();
+        $('#create-client')[0].reset();
+      });
+    </script>
 @endsection

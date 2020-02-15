@@ -70,7 +70,7 @@
                 </li>
                 <li class="side-nav__item @if (request()->is('admin/manager-list') || request()->is('admin/user/*')) side-nav__item--active @endif">
                     <a href="{{ route('admin.user.create') }}" class="side-nav__link">
-                        <span>Manager</span>
+                        <span>Managers</span>
                     </a>
                 </li>
         {{--  Client MENUS  --}}
