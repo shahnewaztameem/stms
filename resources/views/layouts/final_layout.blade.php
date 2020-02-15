@@ -32,16 +32,15 @@
   <div id="app">
 
    <header class="header">
-    <img src="{{ asset('/img/logo.png') }}" alt="App-Logo" class="logo">
-    @if (auth()->user()->user_type == 0)
-        <form action="#" class="search">
-            <input type="text" name="search" id="search" class="search__input" placeholder="Search">
+        <img src="{{ asset('/img/logo.png') }}" alt="App-Logo" class="logo">
+        @if (auth()->user()->user_type == 0)
+            <form class="search">
+                <input type="text" name="search" id="search" class="search__input" autocomplete="off" placeholder="Search">
 
-            <button class="search__button">
-            
-            </button>
-        </form>
-    @endif
+                <div class="row search__result" id="search__result">
+                </div>
+            </form>
+        @endif
    </header>
 
    <div class="content">
@@ -167,11 +166,27 @@
       <script>
           $(document).ready(function() {
               $('#example').DataTable();
+
+              $('#search').keyup(e=>{
+                  if (e.target.value) {
+                    $.ajax({
+                        type: "GET",
+                        url: '/search/'+event.target.value,
+                        success: res => {
+                            $('#search__result').html(res);
+                        },
+                        error: err => console.log(err),
+                    });
+                  }else{
+                    $('#search__result').html("");
+                  }
+              })
           } );
       </script>
 
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+
       @yield('customJS')
   </div>
 </body>

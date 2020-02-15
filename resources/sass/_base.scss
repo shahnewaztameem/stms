@@ -50,3 +50,26 @@ $bp-extraSmall: 31.25em;    // 500px
     background-color: var(--color-primary);
     color: var(--color-white);
 }
+
+// width
+::-webkit-scrollbar {
+    width: 5px;
+  }
+  
+  // Track
+  ::-webkit-scrollbar-track {
+    background: #ebebeb;
+    border-radius: 3px;
+  }
+  
+  // Handle
+  ::-webkit-scrollbar-thumb {
+    background: linear-gradient(140deg, var(--color-primary-light), var(--color-primary));
+    border-radius: 3px;
+  }
+  
+  // Handle on hover
+  ::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(140deg,var(--color-primary-light), var(--color-primary));
+  }
+  

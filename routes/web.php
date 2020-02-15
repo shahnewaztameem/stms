@@ -171,3 +171,27 @@ Route::get('/project-details/seo/{id}', function ($id) {
         return response()->json(['data' => 'No data found']);
     }
 });
+
+Route::get('search/{query}', function ($query) {
+    $tasks = Task::where('title', 'like', '%'.$query.'%')
+                ->orWhere('details', 'like', '%'.$query.'%')
+                ->get();
+    $html = "<ul class='list-group' style='width: 100%'>";
+    if (count($tasks)) {
+        foreach ($tasks as $index => $task) {
+            $html .= "<a class='list-group-item list-group-item-action' href=".route('admin.task.view', $task->slug).">$task->title</a>";
+            // if ($index == (count($tasks)-1)) {
+            // } else {   
+            //     $html .= "<a class='list-group-item list-group-item-action' href=".route('admin.task.view', $task->slug).">$task->title</a>";
+            //     $html .= "<div class='dropdown-divider'></div>";
+            // }
+        }
+        $html .= "</ul>";
+        return $html;
+    } else {
+        $html .= "<a class='list-group-item list-group-item-action' href='#'>No data found</a>";
+        $html .= "</ul>";
+        return $html;
+    }
+    
+});
