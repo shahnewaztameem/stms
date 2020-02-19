@@ -13,16 +13,18 @@ class FeedbackNotification extends Notification implements ShouldQueue
 
     protected $user;
     protected $task;
+    protected $phase;
 
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct($user, $task)
+    public function __construct($user, $task, $phase)
     {
         $this->user = $user;
         $this->task = $task;
+        $this->phase = $phase;
     }
 
     /**
@@ -51,8 +53,8 @@ class FeedbackNotification extends Notification implements ShouldQueue
         }
         return (new MailMessage)
             ->subject('Client Feedback')
-            ->greeting('Hello!')
-            ->line('Feedback received from Client')
+            ->greeting('Hello '.$this->user->name."!")
+            ->line('Feedback received from Client for '.$this->phase.' phase')
             ->line('Task Title: ' . $this->task->title)
             ->action('See Details', $url)
             ->line('Thank you for using our application!');

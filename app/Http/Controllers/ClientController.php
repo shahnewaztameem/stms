@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\ClientFeedback;
+use App\DesignPhase;
 use App\DevelopmentPhase;
 use App\Notifications\FeedbackNotification;
 use App\SEOPhase;
@@ -79,25 +80,9 @@ class ClientController extends Controller
 
         $feedback->save();
 
-        $this->emailUserAndAdmin($id);
+        // $this->emailUserAndAdmin($id);
 
         return redirect()->back()->with('success', "Thanks for your feedback");
-    }
-
-    /**
-     * Email The assigned user and Admin 
-     * After storing a feedback.
-     * 
-     * @param [type] $task_id
-     * @return void
-     */
-    public function emailUserAndAdmin($task_id)
-    {
-        $task = Task::where('id', $task_id)->with('client')->first();
-        $user = User::find($task->users[1]->id);
-        $user->notify(new FeedbackNotification($user, $task));
-        $admin = User::where('user_type', 0)->first();
-        $admin->notify(new FeedbackNotification($admin, $task));
     }
 
     /**
@@ -192,6 +177,7 @@ class ClientController extends Controller
         $task_files = TaskFile::whereId($file_id)->with('task')->first();
         $task = $task_files->task;
 
+        $this->emailUserAndAdmin($task->id, 'design');
         return redirect()->back()->with('success', "Feedback For task($task->title), WireFrame($task_files->file_title) is added successfully");
 
     }
@@ -225,6 +211,8 @@ class ClientController extends Controller
         // return $devPhase;
         $devPhase->dev_feedback = $request->dev_feedback;
         $devPhase->save();
+
+        $this->emailUserAndAdmin($devPhase->task_id, 'development');
 
         return redirect()->back()->with('success', "Your feedback is added successfully");
     }
@@ -261,6 +249,8 @@ class ClientController extends Controller
         $seoPhase->seo_feedback = $request->seo_feedback;
         $seoPhase->save();
 
+        $this->emailUserAndAdmin($seoPhase->task_id, 'seo');
+
         return redirect()->back()->with('success', "Your feedback is added successfully");
     }
     
@@ -277,5 +267,40 @@ class ClientController extends Controller
         $seoPhase->save();
 
         return redirect()->back()->with('success', "Your feedback is deleted successfully");
+    }
+
+    /**
+     * Email The assigned PM, PROJECT PM and Admin 
+     * After storing a feedback.
+     * 
+     * @param [type] $task_id
+     * @return void
+     */
+    public function emailUserAndAdmin($task_id, $phase)
+    {
+        switch ($phase) {
+            case 'design':
+                $phase_pm = DesignPhase::where('task_id', $task_id)->first();
+                $phase_pm_id = $phase_pm->design_pm_id;
+                break;
+
+            case 'development':
+                $phase_pm = DevelopmentPhase::where('task_id', $task_id)->first();
+                $phase_pm_id = $phase_pm->dev_pm_id;
+                break;
+
+            case 'seo':
+                $phase_pm = SEOPhase::where('task_id', $task_id)->first();
+                $phase_pm_id = $phase_pm->seo_pm_id;
+                break;
+        }
+
+        $task = Task::where('id', $task_id)->with('client')->first();
+        $project_pm = User::find($task->project_manager_id);
+        $project_pm->notify(new FeedbackNotification($project_pm, $task, $phase));
+        $phase_pm_details = User::find($phase_pm_id);
+        $project_pm->notify(new FeedbackNotification($phase_pm_details, $task, $phase));
+        $admin = User::where('user_type', 0)->first();
+        $admin->notify(new FeedbackNotification($admin, $task, $phase));
     }
 }
