@@ -44,6 +44,7 @@
     </div>
 
     <div class="row">
+      @if ($task->design_phase)
       <div class="col-sm-6">
         <div class="card my-2">
           <div class="card-body">
@@ -89,6 +90,7 @@
           </div>
         </div>
       </div>
+      @endif
 
       @if ($task->development_phase)
         <div class="col-sm-6">
@@ -155,54 +157,56 @@
         </div>
       @endif
 
-      <div class="col-sm-6">
-        <div class="card my-2">
-          <div class="card-body">
-            <h4 class="card-text">Wireframes</h4>
-            <div role="separator" class="dropdown-divider"></div>
-              @if ($task->design_phase)
-                @if ($task->design_phase->show_to_client)
-                  @if(count($task->task_files))
-                    <ul class="list-group">
-                      @foreach ($task->task_files as $file)
-                        <li class="list-group-item list-group-item-default">
-                          <div class="row">
-                            <div class="col-10">
-                                <a href="{{ asset($file->file_url) }}" target="_blank">{{ $file->file_url }}</a>
-                            </div>
-                            <div role="separator" class="dropdown-divider"></div>
-                            <div class="col-10 mt-2" style="color: teal">Your Feedback: </div>
-                            @if (count($file->wireframe_feedback))
-                              @foreach ($file->wireframe_feedback as $feedback)
+      @if (count($task->task_files))
+        <div class="col-sm-6">
+          <div class="card my-2">
+            <div class="card-body">
+              <h4 class="card-text">Wireframes</h4>
+              <div role="separator" class="dropdown-divider"></div>
+                @if ($task->design_phase)
+                  @if ($task->design_phase->show_to_client)
+                    @if(count($task->task_files))
+                      <ul class="list-group">
+                        @foreach ($task->task_files as $file)
+                          <li class="list-group-item list-group-item-default">
+                            <div class="row">
+                              <div class="col-10">
+                                  <a href="{{ asset($file->file_url) }}" target="_blank">{{ $file->file_url }}</a>
+                              </div>
+                              <div role="separator" class="dropdown-divider"></div>
+                              <div class="col-10 mt-2" style="color: teal">Your Feedback: </div>
+                              @if (count($file->wireframe_feedback))
+                                @foreach ($file->wireframe_feedback as $feedback)
 
-                                <div class="col-10">
-                                  <p class="card-text" style="color: green">{{ $feedback->comment }}</p>
-                                </div>
-                                <div class="col-2">
-                                  {!! Form::open(['method' => 'DELETE','route'=> ['client.design_feedback.delete', $feedback->id], 'style' => 'display:inline']) !!}
-                                  {!! Form::button('<i class="fa fa-trash" style="font-size: 1.3rem; color: red"></i></span>',['class'=> 'delete-btn','type' => 'submit','data-toggle'=>'tooltip', 'data-placement'=>'bottom', 'title'=>'Remove task','onclick'=>'return confirm("Are you want to delete?")'])  !!}
-                                  {!! Form::close()!!}
-                                </div>
-                              @endforeach
-                            @else 
-                                <div class="col-10">
-                                  <p class="card-text">No Feedback</p>
-                                </div>
-                            @endif
-                          </div>
-                        </li>
-                      @endforeach
-                    </ul>
-                  @else
-                  <p>No Wireframes.</p>
+                                  <div class="col-10">
+                                    <p class="card-text" style="color: green">{{ $feedback->comment }}</p>
+                                  </div>
+                                  <div class="col-2">
+                                    {!! Form::open(['method' => 'DELETE','route'=> ['client.design_feedback.delete', $feedback->id], 'style' => 'display:inline']) !!}
+                                    {!! Form::button('<i class="fa fa-trash" style="font-size: 1.3rem; color: red"></i></span>',['class'=> 'delete-btn','type' => 'submit','data-toggle'=>'tooltip', 'data-placement'=>'bottom', 'title'=>'Remove task','onclick'=>'return confirm("Are you want to delete?")'])  !!}
+                                    {!! Form::close()!!}
+                                  </div>
+                                @endforeach
+                              @else 
+                                  <div class="col-10">
+                                    <p class="card-text">No Feedback</p>
+                                  </div>
+                              @endif
+                            </div>
+                          </li>
+                        @endforeach
+                      </ul>
+                    @else
+                    <p>No Wireframes.</p>
+                    @endif
+                  @else 
+                    <p>Not allowed to view from admin.</p> 
                   @endif
-                @else 
-                  <p>Not allowed to view from admin.</p> 
                 @endif
-              @endif
+              </div>
             </div>
-          </div>
-      </div>
+        </div>
+      @endif
 
       @if ($task->seo_phase)
         <div class="col-sm-6">

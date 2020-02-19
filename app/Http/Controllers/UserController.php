@@ -2,95 +2,91 @@
 
 namespace App\Http\Controllers;
 
+use App\DesignPhase;
+use App\DevelopmentPhase;
+use App\SEOPhase;
 use App\Task;
-use App\User;
-use App\TaskFile;
-use Illuminate\Support\Str;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\File;
 
 class UserController extends Controller
 {
     /**
-     * Get all the tasks for the logged in User
+     * Get all the tasks for the logged in user
      *
      * @return view with the tasks
      */
     public function index()
     {
-        $user = User::whereId(auth()->id())->with('tasks')->first();
+        $user = auth()->user();
         // return $user;
-        return view('user.home', compact('user'));
+        $tasks = Task::where('project_manager_id', auth()->user()->id)->with('design_phase', 'development_phase', 'seo_phase')->get();
+        $designPhase = DesignPhase::where('design_pm_id', auth()->user()->id)->with('task')->get();
+        $devPhase = DevelopmentPhase::where('dev_pm_id', auth()->user()->id)->with('task')->get();
+        $seoPhase = SEOPhase::where('seo_pm_id', auth()->user()->id)->with('task')->get();
+        // return $tasks;
+        return view('user.home', compact('user', 'tasks'));
     }
 
     /**
-     * View a single task 
+     * View a single task
+     * It searches with the slug for email HASH url 
      * 
      * @param [type] $slug
      * @return void
      */
     public function view($slug)
     {
-        $task = Task::where('slug', $slug)->with('users', 'task_files', 'feedback')->first();
+        $task = Task::where('slug', $slug)
+            ->with(
+                'client',
+                'project_manager',
+                'task_files',
+                'task_files.wireframe_feedback',
+                'design_phase',
+                'design_phase.design_pm',
+                'development_phase',
+                'development_phase.dev_pm',
+                'seo_phase',
+                'seo_phase.seo_pm',
+                'feedback'
+            )->first();
         // return $task;
         return view('user.view_task', compact('task'));
     }
 
-    /**
-     * Store a files from the assigned user
-     * for an individual task
+        /**
+     * Get All the task-design phase
      *
-     * @param Request $request
-     * @param [type] $id
-     * @return void
+     * @return projectList
      */
-    public function store_file(Request $request, $id)
+    public function design_phase()
     {
-        $request->validate([
-            'task_files' => 'required'
-        ]);
-
-        if ($request->hasFile('task_files')) {
-            // return $request;
-            $i = 0;
-            $destinationPath = public_path() . '/img/task/';
-            foreach ($request->task_files as $task_file) {
-                $i++;
-                $input['imagename'] = 'Task_' . $id . "_" . Str::random(5) . $i . '.' . $task_file->getClientOriginalExtension();
-
-                $task_file->move($destinationPath, $input['imagename']);
-
-                $fileurl = 'img/task/' . $input['imagename'];
-                $file = new TaskFile();
-                $file->task_id = $id;
-                $file->user_id = auth()->id();
-                $file->file_url = $fileurl;
-                $file->save();
-            }
-            return redirect()->back()->with('success', "File uploaded successfully");
-        }
-
-        return redirect()->back()->with('err', "No file found");
+        $designPhase = DesignPhase::where('design_pm_id', auth()->user()->id)->with('task', 'task.task_files')->latest()->paginate(6);
+        // return $designPhase;
+        return view('user.design_phase', compact('designPhase'));
     }
 
     /**
-     * Delete a file
+     * Get All the task-development phase
      *
-     * @param [type] $id
-     * @return void
+     * @return projectList
      */
-    public function delete_file($id)
+    public function dev_phase()
     {
-        $file = TaskFile::find($id);
+        $dev_phase = DevelopmentPhase::where('dev_pm_id', auth()->user()->id)->with('task')->latest()->paginate(6);
+        // return $dev_phase;
+        return view('user.dev_phase', compact('dev_phase'));
+    }
 
-        $filePath = public_path('\\');
-        // return $filePath . $file->file_url;
+    /**
+     * Get All the task-seo phase
+     *
+     * @return projectList
+     */
+    public function seo_phase()
+    {
+        $seoPhase = SEOPhase::where('seo_pm_id', auth()->user()->id)->with('task')->latest()->paginate(6);
 
-        if (File::exists($filePath . $file->file_url)) {
-            File::delete($filePath . $file->file_url);
-        }
-
-        $file->delete();
-        return redirect()->back()->with('success', "File ($file->file_url) is deleted successfully");
+        // return $seoPhase;
+        return view('user.seo_phase', compact('seoPhase'));
     }
 }

@@ -1,56 +1,123 @@
-@extends('layouts.app')
+@extends('layouts.final_layout')
 
 @section('content')
-<div class="container">
- <div class="row justify-content-center">
-   <div class="col-md-10">
-      @if( Session::get('success') )
-      <div class="alert alert-success container" id="div3">
-        <strong>Success!</strong> {{Session::get('success')}}
-      </div>
-      @endif
-      @foreach ($user->tasks as $task)    
-      <div class="card mb-2">
-        <div class="card-header">
-        <div class="row">
-          <div class="col-10">
-          <blockquote class="blockquote mb-0">
-            <h3><a href="{{ route('user.task.view', $task->slug) }}">{{ $task->title }} </a><small class="text-muted posted-text"> Posted {{ $task->created_at->diffForHumans() }}</small></h3>
-            
-            {{-- @if (count($task->users))    
-            <footer class="blockquote-footer">{{ $task->users[0]->name }}</cite></footer>
-            @endif --}}
-            
-          </blockquote>
-          </div>
-          <div class="col-2">
-          <center>
-            <a href="{{route('user.task.view', $task->slug)}}" class="add-btn" data-toggle="tooltip" data-placement="bottom" title="View Task">
-                <i class="fa fa-eye" style="font-size: 1.3rem;color: teal"></i></span>
-            </a>
-          </center>
-          </div>
-        </div>
-        </div>
-        <div class="card-body">
-          <p class="card-text">{{ $task->details }}</p>
-          {{-- @if(count($task->users) > 1)
-            <a href="{{ route('admin.notify.client', $task->id) }}" class="btn btn-primary">Notify Client</a>
-          @endif  --}}
-        </div>
-      </div>
-      @endforeach
 
-      @if (count($user->tasks) == 0)
-        <div class="card">
-            <ul class="card-body justify-content-center">
-                <h3 class="card-text text-center">Not Task available for you.</h3>
-            </ul>
-        </div>          
-      @endif
+<?php
+use Carbon\Carbon;
+?>
 
-   </div>
-
- </div>
+<div class="text-center" style="text-transform: uppercase">
+  <h2>Hello <strong>{{$user->name}} !!</strong></h2>
+  <h2 class="my-5">Welcome to your portal</h2>
+  <h2>You can see the project where you have assigned as PM</h2>
+  <h2>&</h2>
+  <h2>Any feedback from the client</h2>
 </div>
+
+<div role="separator" class="dropdown-divider"></div>
+
+<div class="row">
+  <div class="col-12">
+    <h4>Your Projects: </h4>
+    <div role="separator" class="dropdown-divider"></div>
+  </div>
+</div>
+<div style="overflow-x: auto">
+  @if( Session::get('success') )
+      <div class="alert alert-success container" id="div3">
+          <strong>Success!</strong> {{Session::get('success')}}
+      </div>
+  @endif
+  <table id="example" class="table table-striped table-bordered" style="width:100%">
+      <thead>
+          <tr>
+              <th>#</th>
+              <th>Project</th>
+              <th>Phase</th>
+              <th>Start Date</th>
+              <th style="width: 15%">Action</th>
+          </tr>
+      </thead>
+      <tbody>
+          @foreach ($tasks as $index => $task)
+            @if ($task->design_phase)
+              <tr>
+                <td>{{ $index + 1 }}</td>
+                <td>{{ $task->title }}</td>
+                <td>
+                    Design
+                </td>
+                <td>{{$task->design_phase->start_date}}</td>
+                <td>
+                    <center>
+                        <a href="{{route('user.task.view', $task->slug)}}" data-toggle="tooltip" data-placement="bottom" title="View Project">
+                            <i class="fa fa-eye" style="font-size: 1.3rem"></i>
+                        </a>
+                    </center>
+                </td>
+              </tr>
+            @endif   
+            @if($task->development_phase)
+              <tr>
+                  <td>{{ $index + 1 }}</td>
+                  <td>{{ $task->title }}</td>
+
+                  <td>
+                      Development
+                  </td>
+                  <td>  
+                      {{$task->development_phase->dev_start_date}}
+                  </td>
+                  <td>
+                      <center>
+                          <a href="{{route('user.task.view', $task->slug)}}" data-toggle="tooltip" data-placement="bottom" title="View Project">
+                              <i class="fa fa-eye" style="font-size: 1.3rem"></i>
+                          </a>
+                      </center>
+                  </td>
+              </tr>
+            @endif
+            @if($task->seo_phase)
+              <tr>
+                  <td>{{ $index + 1 }}</td>
+                  <td>{{ $task->title }}</td>
+
+                  <td>
+                      SEO
+                  </td>
+                  <td>  
+                      {{$task->seo_phase->seo_start_date}}
+                  </td>
+                  <td>
+                      <center>
+                          <a href="{{route('user.task.view', $task->slug)}}" data-toggle="tooltip" data-placement="bottom" title="View Project">
+                              <i class="fa fa-eye" style="font-size: 1.3rem"></i>
+                          </a>
+                      </center>
+                  </td>
+              </tr>
+            @endif
+            @if(!$task->design_phase && !$task->development_phase && !$task->seo_phase)
+                <tr>
+                    <td>{{ $index + 1 }}</td>
+                    <td>{{ $task->title }}</td>
+
+                    <td>
+                        Primary Phase
+                    </td>
+                    <td>Not Set</td>
+                    <td>
+                        <center>
+                            <a href="{{route('user.task.view', $task->slug)}}" data-toggle="tooltip" data-placement="bottom" title="View Project">
+                                <i class="fa fa-eye" style="font-size: 1.3rem"></i>
+                            </a>
+                        </center>
+                    </td>
+                </tr>
+            @endif
+          @endforeach
+      </tbody>
+  </table>
+</div>
+
 @endsection

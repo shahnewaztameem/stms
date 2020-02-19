@@ -110,6 +110,36 @@
                         <span>Change Password</span>
                     </a>
                 </li>
+        {{--  PM MENUS  --}}
+            @elseif (auth()->user()->user_type == 2)
+                <li class="side-nav__item @if (request()->is('user/home')) side-nav__item--active @endif">
+                    <a href="{{ route('user.home') }}" class="side-nav__link">
+                        <span>Dashboard</span>
+                    </a>
+                </li>
+                {{-- <li class="side-nav__item @if (request()->is('user/task/view/*')) side-nav__item--active @endif">
+                    <a href="#" class="side-nav__link caret">
+                        <span>Projects</span>
+                    </a>
+                </li> --}}
+
+                <li class="side-nav__item nested @if (request()->is('user/task/design')) side-nav__item--active @endif">
+                    <a href="{{route('user.task.design')}}" class="side-nav__link">
+                        <span>Design Phase</span>
+                    </a>
+                </li>
+
+                <li class="side-nav__item nested @if (request()->is('user/task/dev')) side-nav__item--active @endif">
+                    <a href="{{route('user.task.dev')}}" class="side-nav__link">
+                        <span>Dev Phase</span>
+                    </a>
+                </li>
+
+                <li class="side-nav__item nested @if (request()->is('user/task/seo')) side-nav__item--active @endif">
+                    <a href="{{route('user.task.seo')}}" class="side-nav__link">
+                        <span>SEO Phase</span>
+                    </a>
+                </li>
             @endif
 
            <li class="side-nav__item">

@@ -135,12 +135,12 @@ Route::group(['middleware' => ['auth']], function () {
     // USER ROUTES
     Route::group(['prefix' => 'user'], function () {
         Route::group(['middleware' => ['user']], function () {
-            Route::get('task/all', 'UserController@index')->name('user.home');
-            Route::get('task/view/{slug}', 'UserController@view')->name('user.task.view');
-            Route::post('task/file/{id}', 'UserController@store_file')->name('user.file.create');
-            // Route::get('task/file/edit/{task_id}/{id}', 'UserController@edit_file')->name('user.file.edit');
-            // Route::post('task/file/edit/{task_id}/{id}', 'UserController@update_file');
-            Route::delete('task/file/delete/{id}', 'UserController@delete_file')->name('user.file.delete');
+            Route::get('/home', 'UserController@index')->name('user.home');
+            Route::get('/tasks', 'UserController@all_task')->name('user.tasks');
+            Route::get('/task/design', 'UserController@design_phase')->name('user.task.design');
+            Route::get('/task/dev', 'UserController@dev_phase')->name('user.task.dev');
+            Route::get('/task/seo', 'UserController@seo_phase')->name('user.task.seo');
+            Route::get('/task/view/{slug}', 'UserController@view')->name('user.task.view');
         });
     });
 });
@@ -180,11 +180,6 @@ Route::get('search/{query}', function ($query) {
     if (count($tasks)) {
         foreach ($tasks as $index => $task) {
             $html .= "<a class='list-group-item list-group-item-action' href=".route('admin.task.view', $task->slug).">$task->title</a>";
-            // if ($index == (count($tasks)-1)) {
-            // } else {   
-            //     $html .= "<a class='list-group-item list-group-item-action' href=".route('admin.task.view', $task->slug).">$task->title</a>";
-            //     $html .= "<div class='dropdown-divider'></div>";
-            // }
         }
         $html .= "</ul>";
         return $html;
