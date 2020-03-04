@@ -37,6 +37,7 @@
       $(".custom-file-input").on("change", function() {
         var fileName = $(this).val();
         $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
+        console.log('called');
       });
 
       // DYNAMIC FILE FIELD
@@ -46,13 +47,11 @@
         // dynamic_file_input(fieldNo);
 
         function dynamic_file_input(number) {
-          let html = `<div class="row" id="${number}">`;
+          let html = `<div class="row mt-2" id="${number}">`;
           html += '<div class="col-10">'
           html += '<input type="text" class="form-control mb-3" name="file_title[]" placeholder="Wireframe Title">';
-          html += '<div class="custom-file mb-3">';
-          html += '<label class="custom-file-label" for="file_upload">Choose file...</label>';
-          html += '<input type="file" name="task_files[]" class="custom-file-input" id="file_upload">';
-          html += '</div>';
+      
+          html += `<input type="file" id="file_upload" name="task_files[]" class="input-file">`;
           html += '</div>';
           html += '<div class="col-2">';
           html += '<button class="btn btn-danger" id="remove-btn">';

@@ -149,10 +149,11 @@
                 <div class="row">
                   <div class="col-10">
                     <input type="text" class="form-control mb-3" name="file_title[]" placeholder="Wireframe Title">
-                    <div class="custom-file mb-3">
+                    {{-- <div class="custom-file mb-3">
                       <label class="custom-file-label" for="file_upload">Choose file...</label>
-                      <input type="file" name="task_files[]" class="custom-file-input" id="file_upload">
-                    </div>
+                      <input type="file" name="task_files[]" class="custom-file-input" id="file_upload-1">
+                    </div> --}}
+                    <input type="file" id="file_upload" name="task_files[]" class="input-file">
                   </div>
                   <div class="col-2">
                     <button class="btn btn-info" id="plus-btn">
