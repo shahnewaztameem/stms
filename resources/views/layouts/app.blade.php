@@ -8,14 +8,18 @@
     <title>@yield('site_title', config('app.name'))</title>
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
+    
+    <!-- animate css  -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.0/animate.min.css" integrity="sha512-kb1CHTNhoLzinkElTgWn246D6pX22xj8jFNKsDmVwIQo+px7n1yjJUZraVuR/ou6Kmgea4vZXZeUDbqKtXkEMg==" crossorigin="anonymous" />
     <!-- Fontawesome CDN -->
     <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
     <!-- Styles -->
     <link href="{{ mix('/css/app.css') }}" rel="stylesheet">
+    <link href="{{ asset('/css/login.css') }}" rel="stylesheet">
     
     @yield('header_tag')
 </head>
-<body class="@yield('bg_image')">
+<body class="@yield('bg_image') bg_image">
 <div id="app">
 
     <nav class="navbar navbar-expand-md navbar-light custom-navbar-design bg-white shadow-sm">
@@ -194,6 +198,11 @@
 
 
     @yield('customJS')
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/wow/1.1.2/wow.min.js" integrity="sha512-Eak/29OTpb36LLo2r47IpVzPBLXnAMPAVypbSZiZ4Qkf8p/7S/XRG5xp7OKWPPYfJT6metI+IORkR5G8F900+g==" crossorigin="anonymous"></script>
+<script>
+  new WOW().init();
+</script>
 
 </div>
 </body>

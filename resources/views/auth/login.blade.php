@@ -3,17 +3,16 @@
 @section('content')
 <div class="container">
     <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
+        <div class="">
+            <div class="login-wrapper wow animate__animated animate__fadeIn" data-wow-duration="1s" data-wow-delay="0.8s">
 
-                <div class="card-body">
-                    <h3 class="text-center my-3">
-                        LOGIN
+                <div class="login-content">
+                    <h3 class="text-center my-3 wow animate__animated animate__fadeInUp" ata-wow-duration="1.2s" data-wow-delay="1s">
+                        Welcome Back!
                     </h3>
-
-                    @if ($errors->any())
-                        <div class="form-group row">
-                            <div class="col-md-8 offset-md-2">
+                     @if ($errors->any())
+                        <div class="">
+                            <div class="col-md-12">
                                 <div class="alert alert-danger">
                                     <ul>
                                         @foreach ($errors->all() as $error)
@@ -24,46 +23,50 @@
                             </div>
                         </div>
                     @endif
+                   
 
 
                     <form method="POST" action="{{ route('login') }}">
                         @csrf
 
-                        <div class="form-group row">
-                            <div class="col-md-8 offset-md-2">
-                                <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required placeholder="Email Address" autocomplete="email" autofocus>
+                        <div class="">
+                            <div class="col-md-12">
+                                <input id="email" type="email" class=" @error('email') is-invalid @enderror wow animate__animated animate__fadeInUp" name="email" value="{{ old('email') }}" required placeholder="Email Address" autocomplete="email" autofocus  data-wow-duration="1.6s" data-wow-delay="1.2s">
                             </div>
                         </div>
 
-                        <div class="form-group row">
-                            <div class="col-md-8 offset-md-2">
-                                <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="current-password" placeholder="Password">
+                        <div class="">
+                            <div class="col-md-12">
+                                <input id="password" type="password" class=" @error('password') is-invalid @enderror wow animate__animated animate__fadeInUp" name="password" required autocomplete="current-password" placeholder="Password" data-wow-duration="1.8s" data-wow-delay="1.4s">
                             </div>
                         </div>
 
-                        <div class="form-group row">
-                            <div class="col-md-8 offset-md-2">
+                        <div class="">
+                            <div class="col-md-12">
                                 <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
+                                    <input class="form-check-input wow animate__animated animate__fadeInUp" type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }} data-wow-duration="1.8s" data-wow-delay="1.6s">
 
-                                    <label class="form-check-label" for="remember">
+                                    <label class="form-check-label wow animate__animated animate__fadeInUp" for="remember" data-wow-duration="1.8s" data-wow-delay="1.8s">
                                         {{ __('Remember Me') }}
                                     </label>
                                 </div>
                             </div>
                         </div>
 
-                        <div class="form-group row mb-0">
-                            <div class="col-md-8 offset-md-3">
-                                <button type="submit" class="btn btn-primary">
-                                    {{ __('Account Login') }}
-                                </button>
+                        <div class="mt-2">
+                            <div class="col-md-12">
 
-                                @if (Route::has('password.request'))
-                                    <a class="btn btn-link" href="{{ route('password.request') }}">
+                            @if (Route::has('password.request'))
+                                    <a class="btn-block wow animate__animated animate__fadeInUp" href="{{ route('password.request') }}" data-wow-duration="1.8s" data-wow-delay="2s">
                                         {{ __('Forgot Your Password?') }}
                                     </a>
                                 @endif
+                            
+                                <button type="submit" class="btnfos btnfos-5 wow animate__animated animate__fadeInUp" data-wow-duration="1.8s" data-wow-delay="2.2s">
+                                    {{ __('Account Login') }}
+                                </button>
+
+                                
                             </div>
                         </div>
                     </form>
